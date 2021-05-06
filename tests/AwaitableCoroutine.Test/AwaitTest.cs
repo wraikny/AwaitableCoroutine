@@ -1,7 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-
-using Xunit;
+﻿using Xunit;
 using Xunit.Abstractions;
 
 namespace AwaitableCoroutine.Test
