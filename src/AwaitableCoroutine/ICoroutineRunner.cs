@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Threading;
-using System.ComponentModel;
-
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Threading;
 
 namespace AwaitableCoroutine
 {

@@ -19,7 +19,7 @@ namespace AwaitableCoroutine.Internal
         public AwaitableCoroutineMethodBuilder()
         {
             Logger.Log("AwaitableCoroutineMethodBuilder constructor");
-            _coroutine  = new Coroutine().SetupRunner();
+            _coroutine = new Coroutine().SetupRunner();
         }
 
         // 1. Static Create method.

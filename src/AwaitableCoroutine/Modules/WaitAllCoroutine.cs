@@ -11,7 +11,7 @@ namespace AwaitableCoroutine
         public WaitAllCoroutine(ReadOnlySpan<AwaitableCoroutineBase> coroutines)
         {
             _coroutines = new List<AwaitableCoroutineBase>();
-            foreach(var c in coroutines)
+            foreach (var c in coroutines)
             {
                 _coroutines.Add(c);
             }

@@ -44,7 +44,8 @@ namespace AwaitableCoroutine.Test
         {
             var runner = new CoroutineRunner();
 
-            var waitAll = runner.AddCoroutine(() => {
+            var waitAll = runner.AddCoroutine(() =>
+            {
                 var coroutines = new AwaitableCoroutine<int>[4];
                 for (var i = 0; i < 4; i++)
                 {

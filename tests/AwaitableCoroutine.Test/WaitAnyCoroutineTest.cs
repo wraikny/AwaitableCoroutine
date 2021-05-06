@@ -57,7 +57,8 @@ namespace AwaitableCoroutine.Test
 
             var condition = false;
 
-            var waitAny = runner.AddCoroutine(() => {
+            var waitAny = runner.AddCoroutine(() =>
+            {
                 return AwaitableCoroutine.WaitAny<int>(new AwaitableCoroutine<int>[] {
                     CreateCoroutine(0, () => false),
                     CreateCoroutine(1, () => condition),
