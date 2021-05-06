@@ -5,7 +5,7 @@
 
     <PackageId>AwaitableCoroutine</PackageId>
     <Version>1.0.0</Version>
-    <Description>Altseed2 Extension to check collision based on type</Description>
+    <Description>AwaitableCoroutine is a library for C# that provides a coroutine that can use async/await syntax.</Description>
     <PackageProjectUrl>https://github.com/wraikny/AwaitableCoroutine</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>Copyright (c) 2021 wraikny</Copyright>

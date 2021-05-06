@@ -1,5 +1,9 @@
 # AwaitableCoroutine
 
+AwaitableCoroutine is a library for C# that provides a coroutine that can use async/await syntax.
+
+AwaitableCoroutine は async/await 構文を使用できるコルーチンを提供する C# 向けライブラリです。
+
 ## Example
 
 ```C#
@@ -54,3 +58,31 @@ Finished!
 
 see [examples](examples) in detail.
 
+## Command
+
+### Setup
+
+```sh
+$ git submodule update --init
+$ dotnet tool restore
+```
+
+### Build
+
+```sh
+$ dotnet fake build [-- <DEBUG|RELEASE>]
+```
+
+Default configuration is DEBUG
+
+### Format
+
+```sh
+$ dotnet fake build -t format
+```
+
+### Test
+
+```sh
+$ dotnet fake build -t test [-- <DEBUG|RELEASE>]
+```
