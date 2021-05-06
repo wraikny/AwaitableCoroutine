@@ -36,7 +36,13 @@ namespace AwaitableCoroutine
             OnCompleted = action;
         }
 
-        public abstract void MoveNext();
+        protected abstract void OnMoveNext();
+
+        public void MoveNext()
+        {
+            if (IsCompleted) return;
+            OnMoveNext();
+        }
     }
 
     [AsyncMethodBuilder(typeof(AwaitableCoroutineMethodBuilder))]

@@ -1,17 +1,10 @@
 ﻿namespace AwaitableCoroutine
 {
-    public sealed class YieldCoroutine : AwaitableCoroutine
+    internal sealed class YieldCoroutine : AwaitableCoroutine
     {
-        public YieldCoroutine()
-        {
+        public YieldCoroutine() { }
 
-        }
-
-        public override void MoveNext()
-        {
-            if (IsCompleted) return;
-            Complete();
-        }
+        protected override void OnMoveNext() => Complete();
     }
 
     public partial class AwaitableCoroutine

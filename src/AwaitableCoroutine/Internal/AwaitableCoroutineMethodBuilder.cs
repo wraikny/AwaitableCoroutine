@@ -11,7 +11,7 @@ namespace AwaitableCoroutine.Internal
 
             public void CallComplete() => Complete();
 
-            public override void MoveNext() { }
+            protected override void OnMoveNext() { }
         }
 
         private readonly Coroutine _coroutine;
@@ -95,7 +95,7 @@ namespace AwaitableCoroutine.Internal
 
             public void CallComplete(T result) => Complete(result);
 
-            public override void MoveNext() { }
+            protected override void OnMoveNext() { }
         }
 
         private readonly Coroutine _coroutine;

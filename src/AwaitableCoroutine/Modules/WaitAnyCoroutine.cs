@@ -16,10 +16,8 @@ namespace AwaitableCoroutine
             }
         }
 
-        public override void MoveNext()
+        protected override void OnMoveNext()
         {
-            if (IsCompleted) return;
-
             foreach (var c in _coroutines)
             {
                 c.MoveNext();
@@ -43,10 +41,8 @@ namespace AwaitableCoroutine
         }
 
 
-        public override void MoveNext()
+        protected override void OnMoveNext()
         {
-            if (IsCompleted) return;
-
             List<T> result = null;
 
             foreach (var c in _coroutines)
