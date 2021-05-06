@@ -38,5 +38,11 @@ jobs:
     - name: Build
       run: dotnet fake build
 
+    - name: Build(Release)
+      run: dotnet fake build -- RELEASE
+
     - name: Test
       run: dotnet fake build -t test
+
+    - name: Test(Release)
+      run: dotnet fake build -t test -- RELEASE
