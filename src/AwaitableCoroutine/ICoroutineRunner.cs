@@ -8,31 +8,12 @@ namespace AwaitableCoroutine
 {
     public interface ICoroutineRunner
     {
-        private static readonly ThreadLocal<Stack<ICoroutineRunner>> s_instances = new ThreadLocal<Stack<ICoroutineRunner>>();
+        private static readonly ThreadLocal<ICoroutineRunner> s_instance = new ThreadLocal<ICoroutineRunner>();
 
-        internal static ICoroutineRunner Peek()
+        internal static ICoroutineRunner Context
         {
-            var stack = s_instances.Value;
-            if (stack is null) return null;
-
-            return stack.TryPeek(out var res) ? res : null;
-        }
-
-        internal static void Push(ICoroutineRunner runner)
-        {
-            if (runner is null)
-            {
-                throw new ArgumentNullException(nameof(runner));
-            }
-
-            s_instances.Value ??= new Stack<ICoroutineRunner>();
-
-            s_instances.Value.Push(runner);
-        }
-
-        internal static void Pop()
-        {
-            s_instances.Value.Pop();
+            get => s_instance.Value;
+            set => s_instance.Value = value;
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -55,7 +36,7 @@ namespace AwaitableCoroutine
                 throw new ArgumentNullException(nameof(coroutine));
             }
 
-            var runner = ICoroutineRunner.Peek();
+            var runner = ICoroutineRunner.Context;
 
             if (runner is null)
             {
@@ -70,14 +51,16 @@ namespace AwaitableCoroutine
 
         public static void Update(this ICoroutineRunner runner)
         {
+            ICoroutineRunner lastRunner = null;
             try
             {
-                ICoroutineRunner.Push(runner);
+                lastRunner = ICoroutineRunner.Context;
+                ICoroutineRunner.Context = runner;
                 runner.OnUpdate();
             }
             finally
             {
-                ICoroutineRunner.Pop();
+                ICoroutineRunner.Context = lastRunner;
             }
         }
 
@@ -89,16 +72,17 @@ namespace AwaitableCoroutine
                 throw new ArgumentNullException(nameof(init));
             }
 
+            ICoroutineRunner lastRunner = null;
             TRes coroutine;
-
             try
             {
-                ICoroutineRunner.Push(runner);
+                lastRunner = ICoroutineRunner.Context;
+                ICoroutineRunner.Context = runner;
                 coroutine = init();
             }
             finally
             {
-                ICoroutineRunner.Pop();
+                ICoroutineRunner.Context = lastRunner;
             }
 
             return coroutine;

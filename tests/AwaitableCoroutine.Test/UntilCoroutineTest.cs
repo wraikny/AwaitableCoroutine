@@ -22,7 +22,7 @@ namespace AwaitableCoroutine.Test
 
             var coroutine = runner.AddCoroutine(() => AwaitableCoroutine.Until(() => condition));
 
-            for(var i = 0; i < 10; i++)
+            for(var i = 0; i < 3; i++)
             {
                 runner.Update();
                 Assert.False(coroutine.IsCompleted);

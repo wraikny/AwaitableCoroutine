@@ -67,11 +67,11 @@ namespace AwaitableCoroutine.Internal
         {
             Logger.Log("AwaitableCoroutineMethodBuilder.Start");
 
-            var runner = ICoroutineRunner.Peek();
+            var runner = ICoroutineRunner.Context;
 
             if (runner is null)
             {
-                throw new InvalidOperationException("Out of ICoroutineRunner context");
+                throw new InvalidOperationException("ICoroutineRunner.Context is null");
             }
 
             runner.Post(stateMachine.MoveNext);
@@ -151,11 +151,11 @@ namespace AwaitableCoroutine.Internal
         {
             Logger.Log($"AwaitableCoroutineMethodBuilder<{typeof(T).Name}>.Start");
 
-            var runner = ICoroutineRunner.Peek();
+            var runner = ICoroutineRunner.Context;
 
             if (runner is null)
             {
-                throw new InvalidOperationException("Out of ICoroutineRunner context");
+                throw new InvalidOperationException("ICoroutineRunner.Context is null");
             }
 
             runner.Post(stateMachine.MoveNext);
