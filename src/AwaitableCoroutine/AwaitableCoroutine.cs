@@ -15,9 +15,18 @@ namespace AwaitableCoroutine
 
         public AwaitableCoroutineBase()
         {
-            Runner = null;
             OnCompleted = null;
             IsCompleted = false;
+
+            var runner = ICoroutineRunner.Context;
+
+            if (runner is null)
+            {
+                throw new InvalidOperationException("Out of ICoroutineRunner context");
+            }
+
+            runner.OnRegistering(this);
+            Runner = runner;
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -25,21 +34,6 @@ namespace AwaitableCoroutine
         {
             if (action is null) return;
             OnCompleted = action;
-        }
-
-        internal void SetRegistered(ICoroutineRunner runner)
-        {
-            if (runner is null)
-            {
-                throw new ArgumentNullException(nameof(runner));
-            }
-
-            if (Runner is { })
-            {
-                throw new InvalidOperationException("Coroutine already registered");
-            }
-
-            Runner = runner;
         }
 
         public abstract void MoveNext();

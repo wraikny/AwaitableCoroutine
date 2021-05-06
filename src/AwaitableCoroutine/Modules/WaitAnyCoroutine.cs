@@ -70,12 +70,12 @@ namespace AwaitableCoroutine
     {
         public static AwaitableCoroutine WaitAny(ReadOnlySpan<AwaitableCoroutineBase> coroutines)
         {
-            return new WaitAnyCoroutine(coroutines).SetupRunner();
+            return new WaitAnyCoroutine(coroutines);
         }
 
         public static AwaitableCoroutine<IReadOnlyList<T>> WaitAny<T>(ReadOnlySpan<AwaitableCoroutine<T>> coroutines)
         {
-            return new WaitAnyCoroutine<T>(coroutines).SetupRunner();
+            return new WaitAnyCoroutine<T>(coroutines);
         }
     }
 }

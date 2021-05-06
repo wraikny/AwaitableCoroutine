@@ -18,7 +18,7 @@
     {
         public static AwaitableCoroutine Yield()
         {
-            return new YieldCoroutine().SetupRunner();
+            return new YieldCoroutine();
         }
     }
 }

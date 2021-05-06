@@ -25,28 +25,6 @@ namespace AwaitableCoroutine
 
     public static class ICoroutineRunnerExt
     {
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public static T SetupRunner<T>(this T coroutine)
-            where T : AwaitableCoroutineBase
-        {
-            if (coroutine is null)
-            {
-                throw new ArgumentNullException(nameof(coroutine));
-            }
-
-            var runner = ICoroutineRunner.Context;
-
-            if (runner is null)
-            {
-                throw new InvalidOperationException("Out of ICoroutineRunner context");
-            }
-
-            runner.OnRegistering(coroutine);
-            coroutine.SetRegistered(runner);
-
-            return coroutine;
-        }
-
         public static void Update(this ICoroutineRunner runner)
         {
             ICoroutineRunner lastRunner = null;

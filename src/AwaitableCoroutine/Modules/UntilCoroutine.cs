@@ -8,11 +8,6 @@ namespace AwaitableCoroutine
 
         public UntilCoroutine(Func<bool> predicate)
         {
-            if (predicate is null)
-            {
-                throw new ArgumentNullException(nameof(predicate));
-            }
-
             _predicate = predicate;
         }
 
@@ -31,7 +26,12 @@ namespace AwaitableCoroutine
     {
         public static AwaitableCoroutine Until(Func<bool> predicate)
         {
-            return new UntilCoroutine(predicate).SetupRunner();
+            if (predicate is null)
+            {
+                throw new ArgumentNullException(nameof(predicate));
+            }
+
+            return new UntilCoroutine(predicate);
         }
     }
 }

@@ -68,12 +68,12 @@ namespace AwaitableCoroutine
     {
         public static AwaitableCoroutine WaitAll(ReadOnlySpan<AwaitableCoroutineBase> coroutines)
         {
-            return new WaitAllCoroutine(coroutines).SetupRunner();
+            return new WaitAllCoroutine(coroutines);
         }
 
         public static AwaitableCoroutine<IReadOnlyList<T>> WaitAll<T>(ReadOnlySpan<AwaitableCoroutine<T>> coroutines)
         {
-            return new WaitAllCoroutine<T>(coroutines).SetupRunner();
+            return new WaitAllCoroutine<T>(coroutines);
         }
     }
 }
