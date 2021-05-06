@@ -12,13 +12,17 @@ namespace AwaitableCoroutine.Internal
         [Conditional("DEBUG")]
         public static void Log(string text)
         {
+#if DEBUG
             s_logger?.Invoke(text);
+#endif
         }
 
         [Conditional("DEBUG")]
         public static void SetLogger(Action<string> logger)
         {
+#if DEBUG
             s_logger = logger;
+#endif
         }
     }
 }
