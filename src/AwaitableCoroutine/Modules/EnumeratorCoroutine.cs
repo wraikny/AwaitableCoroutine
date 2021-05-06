@@ -12,7 +12,7 @@ namespace AwaitableCoroutine
                 throw new ArgumentNullException(nameof(enumerator));
             }
 
-            while(enumerator.MoveNext()) await Yield();
+            while (enumerator.MoveNext()) await Yield();
         }
     }
 
