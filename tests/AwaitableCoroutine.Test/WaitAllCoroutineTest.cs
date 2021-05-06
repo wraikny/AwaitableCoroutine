@@ -10,7 +10,17 @@ namespace AwaitableCoroutine.Test
         public WaitAllCoroutineTest(ITestOutputHelper outputHelper)
         {
             _outputHelper = outputHelper;
-            Internal.Logger.SetLogger(_outputHelper.WriteLine);
+            Internal.Logger.SetLogger(text =>
+            {
+                try
+                {
+                    _outputHelper.WriteLine(text);
+                }
+                catch
+                {
+
+                }
+            });
         }
 
         private async AwaitableCoroutine<int> CreateCoroutine(int v)

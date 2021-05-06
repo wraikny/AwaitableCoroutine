@@ -12,7 +12,17 @@ namespace AwaitableCoroutine.Test
         public EnumeratorCoroutineTest(ITestOutputHelper outputHelper)
         {
             _outputHelper = outputHelper;
-            Internal.Logger.SetLogger(_outputHelper.WriteLine);
+            Internal.Logger.SetLogger(text =>
+            {
+                try
+                {
+                    _outputHelper.WriteLine(text);
+                }
+                catch
+                {
+
+                }
+            });
         }
 
         private IEnumerator GetEnumerator(int n)
