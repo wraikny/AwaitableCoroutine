@@ -1,8 +1,11 @@
 # AwaitableCoroutine
 
-AwaitableCoroutine is a library for C# that provides a coroutine that can use async/await syntax.
+AwaitableCoroutine is a library for C# that provides a coroutine that allows the use of async/await syntax.
+Internally it uses Task-Like, the Awaitable pattern, and AsyncMethodBuilder.
 
-AwaitableCoroutine は async/await 構文を使用できるコルーチンを提供する C# 向けライブラリです。
+AwaitableCoroutine は、async/await 構文を使用可能にしたコルーチンを提供する C# 向けライブラリです。
+内部的にはTask-Like、Awaitable パターン、AsyncMethodBuilder が使われています。
+
 
 ## Example
 
