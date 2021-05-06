@@ -103,11 +103,11 @@ namespace AwaitableCoroutine.Internal
         public AwaitableCoroutineMethodBuilder()
         {
             Logger.Log($"AwaitableCoroutineMethodBuilder<{typeof(T).Name}> constructor");
-            _coroutine = new Coroutine();
+            _coroutine = new Coroutine().SetupRunner();
         }
 
         // 1. Static Create method.
-        public static AwaitableCoroutineMethodBuilder Create() => new AwaitableCoroutineMethodBuilder();
+        public static AwaitableCoroutineMethodBuilder<T> Create() => new AwaitableCoroutineMethodBuilder<T>();
 
         // 2. TaskLike Task Property
         public AwaitableCoroutine<T> Task => _coroutine;
