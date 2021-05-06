@@ -1,0 +1,13 @@
+*                   text=auto
+
+*.bat               text eol=crlf
+*.cmd               text eol=crlf
+
+*.sh                text eol=lf
+*.command           text eol=lf
+
+*.md                text eol=lf
+
+*.cs                text eol=lf
+*.fsx               text eol=lf
+*.json              text eol=lf
