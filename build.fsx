@@ -82,6 +82,23 @@ Target.create "Build" (fun _ ->
     }))
 )
 
+Target.create "Test" (fun _ ->
+  let configuration =
+    args
+    |> Option.bind Array.tryHead
+    |> getConfiguration
+
+  !! "tests/**/*.*proj"
+  |> Seq.iter(fun proj ->
+    DotNet.test (fun p ->
+      { p with
+          Logger = Some "console;verbosity=minimal"
+          Configuration = configuration
+      }
+    ) proj
+  )
+)
+
 Target.create "None" ignore
 Target.create "Default" ignore
 

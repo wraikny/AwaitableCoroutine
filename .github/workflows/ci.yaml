@@ -36,4 +36,7 @@ jobs:
       run: dotnet fake build -t format.check
 
     - name: Build
-      run: dotnet build
+      run: dotnet fake build
+
+    - name: Test
+      run: dotnet fake build -t test
