@@ -34,7 +34,6 @@ namespace AwaitableCoroutine.Test
 
             counter.Inc();
             _outputHelper.WriteLine($"Count: {counter.Count}");
-            //await AwaitableCoroutine.Yield();
             // inc 4
         }
 
@@ -65,7 +64,7 @@ namespace AwaitableCoroutine.Test
             var runner = new CoroutineRunner();
             var counter = new Counter();
 
-            _ = runner.AddCoroutine(GetCoroutine, counter);
+            _ = runner.AddCoroutine(() => GetCoroutine(counter));
         }
 
         [Fact]
@@ -74,7 +73,7 @@ namespace AwaitableCoroutine.Test
             var runner = new CoroutineRunner();
             var counter = new Counter();
 
-            _ = runner.AddCoroutine(GetCoroutine, counter);
+            _ = runner.AddCoroutine(() => GetCoroutine(counter));
 
             var i = 0;
             while (i < 3)
@@ -92,7 +91,7 @@ namespace AwaitableCoroutine.Test
             var runner = new CoroutineRunner();
             var counter = new Counter();
 
-            _ = runner.AddCoroutine(GetCoroutine2, counter);
+            _ = runner.AddCoroutine(() => GetCoroutine2(counter));
 
             var i = 0;
             while (i < 12)

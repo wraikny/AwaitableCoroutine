@@ -34,7 +34,7 @@ namespace AwaitableCoroutine
         }
     }
 
-    public sealed class WaitAllCoroutine<T> : AwaitableCoroutine<IReadOnlyList<T>>
+    internal sealed class WaitAllCoroutine<T> : AwaitableCoroutine<IReadOnlyList<T>>
     {
         private readonly AwaitableCoroutine<T>[] _coroutines;
 

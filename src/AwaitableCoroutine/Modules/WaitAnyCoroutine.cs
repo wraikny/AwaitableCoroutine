@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace AwaitableCoroutine
 {
@@ -21,26 +20,19 @@ namespace AwaitableCoroutine
         {
             if (IsCompleted) return;
 
-            var isCompleted = false;
-            
             foreach(var c in _coroutines)
             {
                 c.MoveNext();
                 if (c.IsCompleted)
                 {
-                    isCompleted = true;
+                    Complete();
                     return;
                 }
-            }
-
-            if (isCompleted)
-            {
-                Complete();
             }
         }
     }
 
-    public sealed class WaitAnyCoroutine<T> : AwaitableCoroutine<IReadOnlyList<T>>
+    internal sealed class WaitAnyCoroutine<T> : AwaitableCoroutine<IReadOnlyList<T>>
     {
         private readonly AwaitableCoroutine<T>[] _coroutines;
 
@@ -64,7 +56,6 @@ namespace AwaitableCoroutine
                 {
                     result ??= new List<T>();
                     result.Add(c.Result);
-                    continue;
                 }
             }
 
