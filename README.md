@@ -89,3 +89,9 @@ $ dotnet fake build -t format
 ```sh
 $ dotnet fake build -t test [-- <DEBUG|RELEASE>]
 ```
+
+### Pack
+
+```sh
+$ dotnet pack src/AwaitableCoroutine -c Release -o .
+``
