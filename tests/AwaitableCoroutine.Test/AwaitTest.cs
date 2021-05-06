@@ -1,13 +1,21 @@
-using System;
+﻿using System;
+using System.Diagnostics;
 
 using Xunit;
-
-using AwaitableCoroutine.Modules;
+using Xunit.Abstractions;
 
 namespace AwaitableCoroutine.Test
 {
     public class AwaitTest
     {
+        private readonly ITestOutputHelper _outputHelper;
+
+        public AwaitTest(ITestOutputHelper outputHelper)
+        {
+            _outputHelper = outputHelper;
+            Internal.Logger.SetLogger(_outputHelper.WriteLine);
+        }
+
         public sealed class Counter
         {
             public int Count { get; private set; }
@@ -15,21 +23,40 @@ namespace AwaitableCoroutine.Test
             public void Inc() => Count++;
         }
 
-        public static async AwaitableCoroutine GetCoroutine(ICoroutineRunner runner, Counter counter)
+        public async AwaitableCoroutine GetCoroutine(Counter counter)
         {
-            Console.WriteLine("await 0");
-            await runner.Yield();
+            for (var i = 0; i < 3; i++)
+            {
+                counter.Inc();
+                _outputHelper.WriteLine($"Count: {counter.Count}");
+                await AwaitableCoroutine.Yield();
+            }
 
-            Console.WriteLine("await 1");
             counter.Inc();
-            await runner.Yield();
+            _outputHelper.WriteLine($"Count: {counter.Count}");
+            //await AwaitableCoroutine.Yield();
+            // inc 4
+        }
 
-            Console.WriteLine("await 2");
+        public async AwaitableCoroutine GetCoroutine2(Counter counter)
+        {
             counter.Inc();
-            await runner.Yield();
+            _outputHelper.WriteLine($"Count: {counter.Count}");
+            await AwaitableCoroutine.Yield(); // inc 1
 
-            Console.WriteLine("await 3");
             counter.Inc();
+            _outputHelper.WriteLine($"Count: {counter.Count}");
+
+            await GetCoroutine(counter); // inc 6
+
+            counter.Inc();
+            _outputHelper.WriteLine($"Count: {counter.Count}");
+
+            await GetCoroutine(counter); // inc 11
+
+            counter.Inc();
+            _outputHelper.WriteLine($"Count: {counter.Count}");
+            // inc 12
         }
 
         [Fact]
@@ -38,8 +65,7 @@ namespace AwaitableCoroutine.Test
             var runner = new CoroutineRunner();
             var counter = new Counter();
 
-            ICoroutineRunner.SetInstance(runner);
-            var _ = GetCoroutine(runner, counter);
+            _ = runner.AddCoroutine(GetCoroutine, counter);
         }
 
         [Fact]
@@ -48,29 +74,37 @@ namespace AwaitableCoroutine.Test
             var runner = new CoroutineRunner();
             var counter = new Counter();
 
-            ICoroutineRunner.SetInstance(runner);
-            var coroutine = GetCoroutine(runner, counter);
+            _ = runner.AddCoroutine(GetCoroutine, counter);
 
-            runner.Register(coroutine);
-            Assert.True(runner.Count == 1);
-            Assert.True(counter.Count == 0);
+            var i = 0;
+            while (i < 3)
+            {
+                runner.Update();
+                i++;
+                _outputHelper.WriteLine($"Actual: {i}, Coroutines: {runner.Count}");
+                Assert.Equal(i, counter.Count);
+            }
+        }
 
-            Console.WriteLine("Updating 0");
+        [Fact]
+        public void RunCoroutineInside()
+        {
+            var runner = new CoroutineRunner();
+            var counter = new Counter();
+
+            _ = runner.AddCoroutine(GetCoroutine2, counter);
+
+            var i = 0;
+            while (i < 12)
+            {
+                runner.Update();
+                i++;
+                _outputHelper.WriteLine($"Actual: {i}, Coroutines: {runner.Count}");
+                Assert.Equal(i, counter.Count);
+            }
+
             runner.Update();
-            Console.WriteLine("Updated 0");
-            Assert.True(counter.Count == 0);
-
-            Console.WriteLine("Updating 1");
-            runner.Update();
-            Console.WriteLine("Updated 1");
-            Assert.True(counter.Count == 1);
-
-            Console.WriteLine("Updating 2");
-            runner.Update();
-            Console.WriteLine("Updated 2");
-            Assert.True(counter.Count == 2);
-
-
+            _outputHelper.WriteLine($"Actual: {i}, Coroutines: {runner.Count}");
         }
     }
 }

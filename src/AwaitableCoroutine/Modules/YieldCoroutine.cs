@@ -4,8 +4,7 @@ namespace AwaitableCoroutine
 {
     public sealed class YieldCoroutine : AwaitableCoroutine
     {
-        public YieldCoroutine(ICoroutineRunner runner)
-            : base(runner)
+        public YieldCoroutine()
         {
 
         }
@@ -17,13 +16,11 @@ namespace AwaitableCoroutine
         }
     }
 
-    public static partial class ICoroutineRunnerExt
+    public partial class AwaitableCoroutine
     {
-        public static AwaitableCoroutine Yield(this ICoroutineRunner runner)
+        public static AwaitableCoroutine Yield()
         {
-            var coroutine = new YieldCoroutine(runner);
-            runner.Register(coroutine);
-            return coroutine;
+            return new YieldCoroutine().SetupRunner();
         }
     }
 }

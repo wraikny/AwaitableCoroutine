@@ -1,17 +1,13 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 
-namespace AwaitableCoroutine
+namespace AwaitableCoroutine.Internal
 {
-    public class AwaitableCoroutineMethodBuilder
+    public sealed class AwaitableCoroutineMethodBuilder
     {
         private sealed class Coroutine : AwaitableCoroutine
         {
-            public Coroutine(ICoroutineRunner runner)
-                :base(runner)
-            {
-
-            }
+            public Coroutine() { }
 
             public void CallComplete() => Complete();
 
@@ -20,24 +16,28 @@ namespace AwaitableCoroutine
 
         private readonly Coroutine _coroutine;
 
-        public AwaitableCoroutineMethodBuilder(ICoroutineRunner runner)
+        public AwaitableCoroutineMethodBuilder()
         {
-            _coroutine  = new Coroutine(runner);
+            Logger.Log("AwaitableCoroutineMethodBuilder constructor");
+            _coroutine  = new Coroutine().SetupRunner();
         }
 
         // 1. Static Create method.
-        public static AwaitableCoroutineMethodBuilder Create() => new AwaitableCoroutineMethodBuilder(ICoroutineRunner.Instance);
+        public static AwaitableCoroutineMethodBuilder Create() => new AwaitableCoroutineMethodBuilder();
 
         // 2. TaskLike Task Property
         public AwaitableCoroutine Task => _coroutine;
 
         // 3. SetException
-        public void SetException(Exception _) { }
+        public void SetException(Exception _)
+        {
+            Logger.Log("AwaitableCoroutineMethodBuilder.SetException");
+        }
 
         // 4. SetResult
         public void SetResult()
         {
-            Console.WriteLine("SetResult");
+            Logger.Log("AwaitableCoroutineMethodBuilder.SetResult");
             _coroutine.CallComplete();
         }
 
@@ -47,7 +47,7 @@ namespace AwaitableCoroutine
             where TAwaiter : INotifyCompletion
             where TStateMachine : IAsyncStateMachine
         {
-            Console.WriteLine("AwaitOnCompleted");
+            Logger.Log("AwaitableCoroutineMethodBuilder.AwaitOnCompleted");
             awaiter.OnCompleted(stateMachine.MoveNext);
         }
 
@@ -57,7 +57,7 @@ namespace AwaitableCoroutine
             where TAwaiter : ICriticalNotifyCompletion
             where TStateMachine : IAsyncStateMachine
         {
-            Console.WriteLine("AwaitUnsafeOnCompleted");
+            Logger.Log("AwaitableCoroutineMethodBuilder.AwaitUnsafeOnCompleted");
             awaiter.OnCompleted(stateMachine.MoveNext);
         }
 
@@ -65,18 +65,106 @@ namespace AwaitableCoroutine
         public void Start<TStateMachine>(ref TStateMachine stateMachine)
             where TStateMachine : IAsyncStateMachine
         {
-            Console.WriteLine("Start");
-            if (ICoroutineRunner.Instance is null)
+            Logger.Log("AwaitableCoroutineMethodBuilder.Start");
+
+            var runner = ICoroutineRunner.Peek();
+
+            if (runner is null)
             {
-                throw new InvalidOperationException($"{nameof(ICoroutineRunner.Instance)} is null");
+                throw new InvalidOperationException("Out of ICoroutineRunner context");
             }
-            ICoroutineRunner.Instance.Post(stateMachine.MoveNext);
+
+            runner.Post(stateMachine.MoveNext);
         }
 
         // 8. SetStateMachine
         public void SetStateMachine(IAsyncStateMachine _)
         {
-            Console.WriteLine("SetStateMachine");
+            Logger.Log("AwaitableCoroutineMethodBuilder.SetStateMachine");
+        }
+    }
+
+    public sealed class AwaitableCoroutineMethodBuilder<T>
+    {
+        private sealed class Coroutine : AwaitableCoroutine<T>
+        {
+            public Coroutine()
+            {
+
+            }
+
+            public void CallComplete(T result) => Complete(result);
+
+            public override void MoveNext() { }
+        }
+
+        private readonly Coroutine _coroutine;
+
+        public AwaitableCoroutineMethodBuilder()
+        {
+            Logger.Log($"AwaitableCoroutineMethodBuilder<{typeof(T).Name}> constructor");
+            _coroutine = new Coroutine();
+        }
+
+        // 1. Static Create method.
+        public static AwaitableCoroutineMethodBuilder Create() => new AwaitableCoroutineMethodBuilder();
+
+        // 2. TaskLike Task Property
+        public AwaitableCoroutine<T> Task => _coroutine;
+
+        // 3. SetException
+        public void SetException(Exception _)
+        {
+            Logger.Log($"AwaitableCoroutineMethodBuilder<{typeof(T).Name}>.SetException");
+        }
+
+        // 4. SetResult
+        public void SetResult(T result)
+        {
+            Logger.Log($"AwaitableCoroutineMethodBuilder<{typeof(T).Name}>.SetResult");
+            _coroutine.CallComplete(result);
+        }
+
+        // 5. AwaitOnCompleted
+        public void AwaitOnCompleted<TAwaiter, TStateMachine>(
+            ref TAwaiter awaiter, ref TStateMachine stateMachine)
+            where TAwaiter : INotifyCompletion
+            where TStateMachine : IAsyncStateMachine
+        {
+            Logger.Log($"AwaitableCoroutineMethodBuilder<{typeof(T).Name}>.AwaitOnCompleted");
+            awaiter.OnCompleted(stateMachine.MoveNext);
+        }
+
+        // 6. AwaitUnsafeOnCompleted
+        public void AwaitUnsafeOnCompleted<TAwaiter, TStateMachine>(
+            ref TAwaiter awaiter, ref TStateMachine stateMachine)
+            where TAwaiter : ICriticalNotifyCompletion
+            where TStateMachine : IAsyncStateMachine
+        {
+            Logger.Log($"AwaitableCoroutineMethodBuilder<{typeof(T).Name}>.AwaitUnsafeOnCompleted");
+            awaiter.OnCompleted(stateMachine.MoveNext);
+        }
+
+        // 7. Start
+        public void Start<TStateMachine>(ref TStateMachine stateMachine)
+            where TStateMachine : IAsyncStateMachine
+        {
+            Logger.Log($"AwaitableCoroutineMethodBuilder<{typeof(T).Name}>.Start");
+
+            var runner = ICoroutineRunner.Peek();
+
+            if (runner is null)
+            {
+                throw new InvalidOperationException("Out of ICoroutineRunner context");
+            }
+
+            runner.Post(stateMachine.MoveNext);
+        }
+
+        // 8. SetStateMachine
+        public void SetStateMachine(IAsyncStateMachine _)
+        {
+            Logger.Log($"AwaitableCoroutineMethodBuilder<{typeof(T).Name}>.SetStateMachine");
         }
     }
 }

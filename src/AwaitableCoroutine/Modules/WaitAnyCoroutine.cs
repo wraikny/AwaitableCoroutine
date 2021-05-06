@@ -8,8 +8,7 @@ namespace AwaitableCoroutine
     {
         private readonly List<AwaitableCoroutineBase> _coroutines;
 
-        public WaitAnyCoroutine(ICoroutineRunner runner, ReadOnlySpan<AwaitableCoroutineBase> coroutines)
-            : base(runner)
+        public WaitAnyCoroutine(ReadOnlySpan<AwaitableCoroutineBase> coroutines)
         {
             _coroutines = new List<AwaitableCoroutineBase>();
             foreach(var c in coroutines)
@@ -45,8 +44,7 @@ namespace AwaitableCoroutine
     {
         private readonly AwaitableCoroutine<T>[] _coroutines;
 
-        public WaitAnyCoroutine(ICoroutineRunner runner, ReadOnlySpan<AwaitableCoroutine<T>> coroutines)
-            : base(runner)
+        public WaitAnyCoroutine(ReadOnlySpan<AwaitableCoroutine<T>> coroutines)
         {
             _coroutines = new AwaitableCoroutine<T>[coroutines.Length];
             coroutines.CopyTo(_coroutines);
@@ -77,20 +75,16 @@ namespace AwaitableCoroutine
         }
     }
 
-    public static partial class ICoroutineRunnerExt
+    public partial class AwaitableCoroutine
     {
-        public static AwaitableCoroutine WaitAny(this ICoroutineRunner runner, ReadOnlySpan<AwaitableCoroutineBase> coroutines)
+        public static AwaitableCoroutine WaitAny(ReadOnlySpan<AwaitableCoroutineBase> coroutines)
         {
-            var coroutine = new WaitAnyCoroutine(runner, coroutines);
-            runner.Register(coroutine);
-            return coroutine;
+            return new WaitAnyCoroutine(coroutines).SetupRunner();
         }
 
-        public static AwaitableCoroutine<IReadOnlyList<T>> WaitAny<T>(this ICoroutineRunner runner, ReadOnlySpan<AwaitableCoroutine<T>> coroutines)
+        public static AwaitableCoroutine<IReadOnlyList<T>> WaitAny<T>(ReadOnlySpan<AwaitableCoroutine<T>> coroutines)
         {
-            var coroutine = new WaitAnyCoroutine<T>(runner, coroutines);
-            runner.Register(coroutine);
-            return coroutine;
+            return new WaitAnyCoroutine<T>(coroutines).SetupRunner();
         }
     }
 }

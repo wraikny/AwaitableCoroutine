@@ -11,16 +11,13 @@ namespace AwaitableCoroutine
         protected internal ICoroutineRunner Runner { get; private set; }
         protected internal Action OnCompleted { get; private set; }
 
-        public bool IsRegistered { get; private set; }
+        public bool IsCompleted { get; protected internal set; }
 
-        public AwaitableCoroutineBase(ICoroutineRunner runner)
+        public AwaitableCoroutineBase()
         {
-            if (runner is null)
-            {
-                throw new ArgumentNullException(nameof(runner));
-            }
-
-            Runner = runner;
+            Runner = null;
+            OnCompleted = null;
+            IsCompleted = false;
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -30,30 +27,46 @@ namespace AwaitableCoroutine
             OnCompleted = action;
         }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        public void SetRegistered()
+        internal void SetRegistered(ICoroutineRunner runner)
         {
-            IsRegistered = true;
+            if (runner is null)
+            {
+                throw new ArgumentNullException(nameof(runner));
+            }
+
+            if (Runner is { })
+            {
+                throw new InvalidOperationException("Coroutine already registered");
+            }
+
+            Runner = runner;
         }
 
-        public bool IsCompleted { get; protected internal set; }
         public abstract void MoveNext();
     }
 
     [AsyncMethodBuilder(typeof(AwaitableCoroutineMethodBuilder))]
-    public abstract class AwaitableCoroutine : AwaitableCoroutineBase
+    public abstract partial class AwaitableCoroutine : AwaitableCoroutineBase
     {
         public CoroutineAwaiter GetAwaiter() => new CoroutineAwaiter(this);
 
-        public AwaitableCoroutine(ICoroutineRunner runner)
-            : base(runner)
+        public AwaitableCoroutine()
         {
 
         }
 
         protected void Complete()
         {
-            if (IsCompleted) return;
+            if (Runner is null)
+            {
+                throw new InvalidOperationException("Coroutine not registered");
+            }
+
+            if (IsCompleted)
+            {
+                throw new InvalidOperationException("Coroutine already completed");
+            }
+
             IsCompleted = true;
 
             if (OnCompleted is null) return;
@@ -66,8 +79,7 @@ namespace AwaitableCoroutine
     {
         public CoroutineAwaiter<T> GetAwaiter() => new CoroutineAwaiter<T>(this);
 
-        public AwaitableCoroutine(ICoroutineRunner runner)
-            : base(runner)
+        public AwaitableCoroutine()
         {
 
         }
@@ -76,7 +88,16 @@ namespace AwaitableCoroutine
 
         protected void Complete(T result)
         {
-            if (IsCompleted) return;
+            if (Runner is null)
+            {
+                throw new InvalidOperationException($"Coroutine not registered");
+            }
+
+            if (IsCompleted)
+            {
+                throw new InvalidOperationException("Coroutine already completed");
+            }
+
             IsCompleted = true;
             Result = result;
 

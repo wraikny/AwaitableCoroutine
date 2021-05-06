@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace AwaitableCoroutine
 {
@@ -19,26 +20,13 @@ namespace AwaitableCoroutine
             _coroutinesTmp = new List<AwaitableCoroutineBase>();
         }
 
-        public void Register(AwaitableCoroutineBase coroutine)
+        void ICoroutineRunner.OnRegistering(AwaitableCoroutineBase coroutine)
         {
-            if (coroutine is null)
-            {
-                throw new ArgumentNullException(nameof(coroutine));
-            }
-
-            if (coroutine.IsRegistered)
-            {
-                throw new InvalidOperationException("Coroutine is already registered.");
-            }
-
-            coroutine.SetRegistered();
             _coroutinesTmp.Add(coroutine);
             Count++;
         }
 
-        public void Run(AwaitableCoroutineBase coroutine) => _coroutinesTmp.Add(coroutine);
-
-        public void Update()
+        public void OnUpdate()
         {
             var contCount = _continuations.Count;
             for (var i = 0; i < contCount; i++)
@@ -72,12 +60,7 @@ namespace AwaitableCoroutine
         {
             if (continuation is Action)
             {
-                Console.WriteLine("Continuation posted");
-                _continuations.Enqueue(() => {
-                    Console.WriteLine("Start Coutinuatin");
-                    continuation();
-                    Console.WriteLine("End Coutinuatin");
-                });
+                _continuations.Enqueue(continuation);
             }
         }
     }

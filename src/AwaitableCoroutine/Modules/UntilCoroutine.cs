@@ -7,8 +7,7 @@ namespace AwaitableCoroutine
     {
         private readonly Func<bool> _predicate;
 
-        public UntilCoroutine(ICoroutineRunner runner, Func<bool> predicate)
-            : base(runner)
+        public UntilCoroutine(Func<bool> predicate)
         {
             if (predicate is null)
             {
@@ -29,13 +28,11 @@ namespace AwaitableCoroutine
         }
     }
 
-    public static partial class ICoroutineRunnerExt
+    public partial class AwaitableCoroutine
     {
-        public static AwaitableCoroutine Until(this ICoroutineRunner runner, Func<bool> predicate)
+        public static AwaitableCoroutine Until(Func<bool> predicate)
         {
-            var coroutine = new UntilCoroutine(runner, predicate);
-            runner.Register(coroutine);
-            return coroutine;
+            return new UntilCoroutine(predicate).SetupRunner();
         }
     }
 }
