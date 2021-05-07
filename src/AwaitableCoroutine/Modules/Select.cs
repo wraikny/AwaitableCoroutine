@@ -32,5 +32,22 @@ namespace AwaitableCoroutine
 
             return thunk.Invoke();
         }
+
+        public static async AwaitableCoroutine<U> Select<T, U>(this AwaitableCoroutine<T> coroutine, Func<T, U> thunk)
+        {
+            if (thunk is null)
+            {
+                throw new ArgumentNullException(nameof(thunk));
+            }
+
+            while(true)
+            {
+                coroutine.MoveNext();
+                if (coroutine.IsCompleted) break;
+                await AwaitableCoroutine.Yield();
+            }
+
+            return thunk.Invoke(coroutine.Result);
+        }
     }
 }
