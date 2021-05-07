@@ -22,7 +22,7 @@ namespace AwaitableCoroutine.Internal
         public void GetResult() { }
     }
 
-    public readonly struct CoroutineAwaiter<T>
+    public readonly struct CoroutineAwaiter<T> : INotifyCompletion
     {
         private readonly AwaitableCoroutine<T> _target;
 

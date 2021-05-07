@@ -13,5 +13,11 @@
         {
             return new YieldCoroutine();
         }
+
+        public static async AwaitableCoroutine<T> Return<T>(T res)
+        {
+            await Yield();
+            return res;
+        }
     }
 }

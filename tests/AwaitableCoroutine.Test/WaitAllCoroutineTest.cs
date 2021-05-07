@@ -23,12 +23,6 @@ namespace AwaitableCoroutine.Test
             });
         }
 
-        private async AwaitableCoroutine<int> CreateCoroutine(int v)
-        {
-            await AwaitableCoroutine.Yield();
-            return v;
-        }
-
         [Fact]
         public void WaitAllOfYieldTest()
         {
@@ -59,18 +53,17 @@ namespace AwaitableCoroutine.Test
                 var coroutines = new AwaitableCoroutine<int>[4];
                 for (var i = 0; i < 4; i++)
                 {
-                    coroutines[i] = CreateCoroutine(i);
+                    coroutines[i] = AwaitableCoroutine.Return(i);
                 }
                 return AwaitableCoroutine.WaitAll<int>(coroutines);
             });
 
             Assert.False(waitAll.IsCompleted);
 
-            runner.Update();
-            Assert.False(waitAll.IsCompleted);
-
-            runner.Update();
-            Assert.True(waitAll.IsCompleted);
+            while(!waitAll.IsCompleted)
+            {
+                runner.Update();
+            }
 
             var res = waitAll.Result;
             Assert.NotNull(res);
