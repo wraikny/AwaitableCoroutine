@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace AwaitableCoroutine
 {
@@ -6,7 +6,7 @@ namespace AwaitableCoroutine
     {
         public static async AwaitableCoroutine<T> SelectTo<T>(this AwaitableCoroutineBase coroutine, T res)
         {
-            while(true)
+            while (true)
             {
                 coroutine.MoveNext();
                 if (coroutine.IsCompleted) break;
@@ -23,7 +23,7 @@ namespace AwaitableCoroutine
                 throw new ArgumentNullException(nameof(thunk));
             }
 
-            while(true)
+            while (true)
             {
                 coroutine.MoveNext();
                 if (coroutine.IsCompleted) break;
@@ -40,7 +40,7 @@ namespace AwaitableCoroutine
                 throw new ArgumentNullException(nameof(thunk));
             }
 
-            while(true)
+            while (true)
             {
                 coroutine.MoveNext();
                 if (coroutine.IsCompleted) break;

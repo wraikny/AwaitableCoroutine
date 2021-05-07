@@ -75,8 +75,8 @@ namespace AwaitableCoroutine.Test
             Assert.False(waitAny.IsCompleted);
 
             flag = true;
-            
-            while(!waitAny.IsCompleted)
+
+            while (!waitAny.IsCompleted)
             {
                 runner.Update();
             }

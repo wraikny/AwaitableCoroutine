@@ -60,7 +60,7 @@ namespace AwaitableCoroutine.Test
 
             Assert.False(waitAll.IsCompleted);
 
-            while(!waitAll.IsCompleted)
+            while (!waitAll.IsCompleted)
             {
                 runner.Update();
             }

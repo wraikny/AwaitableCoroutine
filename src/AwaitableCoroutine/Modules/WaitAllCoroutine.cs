@@ -180,7 +180,7 @@ namespace AwaitableCoroutine
 
                 await Yield();
             }
-            
+
             return (c1.Result, c2.Result, c3.Result, c4.Result, c5.Result, c6.Result);
         }
 
@@ -239,7 +239,8 @@ namespace AwaitableCoroutine
                 }
                 return completed;
             })
-                .Select(() => {
+                .Select(() =>
+                {
                     return coroutines.Select(c => c.Result).ToArray();
                 });
         }

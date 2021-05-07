@@ -218,7 +218,8 @@ namespace AwaitableCoroutine
             var coroutines = new AwaitableCoroutineBase[span.Length];
             span.CopyTo(coroutines);
 
-            return Until(() => {
+            return Until(() =>
+            {
                 foreach (var c in coroutines)
                 {
                     c.MoveNext();
@@ -233,10 +234,11 @@ namespace AwaitableCoroutine
         {
             var coroutines = new AwaitableCoroutine<T>[span.Length];
             span.CopyTo(coroutines);
-            
+
             T result = default;
 
-            return Until(() => {
+            return Until(() =>
+            {
                 foreach (var c in coroutines)
                 {
                     c.MoveNext();
