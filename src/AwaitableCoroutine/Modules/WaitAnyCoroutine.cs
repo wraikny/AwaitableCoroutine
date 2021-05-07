@@ -1,77 +1,47 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace AwaitableCoroutine
 {
-    internal sealed class WaitAnyCoroutine : AwaitableCoroutine
-    {
-        private readonly List<AwaitableCoroutineBase> _coroutines;
-
-        public WaitAnyCoroutine(ReadOnlySpan<AwaitableCoroutineBase> coroutines)
-        {
-            _coroutines = new List<AwaitableCoroutineBase>();
-            foreach (var c in coroutines)
-            {
-                _coroutines.Add(c);
-            }
-        }
-
-        protected override void OnMoveNext()
-        {
-            foreach (var c in _coroutines)
-            {
-                c.MoveNext();
-                if (c.IsCompleted)
-                {
-                    Complete();
-                    return;
-                }
-            }
-        }
-    }
-
-    internal sealed class WaitAnyCoroutine<T> : AwaitableCoroutine<IReadOnlyList<T>>
-    {
-        private readonly AwaitableCoroutine<T>[] _coroutines;
-
-        public WaitAnyCoroutine(ReadOnlySpan<AwaitableCoroutine<T>> coroutines)
-        {
-            _coroutines = new AwaitableCoroutine<T>[coroutines.Length];
-            coroutines.CopyTo(_coroutines);
-        }
-
-
-        protected override void OnMoveNext()
-        {
-            List<T> result = null;
-
-            foreach (var c in _coroutines)
-            {
-                c.MoveNext();
-                if (c.IsCompleted)
-                {
-                    result ??= new List<T>();
-                    result.Add(c.Result);
-                }
-            }
-
-            if (result is { })
-            {
-                Complete(result);
-            }
-        }
-    }
-
     public partial class AwaitableCoroutine
     {
-        public static AwaitableCoroutine WaitAny(ReadOnlySpan<AwaitableCoroutineBase> coroutines)
+        public static AwaitableCoroutine WaitAny(ReadOnlySpan<AwaitableCoroutineBase> span)
         {
-            return new WaitAnyCoroutine(coroutines);
+            var coroutines = new AwaitableCoroutineBase[span.Length];
+            span.CopyTo(coroutines);
+
+            return Until(() => {
+                foreach (var c in coroutines)
+                {
+                    c.MoveNext();
+                    if (c.IsCompleted) return true;
+                }
+
+                return false;
+            });
         }
 
-        public static AwaitableCoroutine<IReadOnlyList<T>> WaitAny<T>(ReadOnlySpan<AwaitableCoroutine<T>> coroutines)
+        public static AwaitableCoroutine<T> WaitAny<T>(ReadOnlySpan<AwaitableCoroutine<T>> span)
         {
-            return new WaitAnyCoroutine<T>(coroutines);
+            var coroutines = new AwaitableCoroutine<T>[span.Length];
+            span.CopyTo(coroutines);
+            
+            T result = default;
+
+            return Until(() => {
+                foreach (var c in coroutines)
+                {
+                    c.MoveNext();
+                    if (c.IsCompleted)
+                    {
+                        result = c.Result;
+                        return true;
+                    }
+                }
+
+                return false;
+            }).Select(() => result);
         }
     }
 }

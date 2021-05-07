@@ -41,7 +41,7 @@ namespace AwaitableCoroutine
                 }
                 return completed;
             })
-                .AndThen(() => {
+                .Select(() => {
                     return coroutines.Select(c => c.Result).ToArray();
                 });
         }

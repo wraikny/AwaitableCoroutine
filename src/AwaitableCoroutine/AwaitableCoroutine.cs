@@ -73,6 +73,17 @@ namespace AwaitableCoroutine
             Runner.Post(OnCompleted);
         }
 
+        public async AwaitableCoroutine AndThen(Action thunk)
+        {
+            if (thunk is null)
+            {
+                throw new ArgumentNullException(nameof(thunk));
+            }
+
+            await this;
+            thunk();
+        }
+
         public async AwaitableCoroutine<U> AndThen<U>(Func<U> thunk)
         {
             if (thunk is null)
@@ -93,6 +104,17 @@ namespace AwaitableCoroutine
 
             await this;
             await thunk();
+        }
+
+        public async AwaitableCoroutine<T> AndThen<T>(Func<AwaitableCoroutine<T>> thunk)
+        {
+            if (thunk is null)
+            {
+                throw new ArgumentNullException(nameof(thunk));
+            }
+
+            await this;
+            return await thunk();
         }
     }
 
@@ -127,6 +149,17 @@ namespace AwaitableCoroutine
             Runner.Post(OnCompleted);
         }
 
+        public async AwaitableCoroutine AndThen(Action<T> thunk)
+        {
+            if (thunk is null)
+            {
+                throw new ArgumentNullException(nameof(thunk));
+            }
+
+            var res = await this;
+            thunk(res);
+        }
+
         public async AwaitableCoroutine<U> AndThen<U>(Func<T, U> thunk)
         {
             if (thunk is null)
@@ -136,6 +169,17 @@ namespace AwaitableCoroutine
 
             var res = await this;
             return thunk(res);
+        }
+
+        public async AwaitableCoroutine AndThen<U>(Func<T, AwaitableCoroutine> thunk)
+        {
+            if (thunk is null)
+            {
+                throw new ArgumentNullException(nameof(thunk));
+            }
+
+            var res = await this;
+            await thunk(res);
         }
 
         public async AwaitableCoroutine<U> AndThen<U>(Func<T, AwaitableCoroutine<U>> thunk)

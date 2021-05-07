@@ -26,38 +26,30 @@ namespace AwaitableCoroutine.Test
         }
 
         [Fact]
-        public void WaitAllOfYieldTest()
+        public void WaitAnyTest()
         {
             var runner = new CoroutineRunner();
 
-            var condition = false;
+            var flag = false;
 
-            var waitAll = runner.AddCoroutine(() =>
+            var waitAny = runner.AddCoroutine(() =>
                 AwaitableCoroutine.WaitAny(new AwaitableCoroutineBase[] {
                     AwaitableCoroutine.Until(() => false),
                     AwaitableCoroutine.Until(() => false),
                     AwaitableCoroutine.Until(() => false),
-                    AwaitableCoroutine.Until(() => condition),
+                    AwaitableCoroutine.Until(() => flag),
                 })
             );
 
-            Assert.False(waitAll.IsCompleted);
+            Assert.False(waitAny.IsCompleted);
 
-            for (var i = 0; i < 5; i++)
-            {
-                runner.Update();
-                Assert.False(waitAll.IsCompleted);
-            }
-
-            condition = true;
             runner.Update();
-            Assert.True(waitAll.IsCompleted);
-        }
+            Assert.False(waitAny.IsCompleted);
 
-        private async AwaitableCoroutine<int> CreateCoroutine(int v, Func<bool> predicate)
-        {
-            await AwaitableCoroutine.Until(predicate);
-            return v;
+            flag = true;
+
+            runner.Update();
+            Assert.True(waitAny.IsCompleted);
         }
 
         [Fact]
@@ -65,15 +57,15 @@ namespace AwaitableCoroutine.Test
         {
             var runner = new CoroutineRunner();
 
-            var condition = false;
+            var flag = false;
 
             var waitAny = runner.AddCoroutine(() =>
             {
                 return AwaitableCoroutine.WaitAny<int>(new AwaitableCoroutine<int>[] {
-                    CreateCoroutine(0, () => false),
-                    CreateCoroutine(1, () => condition),
-                    CreateCoroutine(2, () => false),
-                    CreateCoroutine(3, () => condition),
+                    AwaitableCoroutine.Until(() => false).SelectTo(0),
+                    AwaitableCoroutine.Until(() => flag).SelectTo(1),
+                    AwaitableCoroutine.Until(() => false).SelectTo(2),
+                    AwaitableCoroutine.Until(() => flag).SelectTo(3),
                 });
             });
 
@@ -82,19 +74,17 @@ namespace AwaitableCoroutine.Test
             runner.Update();
             Assert.False(waitAny.IsCompleted);
 
-
-            condition = true;
-            runner.Update();
-            Assert.False(waitAny.IsCompleted);
-
-            runner.Update();
-            Assert.True(waitAny.IsCompleted);
+            flag = true;
+            
+            while(!waitAny.IsCompleted)
+            {
+                runner.Update();
+            }
 
             var res = waitAny.Result;
             Assert.NotNull(res);
 
-            Assert.Equal(1, res[0]);
-            Assert.Equal(3, res[1]);
+            Assert.Equal(1, res);
         }
     }
 }
