@@ -1,4 +1,6 @@
-# AwaitableCoroutine 使い方
+# AwaitableCoroutine ドキュメント
+
+## 使い方
 
 例えば以下のようにコルーチンを定義します。
 
@@ -52,6 +54,8 @@ public static void Main(string[] _)
 }
 ```
 
+## 注意事項
+
 `AwaitableCoroutine`, `AwaitableCoroutine<T>`は、 `AddCoroutine` メソッドのコールバック関数の中で生成する点に注意してください。
 
 コルーチンをどの `ICoroutineRunner` に登録するかの情報を与えるために必要になります。
@@ -61,3 +65,36 @@ public static void Main(string[] _)
 ```C#
 _ = runner.AddCoroutine(() => FooBarCoroutine(arg1, arg2));
 ```
+
+## モジュール
+### `AwaitableCoroutine.Yield`
+一度だけ実行されるコルーチン。
+
+### `AwaitableCoroutine.Until`
+指定した条件が真になるまで実行されるコルーチン。
+
+### `AwaitableCoroutine.While`
+指定した条件が真の間実行されるコルーチン。
+
+### `AwaitableCoroutine.Delay`
+指定したカウントまで実行されるコルーチン。
+差分時間を取得する`Func`も指定する。
+
+以下の型に利用可能。
+
+* `int`
+* `float`
+* `double`
+
+### `AwaitableCoroutine.WaitAll`
+指定した`AwaitableCoroutine`のうち、全てが完了するまで実行されるコルーチン。
+
+### `AwaitableCoroutine.WaitAny`
+指定した`AwaitableCoroutine`のうち、どれか一つが完了するまで実行されるコルーチン。
+
+## 補助メソッド
+### `Select`, `SelectTo`
+`AwaitableCoroutine`の値を変換した`AwaitableCoroutine<T>`を`await`無しに生成する
+
+### `AndThen`
+`await`演算子を使用せずに継続の処理を記述できる。
