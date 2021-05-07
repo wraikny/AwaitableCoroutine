@@ -53,6 +53,31 @@ namespace AwaitableCoroutine.Test
         }
 
         [Fact]
+        public void WaitAny2Test()
+        {
+            var runner = new CoroutineRunner();
+
+            var flag = false;
+
+            var waitAny = runner.AddCoroutine(() =>
+                AwaitableCoroutine.WaitAny(
+                    AwaitableCoroutine.Until(() => false),
+                    AwaitableCoroutine.Until(() => flag)
+                )
+            );
+
+            Assert.False(waitAny.IsCompleted);
+
+            runner.Update();
+            Assert.False(waitAny.IsCompleted);
+
+            flag = true;
+
+            runner.Update();
+            Assert.True(waitAny.IsCompleted);
+        }
+
+        [Fact]
         public void WaitAnyWithValuesTest()
         {
             var runner = new CoroutineRunner();

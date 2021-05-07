@@ -44,6 +44,24 @@ namespace AwaitableCoroutine.Test
         }
 
         [Fact]
+        public void WaitAll2Test()
+        {
+            var runner = new CoroutineRunner();
+
+            var waitAll = runner.AddCoroutine(() =>
+                AwaitableCoroutine.WaitAll(
+                    AwaitableCoroutine.Yield(),
+                    AwaitableCoroutine.Yield()
+                )
+            );
+
+            Assert.False(waitAll.IsCompleted);
+
+            runner.Update();
+            Assert.True(waitAll.IsCompleted);
+        }
+
+        [Fact]
         public void WaitAllWithValuesTest()
         {
             var runner = new CoroutineRunner();
