@@ -8,7 +8,7 @@ namespace AwaitableCoroutine
 {
     public abstract class AwaitableCoroutineBase
     {
-        protected internal ICoroutineRunner Runner { get; private set; }
+        internal ICoroutineRunner Runner { get; private set; }
         protected internal Action OnCompleted { get; private set; }
 
         public bool IsCompleted { get; protected internal set; }
