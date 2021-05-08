@@ -66,35 +66,39 @@ public static void Main(string[] _)
 _ = runner.AddCoroutine(() => FooBarCoroutine(arg1, arg2));
 ```
 
-## モジュール
-### `AwaitableCoroutine.Yield`
+## AwaitableCoroutine
+### コルーチン
+#### `AwaitableCoroutine.Yield`
 一度だけ実行されるコルーチン。
 
-### `AwaitableCoroutine.Until`
+#### `AwaitableCoroutine.Until`
 指定した条件が真になるまで実行されるコルーチン。
 
-### `AwaitableCoroutine.While`
+#### `AwaitableCoroutine.While`
 指定した条件が真の間実行されるコルーチン。
 
-### `AwaitableCoroutine.Delay`
-指定したカウントまで実行されるコルーチン。
-差分時間を取得する`Func`も指定する。
+#### `AwaitableCoroutine.DelayCount`
+指定したカウント実行されるコルーチン。
 
-以下の型に利用可能。
-
-* `int`
-* `float`
-* `double`
-
-### `AwaitableCoroutine.WaitAll`
+#### `AwaitableCoroutine.WaitAll`
 指定した`AwaitableCoroutine`のうち、全てが完了するまで実行されるコルーチン。
 
-### `AwaitableCoroutine.WaitAny`
+#### `AwaitableCoroutine.WaitAny`
 指定した`AwaitableCoroutine`のうち、どれか一つが完了するまで実行されるコルーチン。
 
-## 補助メソッド
-### `Select`, `SelectTo`
+### 補助メソッド
+#### `Select`, `SelectTo`
 `AwaitableCoroutine`の値を変換した`AwaitableCoroutine<T>`を`await`無しに生成する
 
-### `AndThen`
+#### `AndThen`
 `await`演算子を使用せずに継続の処理を記述できる。
+
+## AwaitableCoroutine.Altseed2
+
+### コルーチン
+#### `AwaitableCoroutine.DelaySecond`
+指定した秒数実行されるコルーチン。
+
+### ノード
+#### `CoroutineNode`
+コルーチンを登録するノード。
