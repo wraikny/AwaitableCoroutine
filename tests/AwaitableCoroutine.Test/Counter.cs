@@ -1,4 +1,4 @@
-namespace AwaitableCoroutine.Test
+﻿namespace AwaitableCoroutine.Test
 {
     internal sealed class Counter
     {

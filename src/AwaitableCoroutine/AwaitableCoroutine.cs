@@ -72,7 +72,7 @@ namespace AwaitableCoroutine
 
         public AwaitableCoroutine() { }
 
-        internal AwaitableCoroutine(ICoroutineRunner runner): base(runner) { }
+        internal AwaitableCoroutine(ICoroutineRunner runner) : base(runner) { }
 
         protected void Complete()
         {
@@ -138,7 +138,7 @@ namespace AwaitableCoroutine
 
         public AwaitableCoroutine() { }
 
-        internal AwaitableCoroutine(ICoroutineRunner runner): base(runner) { }
+        internal AwaitableCoroutine(ICoroutineRunner runner) : base(runner) { }
 
         public T Result { get; private set; }
 

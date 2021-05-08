@@ -75,7 +75,7 @@ _ = runner.AddCoroutine(() => FooBarCoroutine(arg1, arg2));
 
 | Name | Desc |
 | --- | --- |
-| [Select, SelectTo](https://github.com/wraikny/AwaitableCoroutine/blob/master/src/AwaitableCoroutine/Modules/Select.cs) | `await`無しに値を変換した新たなコルーチンを生成 |
+| [Select, SelectTo](https://github.com/wraikny/AwaitableCoroutine/blob/master/src/AwaitableCoroutine/Modules/SelectCoroutine.cs) | コルーチンの結果の値を変換した新たなコルーチンを生成 |
 | [AndThen](https://github.com/wraikny/AwaitableCoroutine/blob/master/src/AwaitableCoroutine/AwaitableCoroutine.cs) | コルーチンを継続した新たなコルーチンを生成 |
 
 

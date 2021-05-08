@@ -23,6 +23,7 @@ namespace AwaitableCoroutine
 
         void ICoroutineRunner.OnRegistering(AwaitableCoroutineBase coroutine)
         {
+            Internal.Logger.Log($"CoroutineRunner.Registering {coroutine.GetType().Name}");
             _coroutinesTmp.Add(coroutine);
             Count++;
         }
@@ -49,7 +50,11 @@ namespace AwaitableCoroutine
             {
                 c.MoveNext();
 
-                if (!c.IsCompleted)
+                if (c.IsCompleted)
+                {
+                    Internal.Logger.Log($"CoroutineRunner.OnUpdate {c.GetType().Name} is completed");
+                }
+                else
                 {
                     _coroutinesTmp.Add(c);
                 }

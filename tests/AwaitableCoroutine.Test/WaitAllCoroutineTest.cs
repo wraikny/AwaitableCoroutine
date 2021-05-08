@@ -8,7 +8,7 @@ namespace AwaitableCoroutine.Test
         public WaitAllCoroutineTest(ITestOutputHelper outputHelper)
             : base(outputHelper)
         {
-            
+
         }
 
         [Fact]
@@ -45,7 +45,9 @@ namespace AwaitableCoroutine.Test
 
             Assert.False(waitAll.IsCompleted);
 
+            // completes children
             runner.Update();
+
             Assert.True(waitAll.IsCompleted);
         }
 

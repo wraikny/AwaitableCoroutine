@@ -8,7 +8,7 @@ namespace AwaitableCoroutine.Test
         public DelayCoroutineTest(ITestOutputHelper outputHelper)
             : base(outputHelper)
         {
-            
+
         }
 
         [Fact]

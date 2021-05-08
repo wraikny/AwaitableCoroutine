@@ -7,8 +7,6 @@ namespace AwaitableCoroutine.Test
 {
     public class WaitAnyCoroutineTest : TestTemplate
     {
-        private readonly ITestOutputHelper _outputHelper;
-
         public WaitAnyCoroutineTest(ITestOutputHelper outputHelper)
             : base(outputHelper)
         {

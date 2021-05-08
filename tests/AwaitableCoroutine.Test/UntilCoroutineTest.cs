@@ -8,7 +8,7 @@ namespace AwaitableCoroutine.Test
         public UntilCoroutineTest(ITestOutputHelper outputHelper)
             : base(outputHelper)
         {
-            
+
         }
 
         [Fact]
