@@ -25,7 +25,7 @@ namespace AwaitableCoroutine
             Count++;
         }
 
-        public void OnUpdate()
+        void ICoroutineRunner.OnUpdate()
         {
             var contCount = _continuations.Count;
             for (var i = 0; i < contCount; i++)

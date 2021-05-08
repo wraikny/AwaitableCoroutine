@@ -107,8 +107,6 @@ namespace AwaitableCoroutine.Test
             }
 
             var res = waitAny.Result;
-            Assert.NotNull(res);
-
             Assert.Equal(1, res);
         }
     }
