@@ -14,7 +14,7 @@ namespace AwaitableCoroutine
 
         public bool IsCompleted { get; protected internal set; } = false;
 
-        private protected abstract void _Pseudo();
+        internal protected abstract void _Pseudo();
 
         public AwaitableCoroutineBase()
         {
@@ -68,7 +68,7 @@ namespace AwaitableCoroutine
     {
         public CoroutineAwaiter GetAwaiter() => new CoroutineAwaiter(this);
 
-        private protected sealed override void _Pseudo() { }
+        internal protected sealed override void _Pseudo() { }
 
         public AwaitableCoroutine() { }
 
@@ -134,7 +134,7 @@ namespace AwaitableCoroutine
     {
         public CoroutineAwaiter<T> GetAwaiter() => new CoroutineAwaiter<T>(this);
 
-        private protected sealed override void _Pseudo() { }
+        internal protected sealed override void _Pseudo() { }
 
         public AwaitableCoroutine() { }
 
