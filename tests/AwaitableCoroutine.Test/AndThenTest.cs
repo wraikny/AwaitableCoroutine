@@ -1,17 +1,17 @@
-using Xunit;
+﻿using Xunit;
 using Xunit.Abstractions;
 
 namespace AwaitableCoroutine.Test
 {
     public class AndThenTest : TestTemplate
     {
-        
+
         public AndThenTest(ITestOutputHelper outputHelper)
-            :base(outputHelper)
+            : base(outputHelper)
         {
-            
+
         }
-        
+
         [Fact]
         public void RunAndThen()
         {

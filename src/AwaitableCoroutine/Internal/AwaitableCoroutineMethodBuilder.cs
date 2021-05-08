@@ -7,7 +7,7 @@ namespace AwaitableCoroutine.Internal
     {
         private sealed class Coroutine : AwaitableCoroutine
         {
-            public Coroutine(ICoroutineRunner runner): base(runner) { }
+            public Coroutine(ICoroutineRunner runner) : base(runner) { }
 
             public void CallComplete() => Complete();
 
@@ -85,13 +85,13 @@ namespace AwaitableCoroutine.Internal
     {
         private sealed class Coroutine : AwaitableCoroutine<T>
         {
-            public Coroutine(ICoroutineRunner runner): base(runner) { }
+            public Coroutine(ICoroutineRunner runner) : base(runner) { }
 
             public void CallComplete(T result) => Complete(result);
 
             protected override void OnMoveNext() { }
         }
-        
+
         private readonly ICoroutineRunner _runner;
         private readonly Coroutine _coroutine;
 

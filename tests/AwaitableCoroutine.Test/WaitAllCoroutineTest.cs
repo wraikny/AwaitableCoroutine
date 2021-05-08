@@ -8,7 +8,7 @@ namespace AwaitableCoroutine.Test
         public WaitAllCoroutineTest(ITestOutputHelper outputHelper)
             : base(outputHelper)
         {
-            
+
         }
 
         [Fact]

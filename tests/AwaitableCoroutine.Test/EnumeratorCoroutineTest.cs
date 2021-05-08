@@ -10,7 +10,7 @@ namespace AwaitableCoroutine.Test
         public EnumeratorCoroutineTest(ITestOutputHelper outputHelper)
             : base(outputHelper)
         {
-            
+
         }
 
         private IEnumerator GetEnumerator(int n)

@@ -1,4 +1,4 @@
-using Xunit;
+﻿using Xunit;
 using Xunit.Abstractions;
 
 namespace AwaitableCoroutine.Test
@@ -27,11 +27,11 @@ namespace AwaitableCoroutine.Test
             var runner = new CoroutineRunner();
 
             var c = runner.AddCoroutine(() => new CustomCoroutine());
-            
+
             Assert.False(c.IsCompleted);
 
             runner.Update();
-            
+
             Assert.True(c.IsCompleted);
         }
     }

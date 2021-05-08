@@ -8,7 +8,7 @@ namespace AwaitableCoroutine.Test
         public AwaitTest(ITestOutputHelper outputHelper)
             : base(outputHelper)
         {
-            
+
         }
 
         private async AwaitableCoroutine GetCoroutine(Counter counter)
