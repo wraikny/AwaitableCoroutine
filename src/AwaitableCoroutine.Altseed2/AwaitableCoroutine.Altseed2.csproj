@@ -2,6 +2,8 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
+    <PackageOutputPath>../../output</PackageOutputPath>
+    <PlatformTarget>x64</PlatformTarget>
 
     <PackageId>AwaitableCoroutine.Altseed2</PackageId>
     <Version>1.2.0</Version>
@@ -12,7 +14,6 @@
     <RepositoryType>git</RepositoryType>
     <PackageTags>coroutine,awaitable,asyncawait,altseed2</PackageTags>
 
-    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>
