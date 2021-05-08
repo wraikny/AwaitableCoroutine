@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -8,32 +9,40 @@ namespace AwaitableCoroutine
 {
     public abstract class AwaitableCoroutineBase
     {
-        internal ICoroutineRunner Runner { get; private set; }
-        protected internal Action OnCompleted { get; private set; }
+        internal protected ICoroutineRunner Runner { get; set; }
+        protected internal Action OnCompleted { get; set; }
 
-        public bool IsCompleted { get; protected internal set; }
+        public bool IsCompleted { get; protected internal set; } = false;
+
+        private protected abstract void _Pseudo();
 
         public AwaitableCoroutineBase()
         {
-            OnCompleted = null;
-            IsCompleted = false;
+            Runner = ICoroutineRunner.GetContextStrict();
+            Runner.Register(this);
+        }
 
-            var runner = ICoroutineRunner.Context;
-
-            if (runner is null)
-            {
-                throw new InvalidOperationException("Out of ICoroutineRunner context");
-            }
-
-            runner.OnRegistering(this);
+        internal AwaitableCoroutineBase(ICoroutineRunner runner)
+        {
             Runner = runner;
+            Runner.Register(this);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         public void ContinueWith(Action action)
         {
-            if (action is null) return;
-            OnCompleted = action;
+            if (action is null)
+            {
+                throw new ArgumentNullException(nameof(action));
+            }
+
+            if (IsCompleted)
+            {
+                action.Invoke();
+                return;
+            }
+
+            OnCompleted += action;
         }
 
         protected abstract void OnMoveNext();
@@ -43,6 +52,15 @@ namespace AwaitableCoroutine
             if (IsCompleted) return;
             OnMoveNext();
         }
+
+        public async AwaitableCoroutine With(Action action)
+        {
+            while (true)
+            {
+                if (IsCompleted) return;
+                await AwaitableCoroutine.Yield();
+            }
+        }
     }
 
     [AsyncMethodBuilder(typeof(AwaitableCoroutineMethodBuilder))]
@@ -50,27 +68,20 @@ namespace AwaitableCoroutine
     {
         public CoroutineAwaiter GetAwaiter() => new CoroutineAwaiter(this);
 
-        public AwaitableCoroutine()
-        {
+        private protected sealed override void _Pseudo() { }
 
-        }
+        public AwaitableCoroutine() { }
+
+        internal AwaitableCoroutine(ICoroutineRunner runner): base(runner) { }
 
         protected void Complete()
         {
-            if (Runner is null)
-            {
-                throw new InvalidOperationException("Coroutine not registered");
-            }
-
-            if (IsCompleted)
-            {
-                throw new InvalidOperationException("Coroutine already completed");
-            }
-
             IsCompleted = true;
 
             if (OnCompleted is null) return;
             Runner.Post(OnCompleted);
+            OnCompleted = null;
+            Runner = null;
         }
 
         public async AwaitableCoroutine AndThen(Action thunk)
@@ -123,20 +134,16 @@ namespace AwaitableCoroutine
     {
         public CoroutineAwaiter<T> GetAwaiter() => new CoroutineAwaiter<T>(this);
 
-        public AwaitableCoroutine()
-        {
+        private protected sealed override void _Pseudo() { }
 
-        }
+        public AwaitableCoroutine() { }
+
+        internal AwaitableCoroutine(ICoroutineRunner runner): base(runner) { }
 
         public T Result { get; private set; }
 
         protected void Complete(T result)
         {
-            if (Runner is null)
-            {
-                throw new InvalidOperationException($"Coroutine not registered");
-            }
-
             if (IsCompleted)
             {
                 throw new InvalidOperationException("Coroutine already completed");
@@ -146,7 +153,10 @@ namespace AwaitableCoroutine
             Result = result;
 
             if (OnCompleted is null) return;
+
             Runner.Post(OnCompleted);
+            OnCompleted = null;
+            Runner = null;
         }
 
         public async AwaitableCoroutine AndThen(Action<T> thunk)

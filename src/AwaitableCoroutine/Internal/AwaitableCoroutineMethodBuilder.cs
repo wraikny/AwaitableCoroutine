@@ -7,23 +7,28 @@ namespace AwaitableCoroutine.Internal
     {
         private sealed class Coroutine : AwaitableCoroutine
         {
-            public Coroutine() { }
+            public Coroutine(ICoroutineRunner runner): base(runner) { }
 
             public void CallComplete() => Complete();
 
             protected override void OnMoveNext() { }
         }
 
+        private readonly ICoroutineRunner _runner;
         private readonly Coroutine _coroutine;
 
-        private AwaitableCoroutineMethodBuilder(Coroutine coroutine)
+        private AwaitableCoroutineMethodBuilder(ICoroutineRunner runner)
         {
             Logger.Log("AwaitableCoroutineMethodBuilder constructor");
-            _coroutine = coroutine;
+            _runner = runner;
+            _coroutine = new Coroutine(runner);
         }
 
         // 1. Static Create method.
-        public static AwaitableCoroutineMethodBuilder Create() => new AwaitableCoroutineMethodBuilder(new Coroutine());
+        public static AwaitableCoroutineMethodBuilder Create()
+        {
+            return new AwaitableCoroutineMethodBuilder(ICoroutineRunner.GetContextStrict());
+        }
 
         // 2. TaskLike Task Property
         public AwaitableCoroutine Task => _coroutine;
@@ -66,7 +71,7 @@ namespace AwaitableCoroutine.Internal
             where TStateMachine : IAsyncStateMachine
         {
             Logger.Log("AwaitableCoroutineMethodBuilder.Start");
-            _coroutine.Runner.Post(stateMachine.MoveNext);
+            _runner.Post(stateMachine.MoveNext);
         }
 
         // 8. SetStateMachine
@@ -80,23 +85,28 @@ namespace AwaitableCoroutine.Internal
     {
         private sealed class Coroutine : AwaitableCoroutine<T>
         {
-            public Coroutine() { }
+            public Coroutine(ICoroutineRunner runner): base(runner) { }
 
             public void CallComplete(T result) => Complete(result);
 
             protected override void OnMoveNext() { }
         }
-
+        
+        private readonly ICoroutineRunner _runner;
         private readonly Coroutine _coroutine;
 
-        private AwaitableCoroutineMethodBuilder(Coroutine coroutine)
+        private AwaitableCoroutineMethodBuilder(ICoroutineRunner runner)
         {
             Logger.Log($"AwaitableCoroutineMethodBuilder<{typeof(T).Name}> constructor");
-            _coroutine = coroutine;
+            _runner = runner;
+            _coroutine = new Coroutine(runner);
         }
 
         // 1. Static Create method.
-        public static AwaitableCoroutineMethodBuilder<T> Create() => new AwaitableCoroutineMethodBuilder<T>(new Coroutine());
+        public static AwaitableCoroutineMethodBuilder<T> Create()
+        {
+            return new AwaitableCoroutineMethodBuilder<T>(ICoroutineRunner.GetContextStrict());
+        }
 
         // 2. TaskLike Task Property
         public AwaitableCoroutine<T> Task => _coroutine;
@@ -139,7 +149,7 @@ namespace AwaitableCoroutine.Internal
             where TStateMachine : IAsyncStateMachine
         {
             Logger.Log($"AwaitableCoroutineMethodBuilder<{typeof(T).Name}>.Start");
-            _coroutine.Runner.Post(stateMachine.MoveNext);
+            _runner.Post(stateMachine.MoveNext);
         }
 
         // 8. SetStateMachine

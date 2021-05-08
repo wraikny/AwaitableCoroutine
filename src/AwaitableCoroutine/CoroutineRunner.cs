@@ -10,7 +10,9 @@ namespace AwaitableCoroutine
         private List<AwaitableCoroutineBase> _coroutines;
         private List<AwaitableCoroutineBase> _coroutinesTmp;
 
-        public int Count { get; private set; }
+        public bool IsUpdating { get; private set; } = false;
+
+        public int Count { get; private set; } = 0;
 
         public CoroutineRunner()
         {
@@ -27,6 +29,13 @@ namespace AwaitableCoroutine
 
         void ICoroutineRunner.OnUpdate()
         {
+            if (IsUpdating)
+            {
+                throw new InvalidOperationException("Runnner is already updating");
+            }
+
+            IsUpdating = true;
+
             var contCount = _continuations.Count;
             for (var i = 0; i < contCount; i++)
             {
@@ -34,7 +43,6 @@ namespace AwaitableCoroutine
             }
 
             _coroutines.AddRange(_coroutinesTmp);
-
             _coroutinesTmp.Clear();
 
             foreach (var c in _coroutines)
@@ -53,11 +61,15 @@ namespace AwaitableCoroutine
             (_coroutines, _coroutinesTmp) = (_coroutinesTmp, _coroutines);
 
             _coroutinesTmp.Clear();
+
+            IsUpdating = false;
         }
 
         void ICoroutineRunner.Post(Action continuation)
         {
-            if (continuation is Action)
+            if (continuation is null) return;
+
+            if (continuation is { })
             {
                 _continuations.Enqueue(continuation);
             }
