@@ -17,9 +17,14 @@ namespace AwaitableCoroutine.Test
         {
             var runner = new CoroutineRunner();
             var counter = new Counter();
-            var c = runner.AddCoroutine(() => AwaitableCoroutine.Yield().AndThen(counter.Inc));
+            var c = runner.AddCoroutine(() =>
+                AwaitableCoroutine.Yield()
+                    .AndThen(() => AwaitableCoroutine.Yield(counter.Inc))
+            );
 
             while (!c.IsCompleted) runner.Update();
+
+            Assert.True(c.IsCompleted);
 
             Assert.Equal(1, counter.Count);
         }

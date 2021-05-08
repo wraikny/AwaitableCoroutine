@@ -75,10 +75,10 @@ namespace AwaitableCoroutine.Test
             var waitAny = runner.AddCoroutine(() =>
             {
                 return AwaitableCoroutine.WaitAny<int>(new AwaitableCoroutine<int>[] {
-                    AwaitableCoroutine.Until(() => false).SelectTo(0),
-                    AwaitableCoroutine.Until(() => flag).SelectTo(1),
-                    AwaitableCoroutine.Until(() => false).SelectTo(2),
-                    AwaitableCoroutine.Until(() => flag).SelectTo(3),
+                    AwaitableCoroutine.Until(() => false, () => 0),
+                    AwaitableCoroutine.Until(() => flag, () => 1),
+                    AwaitableCoroutine.Until(() => false, () => 2),
+                    AwaitableCoroutine.Until(() => flag, () => 3),
                 });
             });
 
@@ -89,10 +89,9 @@ namespace AwaitableCoroutine.Test
 
             flag = true;
 
-            while (!waitAny.IsCompleted)
-            {
-                runner.Update();
-            }
+            runner.Update();
+
+            Assert.True(waitAny.IsCompleted);
 
             var res = waitAny.Result;
             Assert.Equal(1, res);

@@ -5,27 +5,27 @@ namespace AwaitableCoroutine
 {
     public partial class AwaitableCoroutine
     {
-        public static async AwaitableCoroutine FromEnumerator(IEnumerator enumerator)
+        public static AwaitableCoroutine FromEnumerator(IEnumerator enumerator)
         {
             if (enumerator is null)
             {
                 throw new ArgumentNullException(nameof(enumerator));
             }
 
-            while (enumerator.MoveNext()) await Yield();
+            return While(enumerator.MoveNext);
         }
     }
 
     public static class IEnumeratorExt
     {
-        public static async AwaitableCoroutine ToAwaitableCoroutine(this IEnumerator enumerator)
+        public static AwaitableCoroutine ToAwaitable(this IEnumerator enumerator)
         {
             if (enumerator is null)
             {
                 throw new ArgumentNullException(nameof(enumerator));
             }
 
-            while (enumerator.MoveNext()) await AwaitableCoroutine.Yield();
+            return AwaitableCoroutine.While(enumerator.MoveNext);
         }
     }
 }

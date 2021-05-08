@@ -104,7 +104,10 @@ namespace AwaitableCoroutine
             var coroutines = new AwaitableCoroutine<T>[span.Length];
             span.CopyTo(coroutines);
 
-            return Until(() => coroutines.All(c => c.IsCompleted), () => coroutines.Select(c => c.Result).ToArray());
+            return Until(
+                () => coroutines.All(c => c.IsCompleted),
+                () => coroutines.Select(c => c.Result).ToArray()
+            );
         }
     }
 }

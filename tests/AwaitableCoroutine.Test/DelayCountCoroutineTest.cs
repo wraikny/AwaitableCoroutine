@@ -22,11 +22,10 @@ namespace AwaitableCoroutine.Test
 
             for (var i = 0; i < count; i++)
             {
-                runner.Update();
                 Assert.False(coroutine.IsCompleted);
+                runner.Update();
             }
 
-            runner.Update();
             Assert.True(coroutine.IsCompleted);
         }
     }
