@@ -23,14 +23,7 @@ namespace AwaitableCoroutine.Test
             });
         }
 
-        public sealed class Counter
-        {
-            public int Count { get; private set; }
-
-            public void Inc() => Count++;
-        }
-
-        public async AwaitableCoroutine GetCoroutine(Counter counter)
+        private async AwaitableCoroutine GetCoroutine(Counter counter)
         {
             for (var i = 0; i < 3; i++)
             {
@@ -44,7 +37,7 @@ namespace AwaitableCoroutine.Test
             // inc 4
         }
 
-        public async AwaitableCoroutine GetCoroutine2(Counter counter)
+        private async AwaitableCoroutine GetCoroutine2(Counter counter)
         {
             counter.Inc();
             _outputHelper.WriteLine($"Count: {counter.Count}");
