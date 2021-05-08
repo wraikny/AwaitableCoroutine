@@ -51,7 +51,8 @@ jobs:
       if: startsWith( github.ref, 'refs/tags/')
       run: |
         dotnet pack -c Release
-        cp src/*/bin/Release/netstandard2.1/*.dll output/.
+        cp src/AwaitableCoroutine/bin/Release/netstandard2.1/AwaitableCoroutine.dll output
+        cp src/AwaitableCoroutine.Altseed2/bin/Release/netstandard2.1/AwaitableCoroutine.Altseed2.dll output
 
     - name: Upload artifact
       if: startsWith( github.ref, 'refs/tags/')
