@@ -1,5 +1,4 @@
 [![](https://github.com/wraikny/AwaitableCoroutine/workflows/CI/badge.svg)](https://github.com/wraikny/AwaitableCoroutine/actions?workflow=CI)
-[![Nuget](https://img.shields.io/nuget/v/AwaitableCoroutine?style=plastic)](https://www.nuget.org/packages/AwaitableCoroutine/)
 
 # AwaitableCoroutine
 
@@ -9,9 +8,15 @@ Internally it uses Task-Like, the Awaitable pattern, and AsyncMethodBuilder.
 AwaitableCoroutine は、async/await 構文を使用可能にしたコルーチンを提供する C# 向けライブラリです。
 内部的にはTask-Like、Awaitable パターン、AsyncMethodBuilder が使われています。
 
-## Install
+## Installation
 
-Install from [NuGet Gallery](https://www.nuget.org/packages/AwaitableCoroutine).
+Install from NuGet Gallery
+
+| PackageId | Badge |
+| --- | --- |
+| AwaitableCoroutine | [![AwaitableCoroutine - NuGet Gallery](https://img.shields.io/nuget/v/AwaitableCoroutine?style=plastic)](https://www.nuget.org/packages/AwaitableCoroutine/) |
+| AwaitableCoroutine.Altseed2 | [![AwaitableCoroutine.Altseed2 - NuGet Gallery](https://img.shields.io/nuget/v/AwaitableCoroutine.Altseed2?style=plastic)](https://www.nuget.org/packages/AwaitableCoroutine.Altseed2/) |
+
 
 ## Example
 
