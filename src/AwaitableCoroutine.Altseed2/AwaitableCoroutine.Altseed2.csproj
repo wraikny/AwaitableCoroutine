@@ -10,7 +10,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>Copyright (c) 2021 wraikny</Copyright>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>coroutine,awaitable,asyncawait</PackageTags>
+    <PackageTags>coroutine,awaitable,asyncawait,altseed2</PackageTags>
 
     <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
