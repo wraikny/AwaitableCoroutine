@@ -2,6 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
+
+    <PackageId>AwaitableCoroutine.Altseed2</PackageId>
+    <Version>1.1.0</Version>
+    <Description>AwaitableCoroutine extension for Altseed2</Description>
+    <PackageProjectUrl>https://github.com/wraikny/AwaitableCoroutine</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Copyright (c) 2021 wraikny</Copyright>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>coroutine,awaitable,asyncawait</PackageTags>
+
+    <PlatformTarget>x64</PlatformTarget>
   </PropertyGroup>
 
   <ItemGroup>

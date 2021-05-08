@@ -46,3 +46,15 @@ jobs:
 
     - name: Test(Release)
       run: dotnet fake build -t test -- RELEASE
+
+    - name: NuGet
+      if: startsWith( github.ref, 'refs/tags/')
+      run: |
+        dotnet pack src/AwaitableCoroutine -c Release -o output/.
+        dotnet pack src/AwaitableCoroutine.Altseed2 -c Release -o output/.
+
+    - name: Upload artifact
+      if: startsWith( github.ref, 'refs/tags/')
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        path: output/*.nupkg
