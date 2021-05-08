@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace AwaitableCoroutine.Internal
 {
-    public struct AwaitableCoroutineMethodBuilder
+    public readonly struct AwaitableCoroutineMethodBuilder
     {
         private sealed class Coroutine : AwaitableCoroutine
         {
@@ -76,7 +76,7 @@ namespace AwaitableCoroutine.Internal
         }
     }
 
-    public struct AwaitableCoroutineMethodBuilder<T>
+    public readonly struct AwaitableCoroutineMethodBuilder<T>
     {
         private sealed class Coroutine : AwaitableCoroutine<T>
         {
