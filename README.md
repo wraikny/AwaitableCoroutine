@@ -105,4 +105,4 @@ $ dotnet fake build -t test [-- <DEBUG|RELEASE>]
 
 ```sh
 $ dotnet pack  -c Release
-``
+```
