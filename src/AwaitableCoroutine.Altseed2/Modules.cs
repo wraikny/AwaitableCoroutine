@@ -1,4 +1,5 @@
-using System;
+﻿using System;
+
 using Altseed2;
 
 using AC = AwaitableCoroutine.AwaitableCoroutine;
