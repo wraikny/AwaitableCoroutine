@@ -5,31 +5,19 @@ using Xunit.Abstractions;
 
 namespace AwaitableCoroutine.Test
 {
-    public class EnumeratorCoroutineTest
+    public class EnumeratorCoroutineTest : TestTemplate
     {
-        private readonly ITestOutputHelper _outputHelper;
-
         public EnumeratorCoroutineTest(ITestOutputHelper outputHelper)
+            : base(outputHelper)
         {
-            _outputHelper = outputHelper;
-            Internal.Logger.SetLogger(text =>
-            {
-                try
-                {
-                    _outputHelper.WriteLine(text);
-                }
-                catch
-                {
-
-                }
-            });
+            
         }
 
         private IEnumerator GetEnumerator(int n)
         {
             for (var i = 0; i < n; i++)
             {
-                _outputHelper.WriteLine($"{i}");
+                Log($"{i}");
                 yield return null;
             }
         }

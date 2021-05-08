@@ -3,24 +3,13 @@ using Xunit.Abstractions;
 
 namespace AwaitableCoroutine.Test
 {
-    public class AndThenTest
+    public class AndThenTest : TestTemplate
     {
-        private readonly ITestOutputHelper _outputHelper;
-
+        
         public AndThenTest(ITestOutputHelper outputHelper)
+            :base(outputHelper)
         {
-            _outputHelper = outputHelper;
-            Internal.Logger.SetLogger(text =>
-            {
-                try
-                {
-                    _outputHelper.WriteLine(text);
-                }
-                catch
-                {
-
-                }
-            });
+            
         }
         
         [Fact]

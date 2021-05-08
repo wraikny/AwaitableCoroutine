@@ -3,24 +3,12 @@ using Xunit.Abstractions;
 
 namespace AwaitableCoroutine.Test
 {
-    public class AwaitTest
+    public class AwaitTest : TestTemplate
     {
-        private readonly ITestOutputHelper _outputHelper;
-
         public AwaitTest(ITestOutputHelper outputHelper)
+            : base(outputHelper)
         {
-            _outputHelper = outputHelper;
-            Internal.Logger.SetLogger(text =>
-            {
-                try
-                {
-                    _outputHelper.WriteLine(text);
-                }
-                catch
-                {
-
-                }
-            });
+            
         }
 
         private async AwaitableCoroutine GetCoroutine(Counter counter)
@@ -28,33 +16,33 @@ namespace AwaitableCoroutine.Test
             for (var i = 0; i < 3; i++)
             {
                 counter.Inc();
-                _outputHelper.WriteLine($"Count: {counter.Count}");
+                Log($"Count: {counter.Count}");
                 await AwaitableCoroutine.Yield();
             }
 
             counter.Inc();
-            _outputHelper.WriteLine($"Count: {counter.Count}");
+            Log($"Count: {counter.Count}");
             // inc 4
         }
 
         private async AwaitableCoroutine GetCoroutine2(Counter counter)
         {
             counter.Inc();
-            _outputHelper.WriteLine($"Count: {counter.Count}");
+            Log($"Count: {counter.Count}");
             await AwaitableCoroutine.Yield(); // inc 1
 
             counter.Inc();
-            _outputHelper.WriteLine($"Count: {counter.Count}");
+            Log($"Count: {counter.Count}");
 
             await GetCoroutine(counter); // inc 6
 
             counter.Inc();
-            _outputHelper.WriteLine($"Count: {counter.Count}");
+            Log($"Count: {counter.Count}");
 
             await GetCoroutine(counter); // inc 11
 
             counter.Inc();
-            _outputHelper.WriteLine($"Count: {counter.Count}");
+            Log($"Count: {counter.Count}");
             // inc 12
         }
 
@@ -80,7 +68,7 @@ namespace AwaitableCoroutine.Test
             {
                 runner.Update();
                 i++;
-                _outputHelper.WriteLine($"Actual: {i}, Coroutines: {runner.Count}");
+                Log($"Actual: {i}, Coroutines: {runner.Count}");
                 Assert.Equal(i, counter.Count);
             }
         }
@@ -98,12 +86,12 @@ namespace AwaitableCoroutine.Test
             {
                 runner.Update();
                 i++;
-                _outputHelper.WriteLine($"Actual: {i}, Coroutines: {runner.Count}");
+                Log($"Actual: {i}, Coroutines: {runner.Count}");
                 Assert.Equal(i, counter.Count);
             }
 
             runner.Update();
-            _outputHelper.WriteLine($"Actual: {i}, Coroutines: {runner.Count}");
+            Log($"Actual: {i}, Coroutines: {runner.Count}");
         }
     }
 }

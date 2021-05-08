@@ -5,24 +5,14 @@ using Xunit.Abstractions;
 
 namespace AwaitableCoroutine.Test
 {
-    public class WaitAnyCoroutineTest
+    public class WaitAnyCoroutineTest : TestTemplate
     {
         private readonly ITestOutputHelper _outputHelper;
 
         public WaitAnyCoroutineTest(ITestOutputHelper outputHelper)
+            : base(outputHelper)
         {
-            _outputHelper = outputHelper;
-            Internal.Logger.SetLogger(text =>
-            {
-                try
-                {
-                    _outputHelper.WriteLine(text);
-                }
-                catch
-                {
 
-                }
-            });
         }
 
         [Fact]
