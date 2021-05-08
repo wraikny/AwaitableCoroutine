@@ -31,7 +31,7 @@ public static void Main(string[] _)
     // Runnerのインスタンスを作成
     var runner = new CoroutineRunner();
 
-    // AddCoroutine メソッドに渡す callback内で、 AwaitableCoroutine を作成
+    // 注意: AwaitableCoroutineはAddCoroutineメソッドに渡すコールバック内で作成する必要がある
     _ = runner.AddCoroutine(CreateCoroutine);
 
     // メインループ
