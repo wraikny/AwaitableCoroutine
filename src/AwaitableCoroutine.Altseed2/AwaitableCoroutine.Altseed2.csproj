@@ -4,7 +4,7 @@
     <TargetFramework>netstandard2.1</TargetFramework>
 
     <PackageId>AwaitableCoroutine.Altseed2</PackageId>
-    <Version>1.1.0</Version>
+    <Version>1.2.0</Version>
     <Description>AwaitableCoroutine extension for Altseed2</Description>
     <PackageProjectUrl>https://github.com/wraikny/AwaitableCoroutine</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
