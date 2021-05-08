@@ -18,9 +18,10 @@ namespace AwaitableCoroutine
         void OnRegistering(AwaitableCoroutineBase coroutine);
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        void Post(Action continuation);
-
         void OnUpdate();
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        void Post(Action continuation);
     }
 
     public static class ICoroutineRunnerExt
