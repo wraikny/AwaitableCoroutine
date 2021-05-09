@@ -16,7 +16,7 @@ namespace AwaitableCoroutine.Test
         {
             var runner = new CoroutineRunner();
 
-            var waitAll = runner.AddCoroutine(() =>
+            var waitAll = runner.Context(() =>
                 AwaitableCoroutine.WaitAll(new AwaitableCoroutineBase[] {
                     AwaitableCoroutine.Yield(),
                     AwaitableCoroutine.Yield(),
@@ -36,7 +36,7 @@ namespace AwaitableCoroutine.Test
         {
             var runner = new CoroutineRunner();
 
-            var waitAll = runner.AddCoroutine(() =>
+            var waitAll = runner.Context(() =>
                 AwaitableCoroutine.WaitAll(
                     AwaitableCoroutine.Yield(),
                     AwaitableCoroutine.Yield()
@@ -56,7 +56,7 @@ namespace AwaitableCoroutine.Test
         {
             var runner = new CoroutineRunner();
 
-            var waitAll = runner.AddCoroutine(() =>
+            var waitAll = runner.Context(() =>
             {
                 var coroutines = new AwaitableCoroutine<int>[4];
                 for (var i = 0; i < 4; i++)

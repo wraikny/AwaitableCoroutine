@@ -19,7 +19,7 @@ namespace AwaitableCoroutine.Example
         {
             var runner = new CoroutineRunner();
 
-            var coroutine = runner.AddCoroutine(CreateCoroutine);
+            var coroutine = runner.Context(CreateCoroutine);
 
             Console.WriteLine("Started!");
 

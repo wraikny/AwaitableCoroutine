@@ -26,7 +26,7 @@ namespace AwaitableCoroutine.Test
         {
             var runner = new CoroutineRunner();
 
-            var c = runner.AddCoroutine(() => new CustomCoroutine());
+            var c = runner.Context(() => new CustomCoroutine());
 
             Assert.False(c.IsCompleted);
 

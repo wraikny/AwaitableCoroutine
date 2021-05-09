@@ -18,7 +18,7 @@ namespace AwaitableCoroutine.Test
 
             var count = 5;
 
-            var coroutine = runner.AddCoroutine(() => AwaitableCoroutine.DelayCount(count));
+            var coroutine = runner.Context(() => AwaitableCoroutine.DelayCount(count));
 
             for (var i = 0; i < count; i++)
             {

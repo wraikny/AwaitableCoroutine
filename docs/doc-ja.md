@@ -31,8 +31,8 @@ public static void Main(string[] _)
     // Runnerのインスタンスを作成
     var runner = new CoroutineRunner();
 
-    // 注意: AwaitableCoroutineはAddCoroutineメソッドに渡すコールバック内で作成する必要がある
-    _ = runner.AddCoroutine(CreateCoroutine);
+    // 注意: AwaitableCoroutineはContextメソッドに渡すコールバック内で作成する必要がある
+    _ = runner.Context(CreateCoroutine);
 
     // メインループ
     while(true)
@@ -45,14 +45,14 @@ public static void Main(string[] _)
 
 ## 注意事項
 
-`AwaitableCoroutine`, `AwaitableCoroutine<T>`は、 `AddCoroutine` メソッドのコールバック関数の中で生成する点に注意してください。
+`AwaitableCoroutine`, `AwaitableCoroutine<T>`は、 `Context` メソッドのコールバック関数の中で生成する点に注意してください。
 
 コルーチンをどの `ICoroutineRunner` に登録するかの情報を与えるために必要になります。
 
 コルーチンの作成に引数を与えたい場合は以下のようにします。
 
 ```C#
-_ = runner.AddCoroutine(() => FooBarCoroutine(arg1, arg2));
+var coroutine = runner.Context(() => FooBarCoroutine(arg1, arg2));
 ```
 
 ## AwaitableCoroutine

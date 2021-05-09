@@ -8,7 +8,7 @@ namespace AwaitableCoroutine
     {
         private static readonly ThreadLocal<ICoroutineRunner> s_instance = new ThreadLocal<ICoroutineRunner>();
 
-        internal static ICoroutineRunner Context
+        internal static ICoroutineRunner Instance
         {
             get => s_instance.Value;
             set => s_instance.Value = value;
@@ -44,7 +44,6 @@ namespace AwaitableCoroutine
         {
             if (coroutine.IsCompleted)
             {
-
                 return;
             }
 
@@ -53,41 +52,64 @@ namespace AwaitableCoroutine
 
         public static void Update(this ICoroutineRunner runner)
         {
-            ICoroutineRunner lastRunner = null;
+            runner.Context(runner.OnUpdate);
+        }
+
+        public static void Context(this ICoroutineRunner runner, Action action)
+        {
+            if (runner is null)
+            {
+                throw new ArgumentNullException(nameof(runner));
+            }
+
+            if (action is null)
+            {
+                throw new ArgumentNullException(nameof(action));
+            }
+
+            ICoroutineRunner prev = ICoroutineRunner.Instance;
+            ICoroutineRunner.Instance = runner;
+
             try
             {
-                lastRunner = ICoroutineRunner.Context;
-                ICoroutineRunner.Context = runner;
-                runner.OnUpdate();
+                action.Invoke();
             }
             finally
             {
-                ICoroutineRunner.Context = lastRunner;
+                ICoroutineRunner.Instance = prev;
             }
         }
 
-        public static TRes AddCoroutine<TRes>(this ICoroutineRunner runner, Func<TRes> init)
-            where TRes : AwaitableCoroutineBase
+        public static T Context<T>(this ICoroutineRunner runner, Func<T> init)
         {
+            if (runner is null)
+            {
+                throw new ArgumentNullException(nameof(runner));
+            }
+
             if (init is null)
             {
                 throw new ArgumentNullException(nameof(init));
             }
 
-            ICoroutineRunner lastRunner = null;
-            TRes coroutine;
+            ICoroutineRunner prev = ICoroutineRunner.Instance;
+            ICoroutineRunner.Instance = runner;
+
             try
             {
-                lastRunner = ICoroutineRunner.Context;
-                ICoroutineRunner.Context = runner;
-                coroutine = init();
+                return init.Invoke();
             }
             finally
             {
-                ICoroutineRunner.Context = lastRunner;
+                ICoroutineRunner.Instance = prev;
             }
+        }
 
-            return coroutine;
+        [Obsolete("Use Context")]
+        public static T AddCoroutine<T>(this ICoroutineRunner runner, Func<T> init)
+            where T : AwaitableCoroutineBase
+        {
+            return Context(runner, init);
         }
     }
 }
