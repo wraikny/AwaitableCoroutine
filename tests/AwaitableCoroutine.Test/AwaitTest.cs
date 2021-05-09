@@ -118,7 +118,7 @@ namespace AwaitableCoroutine.Test
                 runner1.Update();
                 Assert.False(coroutine2.IsCompleted);
             }
-            
+
             runner2.Update();
             runner2.Update();
             Assert.True(coroutine2.IsCompleted);
