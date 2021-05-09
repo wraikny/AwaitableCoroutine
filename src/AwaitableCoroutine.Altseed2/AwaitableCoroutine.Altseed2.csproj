@@ -6,7 +6,7 @@
     <PlatformTarget>x64</PlatformTarget>
 
     <PackageId>AwaitableCoroutine.Altseed2</PackageId>
-    <Version>1.2.2</Version>
+    <Version>1.3.0</Version>
     <Description>AwaitableCoroutine extension for Altseed2</Description>
     <PackageProjectUrl>https://github.com/wraikny/AwaitableCoroutine</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
