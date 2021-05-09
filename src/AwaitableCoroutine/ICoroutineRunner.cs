@@ -67,16 +67,24 @@ namespace AwaitableCoroutine
                 throw new ArgumentNullException(nameof(action));
             }
 
-            ICoroutineRunner prev = ICoroutineRunner.Instance;
-            ICoroutineRunner.Instance = runner;
+            var prev = ICoroutineRunner.Instance;
 
-            try
+            if (prev == runner)
             {
                 action.Invoke();
             }
-            finally
+            else
             {
-                ICoroutineRunner.Instance = prev;
+                ICoroutineRunner.Instance = runner;
+
+                try
+                {
+                    action.Invoke();
+                }
+                finally
+                {
+                    ICoroutineRunner.Instance = prev;
+                }
             }
         }
 
@@ -92,16 +100,24 @@ namespace AwaitableCoroutine
                 throw new ArgumentNullException(nameof(init));
             }
 
-            ICoroutineRunner prev = ICoroutineRunner.Instance;
-            ICoroutineRunner.Instance = runner;
+            var prev = ICoroutineRunner.Instance;
 
-            try
+            if (prev == runner)
             {
                 return init.Invoke();
             }
-            finally
+            else
             {
-                ICoroutineRunner.Instance = prev;
+                ICoroutineRunner.Instance = runner;
+
+                try
+                {
+                    return init.Invoke();
+                }
+                finally
+                {
+                    ICoroutineRunner.Instance = prev;
+                }
             }
         }
 
