@@ -42,7 +42,16 @@ namespace AwaitableCoroutine
                 return;
             }
 
-            OnCompleted += action;
+            var runner = ICoroutineRunner.GetContextStrict();
+
+            if (Runner == runner)
+            {
+                OnCompleted += action;
+            }
+            else
+            {
+                OnCompleted += () => runner.Context(action);
+            }
         }
 
         protected abstract void OnMoveNext();

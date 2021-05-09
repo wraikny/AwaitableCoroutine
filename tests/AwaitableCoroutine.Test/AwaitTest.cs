@@ -93,5 +93,35 @@ namespace AwaitableCoroutine.Test
             runner.Update();
             Log($"Actual: {i}, Coroutines: {runner.Count}");
         }
+
+        [Fact]
+        public void AwaitCoroutineWithAnotherRunner()
+        {
+            var runner1 = new CoroutineRunner();
+            var runner2 = new CoroutineRunner();
+
+            var coroutine1 = runner1.Context(() => AwaitableCoroutine.Yield());
+
+            var coroutine2 = runner2.Context(() =>
+                coroutine1.AndThen(() => AwaitableCoroutine.Yield())
+            );
+
+            Assert.False(coroutine1.IsCompleted);
+            Assert.False(coroutine2.IsCompleted);
+
+            runner1.Update();
+            Assert.True(coroutine1.IsCompleted);
+            Assert.False(coroutine2.IsCompleted);
+
+            for (var i = 0; i < 5; i++)
+            {
+                runner1.Update();
+                Assert.False(coroutine2.IsCompleted);
+            }
+            
+            runner2.Update();
+            runner2.Update();
+            Assert.True(coroutine2.IsCompleted);
+        }
     }
 }
