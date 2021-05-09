@@ -19,14 +19,14 @@ namespace AwaitableCoroutine.Altseed2
             _runner.Update();
         }
 
-        public void AddCoroutine(Func<AwaitableCoroutineBase> init)
+        public void Context(Action action)
         {
-            _runner.Context(init);
+            _runner.Context(action);
         }
 
-        public void Context<T>(Func<T> init)
+        public T Context<T>(Func<T> init)
         {
-            _runner.Context(init);
+            return _runner.Context(init);
         }
     }
 }

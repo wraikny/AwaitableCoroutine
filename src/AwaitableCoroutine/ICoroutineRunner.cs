@@ -120,12 +120,5 @@ namespace AwaitableCoroutine
                 }
             }
         }
-
-        [Obsolete("Use Context")]
-        public static T AddCoroutine<T>(this ICoroutineRunner runner, Func<T> init)
-            where T : AwaitableCoroutineBase
-        {
-            return Context(runner, init);
-        }
     }
 }
