@@ -18,8 +18,11 @@ namespace AwaitableCoroutine.Test
             var runner = new CoroutineRunner();
             var counter = new Counter();
             var c = runner.Context(() =>
-                AwaitableCoroutine.Yield()
-                    .AndThen(() => AwaitableCoroutine.Yield(counter.Inc))
+                AwaitableCoroutine.DelayCount(2)
+                    .AndThen(() => AwaitableCoroutine.DelayCount(2, () => {
+                        counter.Inc();
+                        Log($"Count: {counter.Count}");
+                    }))
             );
 
             while (!c.IsCompleted) runner.Update();

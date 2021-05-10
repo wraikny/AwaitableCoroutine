@@ -12,7 +12,7 @@ namespace AwaitableCoroutine.Test
         }
 
         [Fact]
-        public void RunDelayCoroutineInt()
+        public void RunDelayCount()
         {
             var runner = new CoroutineRunner();
 
@@ -22,10 +22,11 @@ namespace AwaitableCoroutine.Test
 
             for (var i = 0; i < count; i++)
             {
-                Assert.False(coroutine.IsCompleted);
                 runner.Update();
+                Assert.False(coroutine.IsCompleted);
             }
 
+            runner.Update();
             Assert.True(coroutine.IsCompleted);
         }
     }
