@@ -72,12 +72,11 @@ Finished!
 
 see [examples](examples) in detail.
 
-## Command
+## Command (for dev)
 
 ### Setup
 
 ```sh
-$ git submodule update --init
 $ dotnet tool restore
 ```
 
