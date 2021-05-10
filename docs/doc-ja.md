@@ -78,9 +78,9 @@ var coroutine = runner.Context(() => FooBarCoroutine(arg1, arg2));
 | [UntilCompleted](../src/AwaitableCoroutine/Modules/UntilCompletedCoroutine.cs) | コルーチンの実行中に`Action`を実行する新たなコルーチンを生成 |
 
 
-### AwaitableYield
+### YieldAwaitable
 
-[AwaitableYield](../src/AwaitableCoroutine/Internal/AwaitableYield.cs.cs)
+[YieldAwaitable](../src/AwaitableCoroutine/Internal/YieldAwaitable.cs.cs)
 
 `async`メソッド内で一度だけ`await`するためだけの構造体です。
 
