@@ -19,7 +19,7 @@ namespace AwaitableCoroutine.Test
             var counter = new Counter();
             var c = runner.Context(() =>
                 AwaitableCoroutine.DelayCount(2)
-                    .AndThen(() => AwaitableCoroutine.DelayCount(2, () => {
+                    .AndThen(() => AwaitableCoroutine.DelayCount(2).OnCompleted(() => {
                         counter.Inc();
                         Log($"Count: {counter.Count}");
                     }))

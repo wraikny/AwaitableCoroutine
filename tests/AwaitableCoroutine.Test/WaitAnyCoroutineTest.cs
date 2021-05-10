@@ -22,10 +22,10 @@ namespace AwaitableCoroutine.Test
 
             var waitAny = runner.Context(() =>
                 AwaitableCoroutine.WaitAny(new AwaitableCoroutineBase[] {
-                    AwaitableCoroutine.Until(() => false),
-                    AwaitableCoroutine.Until(() => false),
-                    AwaitableCoroutine.Until(() => false),
-                    AwaitableCoroutine.Until(() => flag),
+                    AwaitableCoroutine.While(() => true),
+                    AwaitableCoroutine.While(() => true),
+                    AwaitableCoroutine.While(() => true),
+                    AwaitableCoroutine.While(() => !flag),
                 })
             );
 
@@ -49,8 +49,8 @@ namespace AwaitableCoroutine.Test
 
             var waitAny = runner.Context(() =>
                 AwaitableCoroutine.WaitAny(
-                    AwaitableCoroutine.Until(() => false),
-                    AwaitableCoroutine.Until(() => flag)
+                    AwaitableCoroutine.While(() => true),
+                    AwaitableCoroutine.While(() => !flag)
                 )
             );
 
@@ -75,10 +75,10 @@ namespace AwaitableCoroutine.Test
             var waitAny = runner.Context(() =>
             {
                 return AwaitableCoroutine.WaitAny<int>(new AwaitableCoroutine<int>[] {
-                    AwaitableCoroutine.Until(() => false, () => 0),
-                    AwaitableCoroutine.Until(() => flag, () => 1),
-                    AwaitableCoroutine.Until(() => false, () => 2),
-                    AwaitableCoroutine.Until(() => flag, () => 3),
+                    AwaitableCoroutine.While(() => true).SelectTo(0),
+                    AwaitableCoroutine.While(() => !flag).SelectTo(1),
+                    AwaitableCoroutine.While(() => true).SelectTo(2),
+                    AwaitableCoroutine.While(() => !flag).SelectTo(3),
                 });
             });
 

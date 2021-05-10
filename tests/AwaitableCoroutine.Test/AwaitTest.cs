@@ -121,6 +121,7 @@ namespace AwaitableCoroutine.Test
 
             runner2.Update();
             runner2.Update();
+            runner2.Update();
             Assert.True(coroutine2.IsCompleted);
         }
     }

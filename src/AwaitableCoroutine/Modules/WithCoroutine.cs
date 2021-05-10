@@ -4,13 +4,18 @@ namespace AwaitableCoroutine
 {
     public static class WithCoroutineExt
     {
-        public static AwaitableCoroutine With(this AwaitableCoroutineBase coroutine, Action onUpdating, Action onCompleted)
+        public static async AwaitableCoroutine With(this AwaitableCoroutineBase coroutine, Action inWaiting)
         {
-            return AwaitableCoroutine.Until(
-                () => coroutine.IsCompleted,
-                onUpdating: onUpdating,
-                onCompleted: onCompleted
-            );
+            if (inWaiting is null)
+            {
+                throw new ArgumentNullException(nameof(inWaiting));
+            }
+
+            while (!coroutine.IsCompleted)
+            {
+                inWaiting.Invoke();
+                await AwaitableCoroutine.Yield();
+            }
         }
     }
 }

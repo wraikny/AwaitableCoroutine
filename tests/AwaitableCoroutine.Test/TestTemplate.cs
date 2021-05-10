@@ -15,7 +15,15 @@ namespace AwaitableCoroutine.Test
 
         protected void Log(string text)
         {
-            _outputHelper.WriteLine(text);
+            try
+            {
+
+                _outputHelper.WriteLine(text);
+            }
+            catch
+            {
+                
+            }
         }
     }
 }
