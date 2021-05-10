@@ -13,7 +13,7 @@ namespace AwaitableCoroutine.ConsoleTest
 
             var c = runner.Context(() =>
                 AwaitableCoroutine.DelayCount(0)
-                    .AndThen(() => AwaitableCoroutine.DelayCount(0, onCompleted: () =>
+                    .AndThen(() => AwaitableCoroutine.DelayCount(0).OnCompleted(() =>
                     {
                         count++;
                         Internal.Logger.Log($"Count: {count}");
