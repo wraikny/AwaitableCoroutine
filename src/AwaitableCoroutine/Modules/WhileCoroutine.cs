@@ -16,7 +16,7 @@ namespace AwaitableCoroutine
                 onUpdating?.Invoke();
                 await Yield();
             }
-            
+
             onCompleted?.Invoke();
         }
     }

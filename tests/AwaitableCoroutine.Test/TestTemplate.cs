@@ -22,7 +22,7 @@ namespace AwaitableCoroutine.Test
             }
             catch
             {
-                
+
             }
         }
     }

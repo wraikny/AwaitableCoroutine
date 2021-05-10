@@ -116,7 +116,7 @@ namespace AwaitableCoroutine
                 await Yield();
             }
         }
-        
+
 
         public static AwaitableCoroutine WaitAny(ReadOnlySpan<AwaitableCoroutineBase> span)
         {

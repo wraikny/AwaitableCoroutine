@@ -9,7 +9,7 @@ namespace AwaitableCoroutine
 {
     public abstract class AwaitableCoroutineBase
     {
-        internal event Action OnUpdating  = null;
+        internal event Action OnUpdating = null;
         internal protected ICoroutineRunner Runner { get; set; }
         protected internal Action OnCompleted { get; set; }
 
