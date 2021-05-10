@@ -9,6 +9,7 @@ namespace AwaitableCoroutine
 {
     public abstract class AwaitableCoroutineBase
     {
+        internal event Action OnUpdating = null;
         internal protected ICoroutineRunner Runner { get; set; }
         protected internal Action OnCompleted { get; set; }
 
@@ -19,17 +20,19 @@ namespace AwaitableCoroutine
         public AwaitableCoroutineBase()
         {
             Runner = ICoroutineRunner.GetContextStrict();
+            Internal.Logger.Log($"{GetType()} is created");
             Runner.Register(this);
         }
 
         internal AwaitableCoroutineBase(ICoroutineRunner runner)
         {
             Runner = runner;
+            Internal.Logger.Log($"{GetType()} is created");
             Runner.Register(this);
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public void ContinueWith(Action action)
+        internal void ContinueWith(Action action)
         {
             if (action is null)
             {
@@ -59,6 +62,8 @@ namespace AwaitableCoroutine
         public void MoveNext()
         {
             if (IsCompleted) return;
+            Internal.Logger.Log($"{GetType()} move next");
+            OnUpdating?.Invoke();
             OnMoveNext();
         }
     }

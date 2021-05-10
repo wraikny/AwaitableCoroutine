@@ -38,6 +38,7 @@ namespace AwaitableCoroutine
             IsUpdating = true;
 
             var contCount = _continuations.Count;
+
             for (var i = 0; i < contCount; i++)
             {
                 _continuations.Dequeue().Invoke();
@@ -74,10 +75,8 @@ namespace AwaitableCoroutine
         {
             if (continuation is null) return;
 
-            if (continuation is { })
-            {
-                _continuations.Enqueue(continuation);
-            }
+            Internal.Logger.Log($"CoroutineRunner.Post");
+            _continuations.Enqueue(continuation);
         }
     }
 }

@@ -29,7 +29,7 @@ namespace AwaitableCoroutine
 
         /* AwaitableCoroutine<T> */
 
-        public static async AwaitableCoroutine AndThen<T, U>(this AwaitableCoroutine<T> coroutine, Func<T, AwaitableCoroutine> thunk)
+        public static async AwaitableCoroutine AndThen<T>(this AwaitableCoroutine<T> coroutine, Func<T, AwaitableCoroutine> thunk)
         {
             if (thunk is null)
             {

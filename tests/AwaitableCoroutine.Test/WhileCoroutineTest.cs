@@ -3,22 +3,22 @@ using Xunit.Abstractions;
 
 namespace AwaitableCoroutine.Test
 {
-    public class UntilCoroutineTest : TestTemplate
+    public class WhileCoroutineTest : TestTemplate
     {
-        public UntilCoroutineTest(ITestOutputHelper outputHelper)
+        public WhileCoroutineTest(ITestOutputHelper outputHelper)
             : base(outputHelper)
         {
 
         }
 
         [Fact]
-        public void RunUntilCoroutine()
+        public void RunWhileCoroutine()
         {
             var runner = new CoroutineRunner();
 
             var condition = false;
 
-            var coroutine = runner.Context(() => AwaitableCoroutine.Until(() => condition));
+            var coroutine = runner.Context(() => AwaitableCoroutine.While(() => !condition));
 
             for (var i = 0; i < 3; i++)
             {

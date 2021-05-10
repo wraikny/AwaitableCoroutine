@@ -18,10 +18,10 @@ namespace AwaitableCoroutine.Test
 
             var waitAll = runner.Context(() =>
                 AwaitableCoroutine.WaitAll(new AwaitableCoroutineBase[] {
-                    AwaitableCoroutine.Yield(),
-                    AwaitableCoroutine.Yield(),
-                    AwaitableCoroutine.Yield(),
-                    AwaitableCoroutine.Yield(),
+                    AwaitableCoroutine.DelayCount(0),
+                    AwaitableCoroutine.DelayCount(0),
+                    AwaitableCoroutine.DelayCount(0),
+                    AwaitableCoroutine.DelayCount(0),
                 })
             );
 
@@ -38,8 +38,8 @@ namespace AwaitableCoroutine.Test
 
             var waitAll = runner.Context(() =>
                 AwaitableCoroutine.WaitAll(
-                    AwaitableCoroutine.Yield(),
-                    AwaitableCoroutine.Yield()
+                    AwaitableCoroutine.DelayCount(0),
+                    AwaitableCoroutine.DelayCount(0)
                 )
             );
 
@@ -61,7 +61,7 @@ namespace AwaitableCoroutine.Test
                 var coroutines = new AwaitableCoroutine<int>[4];
                 for (var i = 0; i < 4; i++)
                 {
-                    coroutines[i] = AwaitableCoroutine.YieldOf(i);
+                    coroutines[i] = AwaitableCoroutine.DelayCount(0).SelectTo(i);
                 }
                 return AwaitableCoroutine.WaitAll<int>(coroutines);
             });

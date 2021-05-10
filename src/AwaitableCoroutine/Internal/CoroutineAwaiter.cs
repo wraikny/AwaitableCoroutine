@@ -1,8 +1,10 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace AwaitableCoroutine.Internal
 {
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public readonly struct CoroutineAwaiter : INotifyCompletion
     {
         private readonly AwaitableCoroutine _target;
@@ -22,6 +24,7 @@ namespace AwaitableCoroutine.Internal
         public void GetResult() { }
     }
 
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public readonly struct CoroutineAwaiter<T> : INotifyCompletion
     {
         private readonly AwaitableCoroutine<T> _target;

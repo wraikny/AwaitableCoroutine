@@ -17,6 +17,7 @@ namespace AwaitableCoroutine.Test
         {
             try
             {
+
                 _outputHelper.WriteLine(text);
             }
             catch

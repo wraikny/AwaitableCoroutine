@@ -68,7 +68,7 @@ namespace AwaitableCoroutine.Test
             {
                 runner.Update();
                 i++;
-                Log($"Actual: {i}, Coroutines: {runner.Count}");
+                Log($"i: {i}");
                 Assert.Equal(i, counter.Count);
             }
         }
@@ -86,12 +86,12 @@ namespace AwaitableCoroutine.Test
             {
                 runner.Update();
                 i++;
-                Log($"Actual: {i}, Coroutines: {runner.Count}");
+                Log($"i: {i}");
                 Assert.Equal(i, counter.Count);
             }
 
             runner.Update();
-            Log($"Actual: {i}, Coroutines: {runner.Count}");
+            Log($"i: {i}");
         }
 
         [Fact]
@@ -100,10 +100,10 @@ namespace AwaitableCoroutine.Test
             var runner1 = new CoroutineRunner();
             var runner2 = new CoroutineRunner();
 
-            var coroutine1 = runner1.Context(() => AwaitableCoroutine.Yield());
+            var coroutine1 = runner1.Context(() => AwaitableCoroutine.DelayCount(0));
 
             var coroutine2 = runner2.Context(() =>
-                coroutine1.AndThen(() => AwaitableCoroutine.Yield())
+                coroutine1.AndThen(() => AwaitableCoroutine.DelayCount(0))
             );
 
             Assert.False(coroutine1.IsCompleted);
@@ -119,6 +119,7 @@ namespace AwaitableCoroutine.Test
                 Assert.False(coroutine2.IsCompleted);
             }
 
+            runner2.Update();
             runner2.Update();
             runner2.Update();
             Assert.True(coroutine2.IsCompleted);

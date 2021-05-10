@@ -58,26 +58,45 @@ var coroutine = runner.Context(() => FooBarCoroutine(arg1, arg2));
 ## AwaitableCoroutine
 ### コルーチン
 
-`AwaitableCoroutine.Yield()`などとして呼び出します。
+`AwaitableCoroutine.Yield()`などと、静的メソッドとして呼び出します。
 
 | Name | Desc |
 | --- | --- |
-| [Yield](../src/AwaitableCoroutine/Modules/YieldCoroutine.cs) | 一度だけ実行するコルーチンを生成 |
-| [Until](../src/AwaitableCoroutine/Modules/UntilCoroutine.cs) | 条件が偽の間実行するコルーチンを生成 |
-| [While](../src/AwaitableCoroutine/Modules/UntilCoroutine.cs) | 条件が真の間実行するコルーチンを生成 |
+| [While](../src/AwaitableCoroutine/Modules/WhileCoroutine.cs) | 条件が真の間実行するコルーチンを生成 |
 | [DelayCount](../src/AwaitableCoroutine/Modules/DelayCountCoroutine.cs) | 指定したカウント実行するコルーチンを生成 |
 | [WaitAll](../src/AwaitableCoroutine/Modules/WaitAllCoroutine.cs) | 指定した全てのコルーチンが終了するまで実行するコルーチンを生成 |
 | [WaitAny](../src/AwaitableCoroutine/Modules/WaitAnyCoroutine.cs) | 指定したどれか一つのコルーチンが終了するまで実行するコルーチンを生成 |
-| [FromEnumerator](../src/AwaitableCoroutine/Modules/EnumeratorCoroutine.cs) | `IEnumerator`をすすめるコルーチンを生成 |
+| [FromEnumerator](../src/AwaitableCoroutine/Modules/EnumeratorCoroutine.cs) | `IEnumerator`を一つづつすすめるコルーチンを生成 |
 
-
-### 補助メソッド
+### コルーチン（拡張メソッド）
+`coroutine.Select(() => 1)`などと、拡張メソッドとして呼び出します。
 
 | Name | Desc |
 | --- | --- |
 | [Select, SelectTo](../src/AwaitableCoroutine/Modules/SelectCoroutine.cs) | コルーチンの結果の値を変換した新たなコルーチンを生成 |
 | [AndThen](../src/AwaitableCoroutine/Modules/AndThenCoroutine.cs) | コルーチンを継続した新たなコルーチンを生成 |
-| [With](../src/AwaitableCoroutine/Modules/WithCoroutine.cs) | コルーチンの実行中に`Action`を実行するコルーチンを生成 |
+| [UntilCompleted](../src/AwaitableCoroutine/Modules/UntilCompletedCoroutine.cs) | コルーチンの実行中に`Action`を実行する新たなコルーチンを生成 |
+
+
+### YieldAwaitable
+
+[YieldAwaitable](../src/AwaitableCoroutine/Internal/YieldAwaitable.cs.cs)
+
+`async`メソッド内で一度だけ`await`するためだけの構造体です。
+
+通常のコルーチンと同じように利用することはできませんが、最適化のために構造体による実装をしています。
+
+一度だけ`await`したい場合は、基本的にこちらを利用してください。
+
+例
+
+```csharp
+for (int i = 0; i < 10; i++)
+{
+    // do something
+    await AwaitableCoroutine.Yield();
+}
+```
 
 
 ## AwaitableCoroutine.Altseed2

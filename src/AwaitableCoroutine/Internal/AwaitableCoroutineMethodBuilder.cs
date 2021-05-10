@@ -1,8 +1,10 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace AwaitableCoroutine.Internal
 {
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public readonly struct AwaitableCoroutineMethodBuilder
     {
         private sealed class Coroutine : AwaitableCoroutine
@@ -81,6 +83,7 @@ namespace AwaitableCoroutine.Internal
         }
     }
 
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public readonly struct AwaitableCoroutineMethodBuilder<T>
     {
         private sealed class Coroutine : AwaitableCoroutine<T>
