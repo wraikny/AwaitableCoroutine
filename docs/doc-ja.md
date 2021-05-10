@@ -62,7 +62,7 @@ var coroutine = runner.Context(() => FooBarCoroutine(arg1, arg2));
 
 | Name | Desc |
 | --- | --- |
-| [While](../src/AwaitableCoroutine/Modules/UntilCoroutine.cs) | 条件が真の間実行するコルーチンを生成 |
+| [While](../src/AwaitableCoroutine/Modules/WhileCoroutine.cs) | 条件が真の間実行するコルーチンを生成 |
 | [DelayCount](../src/AwaitableCoroutine/Modules/DelayCountCoroutine.cs) | 指定したカウント実行するコルーチンを生成 |
 | [WaitAll](../src/AwaitableCoroutine/Modules/WaitAllCoroutine.cs) | 指定した全てのコルーチンが終了するまで実行するコルーチンを生成 |
 | [WaitAny](../src/AwaitableCoroutine/Modules/WaitAnyCoroutine.cs) | 指定したどれか一つのコルーチンが終了するまで実行するコルーチンを生成 |
