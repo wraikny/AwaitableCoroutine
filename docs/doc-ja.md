@@ -75,7 +75,7 @@ var coroutine = runner.Context(() => FooBarCoroutine(arg1, arg2));
 | --- | --- |
 | [Select, SelectTo](../src/AwaitableCoroutine/Modules/SelectCoroutine.cs) | コルーチンの結果の値を変換した新たなコルーチンを生成 |
 | [AndThen](../src/AwaitableCoroutine/Modules/AndThenCoroutine.cs) | コルーチンを継続した新たなコルーチンを生成 |
-| [With](../src/AwaitableCoroutine/Modules/WithCoroutine.cs) | コルーチンの実行中に`Action`を実行する新たなコルーチンを生成 |
+| [UntilCompleted](../src/AwaitableCoroutine/Modules/UntilCompletedCoroutine.cs) | コルーチンの実行中に`Action`を実行する新たなコルーチンを生成 |
 
 
 ### AwaitableYield
