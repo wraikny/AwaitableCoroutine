@@ -52,7 +52,9 @@ namespace AwaitableCoroutine
 
         public static void Update(this ICoroutineRunner runner)
         {
+            Internal.Logger.Log($"{runner.GetType().Name} is updating");
             runner.Context(runner.OnUpdate);
+            Internal.Logger.Log($"{runner.GetType().Name} is updated");
         }
 
         public static void Context(this ICoroutineRunner runner, Action action)

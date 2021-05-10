@@ -19,12 +19,14 @@ namespace AwaitableCoroutine
         public AwaitableCoroutineBase()
         {
             Runner = ICoroutineRunner.GetContextStrict();
+            Internal.Logger.Log($"{GetType()} is created");
             Runner.Register(this);
         }
 
         internal AwaitableCoroutineBase(ICoroutineRunner runner)
         {
             Runner = runner;
+            Internal.Logger.Log($"{GetType()} is created");
             Runner.Register(this);
         }
 
@@ -59,6 +61,7 @@ namespace AwaitableCoroutine
         public void MoveNext()
         {
             if (IsCompleted) return;
+            Internal.Logger.Log($"{GetType()} move next");
             OnMoveNext();
         }
     }
