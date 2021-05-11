@@ -4,10 +4,9 @@ using Altseed2;
 
 namespace AwaitableCoroutine.Altseed2
 {
-    public sealed class CoroutineNode : Node
+    public sealed class CoroutineNode : Node, ICoroutineRunner
     {
-        public int CoroutineCount => _runner.Count;
-        private readonly CoroutineRunner _runner;
+        private readonly ICoroutineRunner _runner;
 
         public CoroutineNode()
         {
@@ -19,14 +18,12 @@ namespace AwaitableCoroutine.Altseed2
             _runner.Update();
         }
 
-        public void Context(Action action)
-        {
-            _runner.Context(action);
-        }
+        bool ICoroutineRunner.IsUpdating => _runner.IsUpdating;
 
-        public T Context<T>(Func<T> init)
-        {
-            return _runner.Context(init);
-        }
+        void ICoroutineRunner.OnRegistering(AwaitableCoroutineBase coroutine) => _runner.OnRegistering(coroutine);
+
+        void ICoroutineRunner.OnUpdate() => _runner.OnUpdate();
+
+        void ICoroutineRunner.Post(Action continuation) => _runner.Post(continuation);
     }
 }
