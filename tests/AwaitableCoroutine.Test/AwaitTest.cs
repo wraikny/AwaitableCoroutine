@@ -11,6 +11,15 @@ namespace AwaitableCoroutine.Test
 
         }
 
+        private async AwaitableCoroutine SingleYieldCoroutine(Counter counter)
+        {
+            counter.Inc();
+            Log($"Count: {counter.Count}");
+            await AwaitableCoroutine.Yield();
+            counter.Inc();
+            Log($"Count: {counter.Count}");
+        }
+
         private async AwaitableCoroutine GetCoroutine(Counter counter)
         {
             for (var i = 0; i < 3; i++)
@@ -64,6 +73,26 @@ namespace AwaitableCoroutine.Test
             var counter = new Counter();
 
             _ = runner.Context(() => GetCoroutine(counter));
+        }
+
+        [Fact]
+        public void RunSingleYieldCoroutine()
+        {
+            var runner = new CoroutineRunner();
+            var counter = new Counter();
+
+            var co = runner.Context(() => SingleYieldCoroutine(counter));
+
+            Assert.False(co.IsCompleted);
+            Assert.Equal(0, counter.Count);
+
+            runner.Update();
+            Assert.False(co.IsCompleted);
+            Assert.Equal(1, counter.Count);
+
+            runner.Update();
+            Assert.True(co.IsCompleted);
+            Assert.Equal(2, counter.Count);
         }
 
         [Fact]
