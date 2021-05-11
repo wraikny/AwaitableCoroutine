@@ -22,7 +22,7 @@ Install from NuGet Gallery
 
 | lang | folder |
 | --- | --- |
-| ja | [ドキュメント](docs/ja/index.md) |
+| ja | [ドキュメント](docs/ja) |
 
 
 ## Example
