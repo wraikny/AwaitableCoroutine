@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net5.0</TargetFramework>
+    <TargetRuntime>x64</TargetRuntime>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\AwaitableCoroutine\AwaitableCoroutine.csproj" />
+    <ProjectReference Include="..\..\src\AwaitableCoroutine.Altseed2\AwaitableCoroutine.Altseed2.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Altseed2" Version="2.0.0" />
+  </ItemGroup>
+
+</Project>
