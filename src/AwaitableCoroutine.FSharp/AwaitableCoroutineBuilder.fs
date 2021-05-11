@@ -199,10 +199,9 @@ module Builders =
     member inline __.Bind(abl, continuation) = genericAwait (abl, continuation)
 
   [<Struct>]
-  type DoAwaitableCoroutineBuilder(prev: ICoroutineRunner) =
+  type DoAwaitableCoroutineBuilder(fin: unit -> unit) =
     member __.Delay(f : unit -> Step<_>) = f
-    member __.Run(f : unit -> Step<'m>) =
-      try run f finally ICoroutineRunner.Instance <- prev
+    member __.Run(f : unit -> Step<'m>) = try run f finally fin()
     member __.Zero() = zero
     member __.Return(x) = ret x
     member __.Combine(step : unit Step, continuation) = combine step continuation
@@ -222,4 +221,4 @@ type ICoroutineRunner with
   member this.Do =
     let prev = ICoroutineRunner.Instance
     ICoroutineRunner.Instance <- this
-    DoAwaitableCoroutineBuilder(prev)
+    DoAwaitableCoroutineBuilder(fun() -> ICoroutineRunner.Instance <- prev)
