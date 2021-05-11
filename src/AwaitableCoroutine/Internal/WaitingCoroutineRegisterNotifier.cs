@@ -18,17 +18,16 @@
             Instance ??= new Default();
             Instance.RegisterWaitingCoroutine(ref awaiter, coroutine);
         }
-    }
 
-    public sealed class Default : WaitingCoroutineRegisterNotifier
-    {
-        public override void RegisterWaitingCoroutine<T>(ref T awaiter, AwaitableCoroutineBase coroutine)
+        public sealed class Default : WaitingCoroutineRegisterNotifier
         {
-            if (awaiter is IWaitingCoroutineRegisterer registerer)
+            public override void RegisterWaitingCoroutine<T>(ref T awaiter, AwaitableCoroutineBase coroutine)
             {
-                registerer.RegisterWaitingCoroutine(coroutine);
+                if (awaiter is IWaitingCoroutineRegisterer registerer)
+                {
+                    registerer.RegisterWaitingCoroutine(coroutine);
+                }
             }
         }
     }
-
 }
