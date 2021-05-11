@@ -17,6 +17,12 @@ Install from NuGet Gallery
 | AwaitableCoroutine | [![AwaitableCoroutine - NuGet Gallery](https://img.shields.io/nuget/v/AwaitableCoroutine?style=plastic)](https://www.nuget.org/packages/AwaitableCoroutine/) |
 | AwaitableCoroutine.Altseed2 | [![AwaitableCoroutine.Altseed2 - NuGet Gallery](https://img.shields.io/nuget/v/AwaitableCoroutine.Altseed2?style=plastic)](https://www.nuget.org/packages/AwaitableCoroutine.Altseed2/) |
 
+## Documentation
+
+| lang | folder |
+| --- | --- |
+| ja | [ドキュメント](docs/ja/index.md) |
+
 
 ## Example
 
