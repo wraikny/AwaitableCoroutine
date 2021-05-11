@@ -43,12 +43,12 @@ namespace AwaitableCoroutine
         {
             if (action is null)
             {
-                throw new ArgumentNullException(nameof(action));
+                ThrowHelper.ArgNull(nameof(action));
             }
 
             if (IsCanceled)
             {
-                throw new InvalidOperationException("Coroutine is already canceled");
+                ThrowHelper.InvalidOp("Coroutine is already canceled");
             }
 
             if (IsCompleted)
@@ -75,12 +75,12 @@ namespace AwaitableCoroutine
         {
             if (onCanceled is null)
             {
-                throw new ArgumentNullException(nameof(onCanceled));
+                ThrowHelper.ArgNull(nameof(onCanceled));
             }
 
             if (IsCompleted)
             {
-                throw new InvalidOperationException("Coroutine is already completed");
+                ThrowHelper.InvalidOp("Coroutine is already completed");
             }
 
             if (IsCanceled)
@@ -105,12 +105,12 @@ namespace AwaitableCoroutine
         {
             if (IsCanceled)
             {
-                throw new InvalidOperationException("Coroutien is already canceled");
+                ThrowHelper.InvalidOp("Coroutien is already canceled");
             }
 
             if (IsCompleted)
             {
-                throw new InvalidOperationException("Coroutine is already completed");
+                ThrowHelper.InvalidOp("Coroutine is already completed");
             }
 
             IsCanceled = true;
@@ -133,7 +133,7 @@ namespace AwaitableCoroutine
         {
             if (exn is null)
             {
-                throw new ArgumentNullException(nameof(exn));
+                ThrowHelper.ArgNull(nameof(exn));
             }
 
             Exception = exn;
@@ -157,12 +157,12 @@ namespace AwaitableCoroutine
         {
             if (IsCanceled)
             {
-                throw new InvalidOperationException("Coroutine is alread canceled");
+                ThrowHelper.InvalidOp("Coroutine is alread canceled");
             }
 
             if (IsCompleted)
             {
-                throw new InvalidOperationException("Coroutine is alread completed");
+                ThrowHelper.InvalidOp("Coroutine is alread completed");
             }
 
             try
@@ -193,12 +193,12 @@ namespace AwaitableCoroutine
         {
             if (IsCompleted)
             {
-                throw new InvalidOperationException("Coroutine already completed");
+                ThrowHelper.InvalidOp("Coroutine already completed");
             }
 
             if (IsCanceled)
             {
-                throw new InvalidOperationException($"Coroutine is already canceled");
+                ThrowHelper.InvalidOp($"Coroutine is already canceled");
             }
 
             IsCompleted = true;
@@ -226,12 +226,12 @@ namespace AwaitableCoroutine
         {
             if (IsCompleted)
             {
-                throw new InvalidOperationException("Coroutine already completed");
+                ThrowHelper.InvalidOp("Coroutine already completed");
             }
 
             if (IsCanceled)
             {
-                throw new InvalidOperationException($"Coroutine is already canceled");
+                ThrowHelper.InvalidOp($"Coroutine is already canceled");
             }
 
             IsCompleted = true;

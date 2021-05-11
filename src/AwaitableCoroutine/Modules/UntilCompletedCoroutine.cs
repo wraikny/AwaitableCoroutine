@@ -8,14 +8,14 @@ namespace AwaitableCoroutine
         {
             if (action is null)
             {
-                throw new ArgumentNullException(nameof(action));
+                ThrowHelper.ArgNull(nameof(action));
             }
 
             while (!coroutine.IsCompleted)
             {
                 if (coroutine.IsCanceled)
                 {
-                    throw new ChildCanceledException<AwaitableCoroutineBase>(coroutine);
+                    AwaitableCoroutine.ThrowChildCancel<AwaitableCoroutineBase>(coroutine);
                 }
                 action.Invoke();
                 await AwaitableCoroutine.Yield();

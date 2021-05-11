@@ -9,7 +9,7 @@ namespace AwaitableCoroutine
         {
             if (enumerator is null)
             {
-                throw new ArgumentNullException(nameof(enumerator));
+                ThrowHelper.ArgNull(nameof(enumerator));
             }
 
             while (enumerator.MoveNext())

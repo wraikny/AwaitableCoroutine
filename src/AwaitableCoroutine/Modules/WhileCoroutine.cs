@@ -8,7 +8,7 @@ namespace AwaitableCoroutine
         {
             if (predicate is null)
             {
-                throw new ArgumentNullException(nameof(predicate));
+                ThrowHelper.ArgNull(nameof(predicate));
             }
 
             while (predicate())

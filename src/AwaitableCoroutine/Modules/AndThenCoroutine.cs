@@ -8,7 +8,7 @@ namespace AwaitableCoroutine
         {
             if (thunk is null)
             {
-                throw new ArgumentNullException(nameof(thunk));
+                ThrowHelper.ArgNull(nameof(thunk));
             }
 
             await coroutine;
@@ -19,7 +19,7 @@ namespace AwaitableCoroutine
         {
             if (thunk is null)
             {
-                throw new ArgumentNullException(nameof(thunk));
+                ThrowHelper.ArgNull(nameof(thunk));
             }
 
             await coroutine;
@@ -32,7 +32,7 @@ namespace AwaitableCoroutine
         {
             if (thunk is null)
             {
-                throw new ArgumentNullException(nameof(thunk));
+                ThrowHelper.ArgNull(nameof(thunk));
             }
 
             var res = await coroutine;
@@ -43,7 +43,7 @@ namespace AwaitableCoroutine
         {
             if (thunk is null)
             {
-                throw new ArgumentNullException(nameof(thunk));
+                ThrowHelper.ArgNull(nameof(thunk));
             }
 
             var res = await coroutine;

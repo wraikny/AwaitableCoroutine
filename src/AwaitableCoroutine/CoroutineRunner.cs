@@ -32,7 +32,7 @@ namespace AwaitableCoroutine
         {
             if (IsUpdating)
             {
-                throw new InvalidOperationException("Runnner is already updating");
+                ThrowHelper.InvalidOp("Runnner is already updating");
             }
 
             IsUpdating = true;

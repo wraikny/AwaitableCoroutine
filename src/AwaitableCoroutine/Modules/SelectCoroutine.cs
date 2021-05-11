@@ -10,7 +10,7 @@ namespace AwaitableCoroutine
             {
                 if (coroutine.IsCanceled)
                 {
-                    throw new ChildCanceledException<AwaitableCoroutineBase>(coroutine);
+                    AwaitableCoroutine.ThrowChildCancel<AwaitableCoroutineBase>(coroutine);
                 }
                 await AwaitableCoroutine.Yield();
             }
@@ -22,19 +22,19 @@ namespace AwaitableCoroutine
         {
             if (coroutine is null)
             {
-                throw new ArgumentNullException(nameof(coroutine));
+                ThrowHelper.ArgNull(nameof(coroutine));
             }
 
             if (thunk is null)
             {
-                throw new ArgumentNullException(nameof(thunk));
+                ThrowHelper.ArgNull(nameof(thunk));
             }
 
             while (!coroutine.IsCompleted)
             {
                 if (coroutine.IsCanceled)
                 {
-                    throw new ChildCanceledException<AwaitableCoroutineBase>(coroutine);
+                    AwaitableCoroutine.ThrowChildCancel<AwaitableCoroutineBase>(coroutine);
                 }
                 await AwaitableCoroutine.Yield();
             }
@@ -46,19 +46,19 @@ namespace AwaitableCoroutine
         {
             if (coroutine is null)
             {
-                throw new ArgumentNullException(nameof(coroutine));
+                ThrowHelper.ArgNull(nameof(coroutine));
             }
 
             if (thunk is null)
             {
-                throw new ArgumentNullException(nameof(thunk));
+                ThrowHelper.ArgNull(nameof(thunk));
             }
 
             while (!coroutine.IsCompleted)
             {
                 if (coroutine.IsCanceled)
                 {
-                    throw new ChildCanceledException<AwaitableCoroutineBase>(coroutine);
+                    AwaitableCoroutine.ThrowChildCancel<AwaitableCoroutineBase>(coroutine);
                 }
                 await AwaitableCoroutine.Yield();
             }

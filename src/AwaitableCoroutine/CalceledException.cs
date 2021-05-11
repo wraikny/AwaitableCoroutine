@@ -47,4 +47,24 @@ namespace AwaitableCoroutine
             Children = children;
         }
     }
+
+    public partial class AwaitableCoroutine
+    {
+        public static void ThrowCancel(string message = null)
+        {
+            throw new CanceledException(message);
+        }
+
+        public static void ThrowChildCancel<T>(T child, string message = null)
+            where T : AwaitableCoroutineBase
+        {
+            throw new ChildCanceledException<T>(child, message);
+        }
+
+        public static void ThrowChildrenCancel<T>(T[] children, string message = null)
+            where T : AwaitableCoroutineBase
+        {
+            throw new ChildrenCanceledException<T>(children, message);
+        }
+    }
 }

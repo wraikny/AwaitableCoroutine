@@ -12,7 +12,7 @@ namespace AwaitableCoroutine
             {
                 if (c1.IsCanceled && c2.IsCanceled)
                 {
-                    throw new ChildrenCanceledException<AwaitableCoroutineBase>(new AwaitableCoroutineBase[] { c1, c2 });
+                    AwaitableCoroutine.ThrowChildrenCancel<AwaitableCoroutineBase>(new AwaitableCoroutineBase[] { c1, c2 });
                 }
                 await Yield();
             }
@@ -24,7 +24,7 @@ namespace AwaitableCoroutine
             {
                 if (c1.IsCanceled && c2.IsCanceled && c3.IsCanceled)
                 {
-                    throw new ChildrenCanceledException<AwaitableCoroutineBase>(new AwaitableCoroutineBase[] { c1, c2, c3 });
+                    AwaitableCoroutine.ThrowChildrenCancel<AwaitableCoroutineBase>(new AwaitableCoroutineBase[] { c1, c2, c3 });
                 }
                 await Yield();
             }
@@ -36,7 +36,7 @@ namespace AwaitableCoroutine
             {
                 if (c1.IsCanceled && c2.IsCanceled && c3.IsCanceled && c4.IsCanceled)
                 {
-                    throw new ChildrenCanceledException<AwaitableCoroutineBase>(new AwaitableCoroutineBase[] { c1, c2, c3, c4 });
+                    AwaitableCoroutine.ThrowChildrenCancel<AwaitableCoroutineBase>(new AwaitableCoroutineBase[] { c1, c2, c3, c4 });
                 }
                 await Yield();
             }
@@ -48,7 +48,7 @@ namespace AwaitableCoroutine
             {
                 if (c1.IsCanceled && c2.IsCanceled && c3.IsCanceled && c4.IsCanceled && c5.IsCanceled)
                 {
-                    throw new ChildrenCanceledException<AwaitableCoroutineBase>(new AwaitableCoroutineBase[] { c1, c2, c3, c4, c5 });
+                    AwaitableCoroutine.ThrowChildrenCancel<AwaitableCoroutineBase>(new AwaitableCoroutineBase[] { c1, c2, c3, c4, c5 });
                 }
                 await Yield();
             }
@@ -60,7 +60,7 @@ namespace AwaitableCoroutine
             {
                 if (c1.IsCanceled && c2.IsCanceled && c3.IsCanceled && c4.IsCanceled && c5.IsCanceled && c6.IsCanceled)
                 {
-                    throw new ChildrenCanceledException<AwaitableCoroutineBase>(new AwaitableCoroutineBase[] { c1, c2, c3, c4, c5, c6 });
+                    AwaitableCoroutine.ThrowChildrenCancel<AwaitableCoroutineBase>(new AwaitableCoroutineBase[] { c1, c2, c3, c4, c5, c6 });
                 }
                 await Yield();
             }
@@ -72,7 +72,7 @@ namespace AwaitableCoroutine
             {
                 if (c1.IsCanceled && c2.IsCanceled && c3.IsCanceled && c4.IsCanceled && c5.IsCanceled && c6.IsCanceled && c7.IsCanceled)
                 {
-                    throw new ChildrenCanceledException<AwaitableCoroutineBase>(new AwaitableCoroutineBase[] { c1, c2, c3, c4, c5, c6, c7 });
+                    AwaitableCoroutine.ThrowChildrenCancel<AwaitableCoroutineBase>(new AwaitableCoroutineBase[] { c1, c2, c3, c4, c5, c6, c7 });
                 }
                 await Yield();
             }
@@ -87,7 +87,7 @@ namespace AwaitableCoroutine
 
                 if (c1.IsCanceled && c2.IsCanceled)
                 {
-                    throw new ChildrenCanceledException<AwaitableCoroutine<T>>(new AwaitableCoroutine<T>[] { c1, c2 });
+                    AwaitableCoroutine.ThrowChildrenCancel<AwaitableCoroutine<T>>(new AwaitableCoroutine<T>[] { c1, c2 });
                 }
 
                 await Yield();
@@ -104,7 +104,7 @@ namespace AwaitableCoroutine
 
                 if (c1.IsCanceled && c2.IsCanceled && c3.IsCanceled)
                 {
-                    throw new ChildrenCanceledException<AwaitableCoroutine<T>>(new AwaitableCoroutine<T>[] { c1, c2, c3 });
+                    AwaitableCoroutine.ThrowChildrenCancel<AwaitableCoroutine<T>>(new AwaitableCoroutine<T>[] { c1, c2, c3 });
                 }
 
                 await Yield();
@@ -122,7 +122,7 @@ namespace AwaitableCoroutine
 
                 if (c1.IsCanceled && c2.IsCanceled && c3.IsCanceled && c4.IsCanceled)
                 {
-                    throw new ChildrenCanceledException<AwaitableCoroutine<T>>(new AwaitableCoroutine<T>[] { c1, c2, c3, c4 });
+                    AwaitableCoroutine.ThrowChildrenCancel<AwaitableCoroutine<T>>(new AwaitableCoroutine<T>[] { c1, c2, c3, c4 });
                 }
 
                 await Yield();
@@ -141,7 +141,7 @@ namespace AwaitableCoroutine
 
                 if (c1.IsCanceled && c2.IsCanceled && c3.IsCanceled && c4.IsCanceled && c5.IsCanceled)
                 {
-                    throw new ChildrenCanceledException<AwaitableCoroutine<T>>(new AwaitableCoroutine<T>[] { c1, c2, c3, c4, c5 });
+                    AwaitableCoroutine.ThrowChildrenCancel<AwaitableCoroutine<T>>(new AwaitableCoroutine<T>[] { c1, c2, c3, c4, c5 });
                 }
 
                 await Yield();
@@ -154,7 +154,7 @@ namespace AwaitableCoroutine
             {
                 if (c1.IsCanceled && c2.IsCanceled && c3.IsCanceled && c4.IsCanceled && c5.IsCanceled && c6.IsCanceled)
                 {
-                    throw new ChildrenCanceledException<AwaitableCoroutine<T>>(new AwaitableCoroutine<T>[] { c1, c2, c3, c4, c5, c6 });
+                    AwaitableCoroutine.ThrowChildrenCancel<AwaitableCoroutine<T>>(new AwaitableCoroutine<T>[] { c1, c2, c3, c4, c5, c6 });
                 }
 
                 if (c1.IsCompleted) return c1.Result;
@@ -182,7 +182,7 @@ namespace AwaitableCoroutine
 
                 if (c1.IsCanceled && c2.IsCanceled && c3.IsCanceled && c4.IsCanceled && c5.IsCanceled && c6.IsCanceled && c7.IsCanceled)
                 {
-                    throw new ChildrenCanceledException<AwaitableCoroutine<T>>(new AwaitableCoroutine<T>[] { c1, c2, c3, c4, c5, c6, c7 });
+                    AwaitableCoroutine.ThrowChildrenCancel<AwaitableCoroutine<T>>(new AwaitableCoroutine<T>[] { c1, c2, c3, c4, c5, c6, c7 });
                 }
 
                 await Yield();
@@ -209,7 +209,7 @@ namespace AwaitableCoroutine
 
                     if (isCanceled)
                     {
-                        throw new ChildrenCanceledException<AwaitableCoroutineBase>(coroutines);
+                        AwaitableCoroutine.ThrowChildrenCancel<AwaitableCoroutineBase>(coroutines);
                     }
                     await Yield();
                 }
@@ -239,7 +239,7 @@ namespace AwaitableCoroutine
 
                     if (isCanceled)
                     {
-                        throw new ChildrenCanceledException<AwaitableCoroutineBase>(coroutines);
+                        AwaitableCoroutine.ThrowChildrenCancel<AwaitableCoroutineBase>(coroutines);
                     }
 
                     await Yield();

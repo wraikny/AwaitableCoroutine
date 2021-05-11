@@ -20,7 +20,7 @@ namespace AwaitableCoroutine
 
             if (ctx is null)
             {
-                throw new InvalidOperationException("Out of context");
+                ThrowHelper.InvalidOp("Out of context");
             }
 
             return ctx;
@@ -61,12 +61,12 @@ namespace AwaitableCoroutine
         {
             if (runner is null)
             {
-                throw new ArgumentNullException(nameof(runner));
+                ThrowHelper.ArgNull(nameof(runner));
             }
 
             if (action is null)
             {
-                throw new ArgumentNullException(nameof(action));
+                ThrowHelper.ArgNull(nameof(action));
             }
 
             var prev = ICoroutineRunner.Instance;
@@ -94,12 +94,12 @@ namespace AwaitableCoroutine
         {
             if (runner is null)
             {
-                throw new ArgumentNullException(nameof(runner));
+                ThrowHelper.ArgNull(nameof(runner));
             }
 
             if (init is null)
             {
-                throw new ArgumentNullException(nameof(init));
+                ThrowHelper.ArgNull(nameof(init));
             }
 
             var prev = ICoroutineRunner.Instance;

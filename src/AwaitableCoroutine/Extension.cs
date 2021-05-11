@@ -9,12 +9,12 @@ namespace AwaitableCoroutine
         {
             if (coroutine is null)
             {
-                throw new ArgumentNullException(nameof(coroutine));
+                ThrowHelper.ArgNull(nameof(coroutine));
             }
 
             if (onCompleted is null)
             {
-                throw new ArgumentNullException(nameof(onCompleted));
+                ThrowHelper.ArgNull(nameof(onCompleted));
             }
 
             coroutine.ContinueWith(onCompleted);
@@ -26,22 +26,22 @@ namespace AwaitableCoroutine
         {
             if (coroutine is null)
             {
-                throw new ArgumentNullException(nameof(coroutine));
+                ThrowHelper.ArgNull(nameof(coroutine));
             }
 
             if (onUpdating is null)
             {
-                throw new ArgumentNullException(nameof(onUpdating));
+                ThrowHelper.ArgNull(nameof(onUpdating));
             }
 
             if (coroutine.IsCanceled)
             {
-                throw new InvalidOperationException("Coroutine is already canceled");
+                ThrowHelper.InvalidOp("Coroutine is already canceled");
             }
 
             if (coroutine.IsCompleted)
             {
-                throw new InvalidOperationException("Coroutine is already completed");
+                ThrowHelper.InvalidOp("Coroutine is already completed");
             }
 
             coroutine.OnUpdating += onUpdating;
@@ -53,12 +53,12 @@ namespace AwaitableCoroutine
         {
             if (coroutine is null)
             {
-                throw new ArgumentNullException(nameof(coroutine));
+                ThrowHelper.ArgNull(nameof(coroutine));
             }
 
             if (onCanceled is null)
             {
-                throw new ArgumentNullException(nameof(onCanceled));
+                ThrowHelper.ArgNull(nameof(onCanceled));
             }
 
             coroutine.AddOnCanceled(onCanceled);
