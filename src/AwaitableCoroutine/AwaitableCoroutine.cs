@@ -26,7 +26,7 @@ namespace AwaitableCoroutine
 
         public AwaitableCoroutineBase()
         {
-            Runner = ICoroutineRunner.GetContextStrict();
+            Runner = ICoroutineRunner.GetContext();
             Internal.Logger.Log($"{GetType()} is created");
             Runner.Register(this);
         }
@@ -57,7 +57,7 @@ namespace AwaitableCoroutine
                 return;
             }
 
-            var runner = ICoroutineRunner.GetContextStrict();
+            var runner = ICoroutineRunner.GetContext();
 
             if (Runner == runner)
             {
@@ -89,7 +89,7 @@ namespace AwaitableCoroutine
                 return;
             }
 
-            var runner = ICoroutineRunner.GetContextStrict();
+            var runner = ICoroutineRunner.GetContext();
 
             if (Runner == runner)
             {
@@ -116,6 +116,8 @@ namespace AwaitableCoroutine
             IsCanceled = true;
             OnCalceled?.Invoke();
             OnCalceled = null;
+            OnCompleted = null;
+            Runner = null;
 
             if (WaitingCoroutines is { })
             {

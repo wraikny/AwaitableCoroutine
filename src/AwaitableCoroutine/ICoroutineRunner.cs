@@ -14,7 +14,7 @@ namespace AwaitableCoroutine
             set => s_instance.Value = value;
         }
 
-        internal static ICoroutineRunner GetContextStrict()
+        public static ICoroutineRunner GetContext()
         {
             var ctx = s_instance.Value;
 

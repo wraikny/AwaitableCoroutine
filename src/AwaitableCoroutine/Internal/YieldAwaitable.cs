@@ -25,7 +25,7 @@ namespace AwaitableCoroutine
             public void OnCompleted(Action continuation)
             {
                 Internal.Logger.Log("YieldAwaiter.OnCompleted");
-                var runner = ICoroutineRunner.GetContextStrict();
+                var runner = ICoroutineRunner.GetContext();
                 runner.Post(continuation);
             }
 

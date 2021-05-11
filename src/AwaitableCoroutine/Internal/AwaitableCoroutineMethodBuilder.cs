@@ -29,7 +29,7 @@ namespace AwaitableCoroutine.Internal
         // 1. Static Create method.
         public static AwaitableCoroutineMethodBuilder Create()
         {
-            return new AwaitableCoroutineMethodBuilder(ICoroutineRunner.GetContextStrict());
+            return new AwaitableCoroutineMethodBuilder(ICoroutineRunner.GetContext());
         }
 
         // 2. TaskLike Task Property
@@ -113,7 +113,7 @@ namespace AwaitableCoroutine.Internal
         // 1. Static Create method.
         public static AwaitableCoroutineMethodBuilder<T> Create()
         {
-            return new AwaitableCoroutineMethodBuilder<T>(ICoroutineRunner.GetContextStrict());
+            return new AwaitableCoroutineMethodBuilder<T>(ICoroutineRunner.GetContext());
         }
 
         // 2. TaskLike Task Property
