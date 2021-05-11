@@ -11,6 +11,8 @@ F#向けの拡張パッケージです。
 
 ## コンピューテーション式
 
+[AwaitableCoroutineBuilder.fs](../../src/AwaitableCoroutine.FSharp/AwaitableCoroutineBuilder.fs)
+
 ### awaitableCoroutine
 
 サンプルコード

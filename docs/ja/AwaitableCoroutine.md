@@ -1,5 +1,5 @@
 # AwaitableCoroutine
-[`AwaitableCoroutine`](../src/AwaitableCoroutine/AwaitableCoroutine.cs)
+[`AwaitableCoroutine`](../../src/AwaitableCoroutine/AwaitableCoroutine.cs)
 は、待機可能かつasyncメソッドを使って作成可能なコルーチンです。
 
 ジェネリック版の`AwaitableCoroutine<T>`では結果の値を受け取ることができます。
@@ -31,7 +31,7 @@
 ## モジュール
 
 ### Yield
-[`Yield`](../src/AwaitableCoroutine/Internal/YieldAwaitable.cs.cs)
+[`Yield`](../../src/AwaitableCoroutine/Internal/YieldAwaitable.cs.cs)
 は、`async`メソッド内で一度だけ`await`するためだけの構造体を生成します。
 
 `AwaitableCoroutine.Yield()`と静的メソッドとして呼び出します。
@@ -54,11 +54,11 @@ private async AwaitableCoroutine CreateCoroutine()
 ```
 
 ### While
-[`While`](../src/AwaitableCoroutine/Modules/WhileCoroutine.cs)
+[`While`](../../src/AwaitableCoroutine/Modules/WhileCoroutine.cs)
 は、指定した条件が真の間待機するコルーチンを生成します。
 
 **引数**
-* `Func<bool> predicate`
+* `predicate`: `Func<bool>`
 
 ```csharp
 AwaitableCoroutine.While(() => true)
@@ -67,11 +67,11 @@ AwaitableCoroutine.While(() => true)
 などと静的メソッドとして呼び出します。
 
 ### DelayCount
-[`DelayCount`](../src/AwaitableCoroutine/Modules/DelayCountCoroutine.cs)
+[`DelayCount`](../../src/AwaitableCoroutine/Modules/DelayCountCoroutine.cs)
 は、指定したカウントの回数だけ待機するコルーチンを生成します。
 
 **引数**
-* `int count`
+* `count`: `int`
 
 ```csharp
 AwaitableCoroutine.DelayCount(5)
@@ -80,7 +80,7 @@ AwaitableCoroutine.DelayCount(5)
 などと静的メソッドとして呼び出します。
 
 ### WaitAll
-[`WaitAll`](../src/AwaitableCoroutine/Modules/WaitAllCoroutine.cs)
+[`WaitAll`](../../src/AwaitableCoroutine/Modules/WaitAllCoroutine.cs)
 は、指定したコルーチンが全て終了するまで待機するコルーチンを生成します。
 
 **引数**
@@ -94,7 +94,7 @@ AwaitableCoroutine.WaitAll(coroutine1, coroutine2)
 などと静的メソッドとして呼び出します。
 
 ### WaitAny
-[`WaitAny(c1, c2, ...)`](../src/AwaitableCoroutine/Modules/WaitAnyCoroutine.cs)
+[`WaitAny(c1, c2, ...)`](../../src/AwaitableCoroutine/Modules/WaitAnyCoroutine.cs)
 は、指定したコルーチンのうちどれか一つが終了するまで待機するコルーチンを生成します。
 
 **引数**
@@ -108,17 +108,17 @@ AwaitableCoroutine.WaitAny(coroutine1, coroutine2)
 などと静的メソッドとして呼び出します。
 
 ### FromEnumerator
-[`FromEnumerator(IEnumerator)`](../src/AwaitableCoroutine/Modules/EnumeratorCoroutine.cs)
+[`FromEnumerator(IEnumerator)`](../../src/AwaitableCoroutine/Modules/EnumeratorCoroutine.cs)
 は、`IEnumerator`を元にコルーチンを生成します。
 
 **引数**
-* `IEnumerator enumerator`
+* `enumerator`: `IEnumerator`
 
 `IEnumerator`の拡張メソッドとして`ToAwaitable()`も提供しています。
 
 ### Select, SelectTo
 
-[`Select`, `SelectTo`](../src/AwaitableCoroutine/Modules/SelectCoroutine.cs)
+[`Select`, `SelectTo`](../../src/AwaitableCoroutine/Modules/SelectCoroutine.cs)
 は、コルーチンの結果の値を変換した新たなコルーチンを生成します。
 
 ```csharp
@@ -128,19 +128,19 @@ coroutine.Select(x => x * x)
 などと、拡張メソッドとして呼び出します。
 
 **引数**
-* `SelectTo`
-  * `AwaitableCoroutineBase coroutine`
-  * `T result`
+* `SelectTo<T>`
+  * `coroutine`: `AwaitableCoroutineBase`
+  * `result`: `T`
 * `Select<T>`
-  * `AwaitableCoroutine coroutine`
-  * `Func<T> thunk`
+  * `coroutine`: `AwaitableCoroutine`
+  * `thunk`: `Func<T>`
 * `Select<T, U>`
-  * `AwaitableCoroutine<T> coroutine`
-  * `Func<T, U> thunk`
+  * `coroutine`: `AwaitableCoroutine<T>`
+  * `thunk`: `Func<T, U>`
 
 ### AndThen
 
-[`AndThen`](../src/AwaitableCoroutine/Modules/AndThenCoroutine.cs)
+[`AndThen`](../../src/AwaitableCoroutine/Modules/AndThenCoroutine.cs)
 は、コルーチンの継続のコルーチンを生成し待機するコルーチンを生成します。
 
 ```csharp
@@ -159,23 +159,23 @@ coroutine.AndThen(async x => {
 などと、拡張メソッドとして呼び出します。
 
 **引数**
-* オーバーロード1
-  * `AwaitableCoroutine coroutine`
-  * `Func<AwaitableCoroutine> thunk`
-* オーバーロード2
-  * `AwaitableCoroutine coroutine`
-  * `Func<AwaitableCoroutine<T>> thunk`
-* オーバーロード3
-  * `AwaitableCoroutine<T> coroutine`
-  * `Func<T, AwaitableCoroutine> thunk`
-* オーバーロード4
-  * `AwaitableCoroutine<T> coroutine`
-  * `Func<T< AwaitableCoroutine<U>> thunk`
+* `AwaitableCoroutine.AndThen`
+  * `coroutine`: `AwaitableCoroutine`
+  * `thunk`: `Func<AwaitableCoroutine>`
+* `AwaitableCoroutine.AndThen<T>`
+  * `coroutine`: `AwaitableCoroutine`
+  * `thunk`: `Func<AwaitableCoroutine<T>>`
+* `AwaitableCoroutine<T>.AndThen`
+  * `coroutine`: `AwaitableCoroutine<T>`
+  * `thunk`: `Func<T, AwaitableCoroutine>`
+* `AwaitableCoroutine<T>.AndThen<U>`
+  * `coroutine`: `AwaitableCoroutine<T>`
+  * `thunk`: `Func<T< AwaitableCoroutine<U>>`
 
 
 ### UntilCompleted
 
-[`UntilCompleted`](../src/AwaitableCoroutine/Modules/UntilCompletedCoroutine.cs)
+[`UntilCompleted`](../../src/AwaitableCoroutine/Modules/UntilCompletedCoroutine.cs)
 は、コルーチンが未完了の間`Action`を実行する新たなコルーチンを生成
 
 ```csharp
@@ -212,7 +212,7 @@ coroutine.UntilCompleted(async () => {
 
 | Name | Desc |
 | --- | --- |
-| [`CanceledException`](../src/AwaitableCoroutine/CalceledException.cs) | コルーチンのキャンセルを表す例外 |
+| [`CanceledException`](../../src/AwaitableCoroutine/CalceledException.cs) | コルーチンのキャンセルを表す例外 |
 | `ChildCanceledException` | 待機しているコルーチンがキャンセルされたことによるコルーチンのキャンセルを表す例外 |
 | `ChildrenCanceledException` | 待機している複数のコルーチンがキャンセルされたことによるコルーチンのキャンセルを表す例外 |
 
@@ -220,6 +220,6 @@ coroutine.UntilCompleted(async () => {
 
 | Name | Desc |
 | --- | --- |
-| [`ThrowCancel()`](../src/AwaitableCoroutine/CalceledException.cs) | `CanceledException`をスロー |
+| [`ThrowCancel()`](../../src/AwaitableCoroutine/CalceledException.cs) | `CanceledException`をスロー |
 | `ThrowChildCancel()` | `CanceledChildException`をスロー |
 | `ThrowChildrenCancel()` | `CanceledChildrenException`をスロー |

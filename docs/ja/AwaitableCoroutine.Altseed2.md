@@ -15,7 +15,7 @@
 ### モジュール
 
 #### DelaySecond
-[`DelaySecond(float)`](../src/AwaitableCoroutine.Altseed2/Modules.cs#L11)
+[`DelaySecond(float)`](../../src/AwaitableCoroutine.Altseed2/Modules.cs)
 は、指定した秒数待機するコルーチンを生成します。
 
 `Altseed2Coroutine.DelaySecond(5.0f)`など、静的メソッドとして呼び出します。
@@ -34,7 +34,7 @@ coroutineNode.Create(() =>
 * `float second`
 
 ## ノード
-### [CoroutineNode](../src/AwaitableCoroutine.Altseed2/CoroutineNode.cs)
+### [CoroutineNode](../../src/AwaitableCoroutine.Altseed2/CoroutineNode.cs)
 コルーチンを登録・更新するノードです。
 
 エンジンに登録すると、更新時に自動的に`Update`拡張メソッドが呼び出されます。

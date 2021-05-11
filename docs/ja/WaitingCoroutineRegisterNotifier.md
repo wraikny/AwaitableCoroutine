@@ -1,0 +1,12 @@
+# WaitingCoroutineRegisterNotifier クラス
+
+このドキュメントはライブラリ開発者向けです。
+
+[WaitingCoroutineRegisterNotifier](../../src/AwaitableCoroutine/Internal/WaitingCoroutineRegisterNotifier.cs)
+クラスは、`AwaitableCoroutine`を作る非同期メソッドにおいて、待機しているオブジェクトがキャンセルされた際に、その非同期メソッドもキャンセルされるという挙動を実装するためのインターフェースです。
+
+`Instance`静的プロパティにこのクラスを継承したクラスのインスタンスをsetすることで、この挙動を書き換えることができます。
+
+標準では、Awaiterが`IWaitingCoroutineRegisterer`インターフェースを実装している場合にその`RegisterWaitingCoroutine`メソッドを呼び出すという実装をした`WaitingCoroutineRegisterNotifier`が登録されて呼び出されます。
+
+その他のAwaitableな型に対して、そのオブジェクトがキャンセルされた時に`AwaitableCoroutine`を作る非同期メソッドによって生成されるコルーチンもキャンセルしたい場合は、その登録処理を行うクラスを作成して登録を行ってください。

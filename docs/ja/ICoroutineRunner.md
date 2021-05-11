@@ -1,6 +1,6 @@
 # ICoroutineRunner
 
-[`ICoroutineRunner`](../src/AwaitableCoroutine/ICoroutineRunner.cs)
+[`ICoroutineRunner`](../../src/AwaitableCoroutine/ICoroutineRunner.cs)
 は、コルーチンを登録・実行するオブジェクトを表すインターフェースです。
 
 基本的には標準の`CoroutineRunner`の利用が推奨されますが、インターフェースを実装することでランナーを自作することもできます。
@@ -23,9 +23,9 @@
 
 **引数**
 * `Create`
-  * `Func<AwaitableCoroutine> init`
+  * `init`: `Func<AwaitableCoroutine>`
 * `Create<T>`
-  * `Func<AwaitableCoroutine<T>> init`
+  * `init`: `Func<AwaitableCoroutine<T>>`
 
 ```csharp
 var co = runner.Create(async () => {
@@ -40,9 +40,9 @@ var co = runner.Create(async () => {
 
 **引数**
 * オーバーロード1
-  * `Action action`
+  * `action`: `Action`
 * オーバーロード2
-  * `Func<T> init`
+  * `init`: `Func<T>`
 
 ```csharp
 var (co1, co2, waitAll) = runner.Context(() => {
