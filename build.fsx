@@ -91,7 +91,7 @@ Target.create "Test" (fun _ ->
   |> Seq.iter(fun proj ->
     DotNet.test (fun p ->
       { p with
-          Logger = Some "console;verbosity=minimal"
+          Logger = Some "console;verbosity=normal"
           Configuration = configuration
       }
     ) proj
