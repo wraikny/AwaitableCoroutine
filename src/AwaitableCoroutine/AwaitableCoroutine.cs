@@ -81,10 +81,13 @@ namespace AwaitableCoroutine
 
         protected void Complete()
         {
-            IsCompleted = true;
+            if (IsCompleted)
+            {
+                throw new InvalidOperationException("Coroutine already completed");
+            }
 
-            if (OnCompleted is null) return;
-            Runner.Post(OnCompleted);
+            IsCompleted = true;
+            OnCompleted?.Invoke();
             OnCompleted = null;
             Runner = null;
         }
@@ -113,9 +116,7 @@ namespace AwaitableCoroutine
             IsCompleted = true;
             Result = result;
 
-            if (OnCompleted is null) return;
-
-            Runner.Post(OnCompleted);
+            OnCompleted?.Invoke();
             OnCompleted = null;
             Runner = null;
         }

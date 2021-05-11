@@ -29,21 +29,21 @@ namespace AwaitableCoroutine.Test
         {
             counter.Inc();
             Log($"Count: {counter.Count}");
-            await AwaitableCoroutine.Yield(); // inc 1
+            await AwaitableCoroutine.Yield(); // 1
 
             counter.Inc();
-            Log($"Count: {counter.Count}");
+            Log($"Count: {counter.Count}"); // 2
 
-            await GetCoroutine(counter); // inc 6
+            await GetCoroutine(counter); // 6
 
-            counter.Inc();
-            Log($"Count: {counter.Count}");
+            // counter.Inc();
+            // Log($"Count: {counter.Count}");
 
-            await GetCoroutine(counter); // inc 11
+            await GetCoroutine(counter); // 10
 
-            counter.Inc();
-            Log($"Count: {counter.Count}");
-            // inc 12
+            // counter.Inc();
+            // Log($"Count: {counter.Count}");
+            // inc 10
         }
 
         [Fact]
@@ -82,7 +82,7 @@ namespace AwaitableCoroutine.Test
             _ = runner.Context(() => GetCoroutine2(counter));
 
             var i = 0;
-            while (i < 12)
+            while (i < 10)
             {
                 runner.Update();
                 i++;
