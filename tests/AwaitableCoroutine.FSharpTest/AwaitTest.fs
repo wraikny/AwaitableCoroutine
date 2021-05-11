@@ -7,6 +7,8 @@ open Xunit.Abstractions
 open AwaitableCoroutine
 open AwaitableCoroutine.FSharp
 
+exception MyException
+
 type AwaitTest(outputHelper: ITestOutputHelper) =
   let log = outputHelper.WriteLine
 
@@ -164,7 +166,7 @@ type AwaitTest(outputHelper: ITestOutputHelper) =
           try
             counter.Inc()
             do! AwaitableCoroutine.Yield()
-            raise <|System.Exception()
+            raise <| Exception()
           with _ ->
             counter.Inc()
             do! AwaitableCoroutine.Yield()
@@ -200,7 +202,7 @@ type AwaitTest(outputHelper: ITestOutputHelper) =
           try
             counter.Inc()
             do! AwaitableCoroutine.Yield()
-            raise <| Exception()
+            raise <| MyException
           finally
             counter.Inc()
         }
@@ -215,11 +217,30 @@ type AwaitTest(outputHelper: ITestOutputHelper) =
     runner.Update()
     Assert.Equal(2, counter.Count)
 
-    try
-      runner.Update()
-    with _ -> ()
-
+    let _exn = Assert.Throws<MyException>(runner.Update)
     Assert.Equal(3, counter.Count)
 
     runner.Update()
+    Assert.True(ac.IsCanceled)
+
+  [<Fact>]
+  member __.``Do Test`` () =
+    let runner = CoroutineRunner()
+
+    let counter = new Counter()
+
+    let ac = runner.Do {
+      counter.Inc()
+      do! AwaitableCoroutine.Yield()
+      counter.Inc()
+    }
+
+    Assert.False(ac.IsCompleted)
+    Assert.Equal(0, counter.Count)
+
+    runner.Update()
+    Assert.Equal(1, counter.Count)
+
+    runner.Update()
+    Assert.Equal(2, counter.Count)
     Assert.True(ac.IsCompleted)

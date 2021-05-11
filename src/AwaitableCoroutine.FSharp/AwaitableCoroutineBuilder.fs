@@ -181,20 +181,45 @@ module private Helper =
 
 open Helper
 
-[<Struct>]
-type AwaitableCoroutineBuilder =
-  member __.Delay(f : unit -> Step<_>) = f
-  member __.Run(f : unit -> Step<'m>) = run f
-  member __.Zero() = zero
-  member __.Return(x) = ret x
-  member __.Combine(step : unit Step, continuation) = combine step continuation
-  member __.While(condition : unit -> bool, body : unit -> unit Step) = whileLoop condition body
-  member __.For(sequence : _ seq, body : _ -> unit Step) = forLoop sequence body
-  member __.TryWith(body : unit -> _ Step, catch : exn -> _ Step) = tryWith body catch
-  member __.TryFinally(body : unit -> _ Step, fin : unit -> unit) = tryFinally body fin
-  member __.Using(disp : #IDisposable, body : #IDisposable -> _ Step) = using disp body
-  member inline __.ReturnFrom a : _ Step = ReturnFrom a
-  member inline __.Bind(abl, continuation) = genericAwait (abl, continuation)
+module Builders =
 
+  [<Struct>]
+  type AwaitableCoroutineBuilder =
+    member __.Delay(f : unit -> Step<_>) = f
+    member __.Run(f : unit -> Step<'m>) = run f
+    member __.Zero() = zero
+    member __.Return(x) = ret x
+    member __.Combine(step : unit Step, continuation) = combine step continuation
+    member __.While(condition : unit -> bool, body : unit -> unit Step) = whileLoop condition body
+    member __.For(sequence : _ seq, body : _ -> unit Step) = forLoop sequence body
+    member __.TryWith(body : unit -> _ Step, catch : exn -> _ Step) = tryWith body catch
+    member __.TryFinally(body : unit -> _ Step, fin : unit -> unit) = tryFinally body fin
+    member __.Using(disp : #IDisposable, body : #IDisposable -> _ Step) = using disp body
+    member inline __.ReturnFrom a : _ Step = ReturnFrom a
+    member inline __.Bind(abl, continuation) = genericAwait (abl, continuation)
+
+  [<Struct>]
+  type DoAwaitableCoroutineBuilder(prev: ICoroutineRunner) =
+    member __.Delay(f : unit -> Step<_>) = f
+    member __.Run(f : unit -> Step<'m>) =
+      try run f finally ICoroutineRunner.Instance <- prev
+    member __.Zero() = zero
+    member __.Return(x) = ret x
+    member __.Combine(step : unit Step, continuation) = combine step continuation
+    member __.While(condition : unit -> bool, body : unit -> unit Step) = whileLoop condition body
+    member __.For(sequence : _ seq, body : _ -> unit Step) = forLoop sequence body
+    member __.TryWith(body : unit -> _ Step, catch : exn -> _ Step) = tryWith body catch
+    member __.TryFinally(body : unit -> _ Step, fin : unit -> unit) = tryFinally body fin
+    member __.Using(disp : #IDisposable, body : #IDisposable -> _ Step) = using disp body
+    member inline __.ReturnFrom a : _ Step = ReturnFrom a
+    member inline __.Bind(abl, continuation) = genericAwait (abl, continuation)
+
+open Builders
 
 let awaitableCoroutine = AwaitableCoroutineBuilder()
+
+type ICoroutineRunner with
+  member this.Do =
+    let prev = ICoroutineRunner.Instance
+    ICoroutineRunner.Instance <- this
+    DoAwaitableCoroutineBuilder(prev)
