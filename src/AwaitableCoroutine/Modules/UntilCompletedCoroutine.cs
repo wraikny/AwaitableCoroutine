@@ -13,6 +13,10 @@ namespace AwaitableCoroutine
 
             while (!coroutine.IsCompleted)
             {
+                if (coroutine.IsCanceled)
+                {
+                    throw new ChildCanceledException<AwaitableCoroutineBase>(coroutine);
+                }
                 action.Invoke();
                 await AwaitableCoroutine.Yield();
             }

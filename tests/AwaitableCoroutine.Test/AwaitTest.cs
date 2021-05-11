@@ -150,6 +150,7 @@ namespace AwaitableCoroutine.Test
             Assert.Throws<MyException>(runner.Update);
 
             runner.Update();
+            Assert.True(co.IsCanceled);
         }
 
         [Fact]
@@ -157,17 +158,24 @@ namespace AwaitableCoroutine.Test
         {
             var runner = new CoroutineRunner();
 
-            var co = runner.Context(() =>
-                AwaitableCoroutine.WaitAll(CreateWithException(), CreateWithException())
+            var (co1, co2, co3) = runner.Context(() =>
+                (CreateWithException(), AwaitableCoroutine.While(() => true), CreateWithException())
             );
 
-            Assert.False(co.IsCompleted);
+            var waitAll = runner.Context(() => AwaitableCoroutine.WaitAll(co1, co2, co3));
+
+            Assert.False(co1.IsCompleted);
+            Assert.False(co2.IsCompleted);
 
             runner.Update();
 
             Assert.Throws<System.AggregateException>(runner.Update);
 
             runner.Update();
+            Assert.True(co1.IsCanceled);
+            Assert.False(co2.IsCanceled);
+            Assert.True(co3.IsCanceled);
+            Assert.True(waitAll.IsCanceled);
         }
     }
 }

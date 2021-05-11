@@ -11,9 +11,16 @@ namespace AwaitableCoroutine
     {
         internal event Action OnUpdating = null;
         internal protected ICoroutineRunner Runner { get; set; }
-        protected internal Action OnCompleted { get; set; }
+        internal Action OnCompleted { get; set; }
 
         public bool IsCompleted { get; protected internal set; } = false;
+
+        public Exception Exception { get; private set; } = null;
+
+        public bool IsCanceled { get; private set; } = false;
+        private Action OnCalceled { get; set; }
+
+        internal List<AwaitableCoroutineBase> WaitingCoroutines { get; set; }
 
         internal protected abstract void _Pseudo();
 
@@ -39,6 +46,11 @@ namespace AwaitableCoroutine
                 throw new ArgumentNullException(nameof(action));
             }
 
+            if (IsCanceled)
+            {
+                throw new InvalidOperationException("Coroutine is already canceled");
+            }
+
             if (IsCompleted)
             {
                 action.Invoke();
@@ -59,12 +71,108 @@ namespace AwaitableCoroutine
 
         protected abstract void OnMoveNext();
 
+        internal void AddOnCanceled(Action onCanceled)
+        {
+            if (onCanceled is null)
+            {
+                throw new ArgumentNullException(nameof(onCanceled));
+            }
+
+            if (IsCompleted)
+            {
+                throw new InvalidOperationException("Coroutine is already completed");
+            }
+
+            if (IsCanceled)
+            {
+                onCanceled.Invoke();
+                return;
+            }
+
+            var runner = ICoroutineRunner.GetContextStrict();
+
+            if (Runner == runner)
+            {
+                OnCalceled += onCanceled;
+            }
+            else
+            {
+                OnCalceled += () => runner.Context(onCanceled);
+            }
+        }
+
+        public void Cancel()
+        {
+            if (IsCanceled)
+            {
+                throw new InvalidOperationException("Coroutien is already canceled");
+            }
+
+            if (IsCompleted)
+            {
+                throw new InvalidOperationException("Coroutine is already completed");
+            }
+
+            IsCanceled = true;
+            OnCalceled?.Invoke();
+            OnCalceled = null;
+
+            if (WaitingCoroutines is { })
+            {
+                foreach (var child in WaitingCoroutines)
+                {
+                    if (child.IsCanceled || child.IsCompleted) continue;
+                    child.Cancel();
+                }
+            }
+        }
+
+        internal void SetException(Exception exn)
+        {
+            if (exn is null)
+            {
+                throw new ArgumentNullException(nameof(exn));
+            }
+
+            Exception = exn;
+            Cancel();
+        }
+
+        internal void RegisterWaitingCoroutine(AwaitableCoroutineBase coroutine)
+        {
+            if (IsCanceled)
+            {
+                if (coroutine.IsCanceled || coroutine.IsCompleted) return;
+                coroutine.Cancel();
+                return;
+            }
+
+            WaitingCoroutines ??= new List<AwaitableCoroutineBase>();
+            WaitingCoroutines.Add(coroutine);
+        }
+
         public void MoveNext()
         {
-            if (IsCompleted) return;
-            Internal.Logger.Log($"{GetType()} move next");
-            OnUpdating?.Invoke();
-            OnMoveNext();
+            if (IsCanceled)
+            {
+                throw new InvalidOperationException("Coroutine is alread canceled");
+            }
+
+            if (IsCompleted)
+            {
+                throw new InvalidOperationException("Coroutine is alread completed");
+            }
+
+            try
+            {
+                Internal.Logger.Log($"{GetType()} move next");
+                OnUpdating?.Invoke();
+                OnMoveNext();
+            }
+            catch (Exception exn)
+            {
+                Exception = exn;
+            }
         }
     }
 
@@ -86,10 +194,16 @@ namespace AwaitableCoroutine
                 throw new InvalidOperationException("Coroutine already completed");
             }
 
+            if (IsCanceled)
+            {
+                throw new InvalidOperationException($"Coroutine is already canceled");
+            }
+
             IsCompleted = true;
             OnCompleted?.Invoke();
             OnCompleted = null;
             Runner = null;
+            WaitingCoroutines = null;
         }
     }
 
@@ -113,12 +227,18 @@ namespace AwaitableCoroutine
                 throw new InvalidOperationException("Coroutine already completed");
             }
 
+            if (IsCanceled)
+            {
+                throw new InvalidOperationException($"Coroutine is already canceled");
+            }
+
             IsCompleted = true;
             Result = result;
 
             OnCompleted?.Invoke();
             OnCompleted = null;
             Runner = null;
+            WaitingCoroutines = null;
         }
     }
 }

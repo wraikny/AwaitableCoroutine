@@ -12,7 +12,7 @@ namespace AwaitableCoroutine.Test
         }
 
         [Fact]
-        public void WaitAllOfYieldTest()
+        public void WaitAllOfDelay0Test()
         {
             var runner = new CoroutineRunner();
 
@@ -27,6 +27,30 @@ namespace AwaitableCoroutine.Test
 
             Assert.False(waitAll.IsCompleted);
 
+            runner.Update();
+            Assert.True(waitAll.IsCompleted);
+        }
+
+        [Fact]
+        public void WaitAllOfDelayTest()
+        {
+            var runner = new CoroutineRunner();
+
+            var waitAll = runner.Context(() =>
+                AwaitableCoroutine.WaitAll(new AwaitableCoroutineBase[] {
+                    AwaitableCoroutine.DelayCount(1),
+                    AwaitableCoroutine.DelayCount(2),
+                    AwaitableCoroutine.DelayCount(3),
+                    AwaitableCoroutine.DelayCount(4),
+                })
+            );
+
+            Assert.False(waitAll.IsCompleted);
+
+            for (var i = 0; i < 4; i++)
+            {
+                runner.Update();
+            }
             runner.Update();
             Assert.True(waitAll.IsCompleted);
         }

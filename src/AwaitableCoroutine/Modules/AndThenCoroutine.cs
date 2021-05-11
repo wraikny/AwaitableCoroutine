@@ -4,7 +4,6 @@ namespace AwaitableCoroutine
 {
     public static class AwaitableCoroutineAndThenExt
     {
-        /* AwaitableCoroutine */
         public static async AwaitableCoroutine AndThen(this AwaitableCoroutine coroutine, Func<AwaitableCoroutine> thunk)
         {
             if (thunk is null)

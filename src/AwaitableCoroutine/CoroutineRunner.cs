@@ -61,17 +61,25 @@ namespace AwaitableCoroutine
 
                 foreach (var c in _coroutines)
                 {
-                    try
+                    if (!c.IsCompleted && !c.IsCanceled) c.MoveNext();
+
+                    if (c.Exception is CanceledException)
                     {
-                        c.MoveNext();
+                        // hack
+                        Internal.Logger.Log($"CoroutineRunner.OnUpdate {c.GetType().Name} is canceled with {c.Exception.GetType()}");
                     }
-                    catch (Exception e)
+                    else if (c.Exception is Exception e)
                     {
+                        Internal.Logger.Log($"CoroutineRunner.OnUpdate {c.GetType().Name} has {e.GetType()}");
+
                         exns ??= new List<Exception>();
                         exns.Add(e);
                     }
-
-                    if (c.IsCompleted)
+                    else if (c.IsCanceled)
+                    {
+                        Internal.Logger.Log($"CoroutineRunner.OnUpdate {c.GetType().Name} is canceled");
+                    }
+                    else if (c.IsCompleted)
                     {
                         Internal.Logger.Log($"CoroutineRunner.OnUpdate {c.GetType().Name} is completed");
                     }
@@ -96,7 +104,7 @@ namespace AwaitableCoroutine
             if (exns is { })
             {
                 if (exns.Count == 1) throw exns[0];
-                throw new AggregateException(exns);
+                throw new AggregateException(exns).Flatten();
             }
         }
 

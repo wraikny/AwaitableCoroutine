@@ -39,7 +39,7 @@ namespace AwaitableCoroutine.Internal
         public void SetException(Exception exn)
         {
             Logger.Log("AwaitableCoroutineMethodBuilder.SetException");
-            throw exn;
+            _coroutine.SetException(exn);
         }
 
         // 4. SetResult
@@ -57,6 +57,8 @@ namespace AwaitableCoroutine.Internal
         {
             Logger.Log("AwaitableCoroutineMethodBuilder.AwaitOnCompleted");
             awaiter.OnCompleted(stateMachine.MoveNext);
+
+            WaitingCoroutineRegisterNotifier.Register<TAwaiter>(ref awaiter, _coroutine);
         }
 
         // 6. AwaitUnsafeOnCompleted
@@ -67,6 +69,8 @@ namespace AwaitableCoroutine.Internal
         {
             Logger.Log("AwaitableCoroutineMethodBuilder.AwaitUnsafeOnCompleted");
             awaiter.OnCompleted(stateMachine.MoveNext);
+
+            WaitingCoroutineRegisterNotifier.Register<TAwaiter>(ref awaiter, _coroutine);
         }
 
         // 7. Start
@@ -119,7 +123,7 @@ namespace AwaitableCoroutine.Internal
         public void SetException(Exception exn)
         {
             Logger.Log($"AwaitableCoroutineMethodBuilder<{typeof(T).Name}>.SetException");
-            throw exn;
+            _coroutine.SetException(exn);
         }
 
         // 4. SetResult
@@ -137,6 +141,7 @@ namespace AwaitableCoroutine.Internal
         {
             Logger.Log($"AwaitableCoroutineMethodBuilder<{typeof(T).Name}>.AwaitOnCompleted");
             awaiter.OnCompleted(stateMachine.MoveNext);
+            WaitingCoroutineRegisterNotifier.Register<TAwaiter>(ref awaiter, _coroutine);
         }
 
         // 6. AwaitUnsafeOnCompleted
@@ -147,6 +152,8 @@ namespace AwaitableCoroutine.Internal
         {
             Logger.Log($"AwaitableCoroutineMethodBuilder<{typeof(T).Name}>.AwaitUnsafeOnCompleted");
             awaiter.OnCompleted(stateMachine.MoveNext);
+
+            WaitingCoroutineRegisterNotifier.Register<TAwaiter>(ref awaiter, _coroutine);
         }
 
         // 7. Start

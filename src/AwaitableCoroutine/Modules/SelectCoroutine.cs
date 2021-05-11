@@ -8,6 +8,10 @@ namespace AwaitableCoroutine
         {
             while (!coroutine.IsCompleted)
             {
+                if (coroutine.IsCanceled)
+                {
+                    throw new ChildCanceledException<AwaitableCoroutineBase>(coroutine);
+                }
                 await AwaitableCoroutine.Yield();
             }
 
@@ -28,6 +32,10 @@ namespace AwaitableCoroutine
 
             while (!coroutine.IsCompleted)
             {
+                if (coroutine.IsCanceled)
+                {
+                    throw new ChildCanceledException<AwaitableCoroutineBase>(coroutine);
+                }
                 await AwaitableCoroutine.Yield();
             }
 
@@ -48,6 +56,10 @@ namespace AwaitableCoroutine
 
             while (!coroutine.IsCompleted)
             {
+                if (coroutine.IsCanceled)
+                {
+                    throw new ChildCanceledException<AwaitableCoroutineBase>(coroutine);
+                }
                 await AwaitableCoroutine.Yield();
             }
 
