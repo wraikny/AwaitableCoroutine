@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.1</TargetFramework>
+    <PackageOutputPath>../../output</PackageOutputPath>
+
+    <PackageId>AwaitableCoroutine.FSharp</PackageId>
+    <Version>1.4.0</Version>
+    <Description>AwaitableCoroutine extension for F#.</Description>
+    <PackageProjectUrl>https://github.com/wraikny/AwaitableCoroutine</PackageProjectUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Copyright>Copyright (c) 2021 wraikny</Copyright>
+    <RepositoryType>git</RepositoryType>
+    <PackageTags>coroutine,awaitable,asyncawait,fsharp</PackageTags>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="AwaitableCoroutineBuilder.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AwaitableCoroutine\AwaitableCoroutine.csproj" />
+  </ItemGroup>
+
+</Project>
