@@ -46,6 +46,17 @@ namespace AwaitableCoroutine.Test
             // inc 10
         }
 
+        private sealed class MyException : System.Exception
+        {
+
+        }
+
+        private async AwaitableCoroutine CreateWithException()
+        {
+            await AwaitableCoroutine.Yield();
+            throw new MyException();
+        }
+
         [Fact]
         public void CreateCoroutine()
         {
@@ -123,6 +134,40 @@ namespace AwaitableCoroutine.Test
             runner2.Update();
             runner2.Update();
             Assert.True(coroutine2.IsCompleted);
+        }
+
+        [Fact]
+        public void WithExceptionTest()
+        {
+            var runner = new CoroutineRunner();
+
+            var co = runner.Context(CreateWithException);
+
+            Assert.False(co.IsCompleted);
+
+            runner.Update();
+
+            Assert.Throws<MyException>(runner.Update);
+
+            runner.Update();
+        }
+
+        [Fact]
+        public void WithExceptionsTest()
+        {
+            var runner = new CoroutineRunner();
+
+            var co = runner.Context(() =>
+                AwaitableCoroutine.WaitAll(CreateWithException(), CreateWithException())
+            );
+
+            Assert.False(co.IsCompleted);
+
+            runner.Update();
+
+            Assert.Throws<System.AggregateException>(runner.Update);
+
+            runner.Update();
         }
     }
 }

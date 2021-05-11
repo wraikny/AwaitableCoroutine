@@ -37,38 +37,67 @@ namespace AwaitableCoroutine
 
             IsUpdating = true;
 
-            var contCount = _continuations.Count;
-
-            for (var i = 0; i < contCount; i++)
+            List<Exception> exns = null;
+            try
             {
-                _continuations.Dequeue().Invoke();
+
+                var contCount = _continuations.Count;
+
+                for (var i = 0; i < contCount; i++)
+                {
+                    try
+                    {
+                        _continuations.Dequeue().Invoke();
+                    }
+                    catch (Exception e)
+                    {
+                        exns ??= new List<Exception>();
+                        exns.Add(e);
+                    }
+                }
+
+                _coroutines.AddRange(_coroutinesTmp);
+                _coroutinesTmp.Clear();
+
+                foreach (var c in _coroutines)
+                {
+                    try
+                    {
+                        c.MoveNext();
+                    }
+                    catch (Exception e)
+                    {
+                        exns ??= new List<Exception>();
+                        exns.Add(e);
+                    }
+
+                    if (c.IsCompleted)
+                    {
+                        Internal.Logger.Log($"CoroutineRunner.OnUpdate {c.GetType().Name} is completed");
+                    }
+                    else
+                    {
+                        _coroutinesTmp.Add(c);
+                    }
+                }
+
+                Count -= (_coroutines.Count - _coroutinesTmp.Count);
+
+                // Swap
+                (_coroutines, _coroutinesTmp) = (_coroutinesTmp, _coroutines);
+
+                _coroutinesTmp.Clear();
+            }
+            finally
+            {
+                IsUpdating = false;
             }
 
-            _coroutines.AddRange(_coroutinesTmp);
-            _coroutinesTmp.Clear();
-
-            foreach (var c in _coroutines)
+            if (exns is { })
             {
-                c.MoveNext();
-
-                if (c.IsCompleted)
-                {
-                    Internal.Logger.Log($"CoroutineRunner.OnUpdate {c.GetType().Name} is completed");
-                }
-                else
-                {
-                    _coroutinesTmp.Add(c);
-                }
+                if (exns.Count == 1) throw exns[0];
+                throw new AggregateException(exns);
             }
-
-            Count -= (_coroutines.Count - _coroutinesTmp.Count);
-
-            // Swap
-            (_coroutines, _coroutinesTmp) = (_coroutinesTmp, _coroutines);
-
-            _coroutinesTmp.Clear();
-
-            IsUpdating = false;
         }
 
         void ICoroutineRunner.Post(Action continuation)

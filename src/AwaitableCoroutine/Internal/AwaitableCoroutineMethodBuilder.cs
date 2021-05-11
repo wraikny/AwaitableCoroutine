@@ -36,9 +36,10 @@ namespace AwaitableCoroutine.Internal
         public AwaitableCoroutine Task => _coroutine;
 
         // 3. SetException
-        public void SetException(Exception _)
+        public void SetException(Exception exn)
         {
             Logger.Log("AwaitableCoroutineMethodBuilder.SetException");
+            throw exn;
         }
 
         // 4. SetResult
@@ -115,9 +116,10 @@ namespace AwaitableCoroutine.Internal
         public AwaitableCoroutine<T> Task => _coroutine;
 
         // 3. SetException
-        public void SetException(Exception _)
+        public void SetException(Exception exn)
         {
             Logger.Log($"AwaitableCoroutineMethodBuilder<{typeof(T).Name}>.SetException");
+            throw exn;
         }
 
         // 4. SetResult
