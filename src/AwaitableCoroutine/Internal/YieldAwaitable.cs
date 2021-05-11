@@ -8,6 +8,7 @@ namespace AwaitableCoroutine
     [EditorBrowsable(EditorBrowsableState.Never)]
     public readonly struct YieldAwaitable
     {
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public YieldAwaiter GetAwaiter() => new YieldAwaiter();
 
         [EditorBrowsable(EditorBrowsableState.Never)]

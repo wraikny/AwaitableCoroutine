@@ -181,6 +181,7 @@ namespace AwaitableCoroutine
     [AsyncMethodBuilder(typeof(AwaitableCoroutineMethodBuilder))]
     public abstract partial class AwaitableCoroutine : AwaitableCoroutineBase
     {
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public CoroutineAwaiter GetAwaiter() => new CoroutineAwaiter(this);
 
         internal protected sealed override void _Pseudo() { }
@@ -212,6 +213,7 @@ namespace AwaitableCoroutine
     [AsyncMethodBuilder(typeof(AwaitableCoroutineMethodBuilder<>))]
     public abstract class AwaitableCoroutine<T> : AwaitableCoroutineBase
     {
+        [EditorBrowsable(EditorBrowsableState.Never)]
         public CoroutineAwaiter<T> GetAwaiter() => new CoroutineAwaiter<T>(this);
 
         internal protected sealed override void _Pseudo() { }
