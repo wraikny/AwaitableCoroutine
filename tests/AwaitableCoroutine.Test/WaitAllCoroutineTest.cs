@@ -16,7 +16,7 @@ namespace AwaitableCoroutine.Test
         {
             var runner = new CoroutineRunner();
 
-            var waitAll = runner.Context(() =>
+            var waitAll = runner.Create(() =>
                 AwaitableCoroutine.WaitAll(new AwaitableCoroutineBase[] {
                     AwaitableCoroutine.DelayCount(0),
                     AwaitableCoroutine.DelayCount(0),
@@ -36,7 +36,7 @@ namespace AwaitableCoroutine.Test
         {
             var runner = new CoroutineRunner();
 
-            var waitAll = runner.Context(() =>
+            var waitAll = runner.Create(() =>
                 AwaitableCoroutine.WaitAll(new AwaitableCoroutineBase[] {
                     AwaitableCoroutine.DelayCount(1),
                     AwaitableCoroutine.DelayCount(2),
@@ -60,7 +60,7 @@ namespace AwaitableCoroutine.Test
         {
             var runner = new CoroutineRunner();
 
-            var waitAll = runner.Context(() =>
+            var waitAll = runner.Create(() =>
                 AwaitableCoroutine.WaitAll(
                     AwaitableCoroutine.DelayCount(0),
                     AwaitableCoroutine.DelayCount(0)
@@ -80,7 +80,7 @@ namespace AwaitableCoroutine.Test
         {
             var runner = new CoroutineRunner();
 
-            var waitAll = runner.Context(() =>
+            var waitAll = runner.Create(() =>
             {
                 var coroutines = new AwaitableCoroutine<int>[4];
                 for (var i = 0; i < 4; i++)

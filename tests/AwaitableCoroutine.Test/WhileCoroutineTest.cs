@@ -18,7 +18,7 @@ namespace AwaitableCoroutine.Test
 
             var condition = false;
 
-            var coroutine = runner.Context(() => AwaitableCoroutine.While(() => !condition));
+            var coroutine = runner.Create(() => AwaitableCoroutine.While(() => !condition));
 
             for (var i = 0; i < 3; i++)
             {

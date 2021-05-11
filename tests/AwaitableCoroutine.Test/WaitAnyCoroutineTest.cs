@@ -20,7 +20,7 @@ namespace AwaitableCoroutine.Test
 
             var flag = false;
 
-            var waitAny = runner.Context(() =>
+            var waitAny = runner.Create(() =>
                 AwaitableCoroutine.WaitAny(new AwaitableCoroutineBase[] {
                     AwaitableCoroutine.While(() => true),
                     AwaitableCoroutine.While(() => true),
@@ -47,7 +47,7 @@ namespace AwaitableCoroutine.Test
 
             var flag = false;
 
-            var waitAny = runner.Context(() =>
+            var waitAny = runner.Create(() =>
                 AwaitableCoroutine.WaitAny(
                     AwaitableCoroutine.While(() => true),
                     AwaitableCoroutine.While(() => !flag)
@@ -72,7 +72,7 @@ namespace AwaitableCoroutine.Test
 
             var flag = false;
 
-            var waitAny = runner.Context(() =>
+            var waitAny = runner.Create(() =>
             {
                 return AwaitableCoroutine.WaitAny<int>(new AwaitableCoroutine<int>[] {
                     AwaitableCoroutine.While(() => true).SelectTo(0),

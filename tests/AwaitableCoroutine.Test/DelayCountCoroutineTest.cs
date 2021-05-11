@@ -20,7 +20,7 @@ namespace AwaitableCoroutine.Test
 
             bool flag = false;
 
-            var coroutine = runner.Context(() => AwaitableCoroutine.DelayCount(count).OnCompleted(() => flag = true));
+            var coroutine = runner.Create(() => AwaitableCoroutine.DelayCount(count).OnCompleted(() => flag = true));
 
             for (var i = 0; i < count; i++)
             {
@@ -48,7 +48,7 @@ namespace AwaitableCoroutine.Test
             var runner = new CoroutineRunner();
             var counter = new Counter();
 
-            var co = runner.Context(() => CreateAwaitDelayCount(counter));
+            var co = runner.Create(() => CreateAwaitDelayCount(counter));
 
             Assert.False(co.IsCompleted);
 

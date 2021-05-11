@@ -22,14 +22,18 @@
     - [例外](#例外)
     - [ICoroutineRunner](#icoroutinerunner)
       - [メソッド・拡張メソッド](#メソッド拡張メソッド)
+        - [Update](#update)
+        - [Create](#create)
+        - [Context](#context)
       - [静的メンバー](#静的メンバー)
   - [AwaitableCoroutine.FSharp](#awaitablecoroutinefsharp)
     - [コンピューテーション式](#コンピューテーション式)
       - [awaitableCoroutine](#awaitablecoroutine-2)
       - [ICoroutineRunner.Do](#icoroutinerunnerdo)
   - [AwaitableCoroutine.Altseed2](#awaitablecoroutinealtseed2)
-    - [モジュール](#モジュール-1)
-      - [DelaySecond](#delaysecond)
+    - [Altseed2Coroutine](#altseed2coroutine)
+      - [モジュール](#モジュール-1)
+        - [DelaySecond](#delaysecond)
     - [ノード](#ノード)
       - [CoroutineNode](#coroutinenode)
 
@@ -66,8 +70,9 @@ public static void Main(string[] _)
     // Runnerのインスタンスを作成します
     var runner = new CoroutineRunner();
 
-    // 注意: AwaitableCoroutineはContextメソッドに渡すコールバック内で作成する必要があります
-    var co = runner.Context(CreateCoroutine);
+    // 注意: AwaitableCoroutineはCreate拡張メソッドまたはContext拡張メソッドに渡すコールバック内で作成する必要があります
+    var co = runner.Create(CreateCoroutine);
+    _ = runner.Context(CreateCoroutine);
 
     // メインループ
     while(!co.IsCompleted)
@@ -85,14 +90,20 @@ public static void Main(string[] _)
 {
     var runner = new CoroutineRunner();
 
-    // 注意: 非同期ラムダ式を利用する場合、ジェネリックパラメータの明示的な宣言が必要です
-    var co = runner.Context<AwaitableCoroutine>(async () => {
+    var co = runner.Create(async () => {
         for (var i = 0; i < 5; i++)
         {
             Console.WriteLine($"Hello with lambda {i}");
             await AwaitableCoroutine.Yield();
         }
     });
+
+    // 注意: 非同期ラムダ式をContextメソッドで利用する場合はジェネリックパラメータの明示的な宣言が必要です
+    /*
+      var co = runner.Context<AwaitableCoroutine>(async () => {
+        await AwaitableCoroutine.Yield();
+      });
+    */
 
     while(!co.IsCompleted)
     {
@@ -103,11 +114,17 @@ public static void Main(string[] _)
 
 ## 注意事項
 
-`AwaitableCoroutine`, `AwaitableCoroutine<T>`は、 `Context` メソッドのコールバック関数の中で生成する点に注意してください。
-
-非同期ラムダ式を利用する場合、ジェネリックパラメータの明示的な宣言が必要です。
-
+`AwaitableCoroutine`, `AwaitableCoroutine<T>`は、 `Create`メソッドまたは`Context` メソッドのコールバック関数の中で生成する点に注意してください。
 コルーチンをどの `ICoroutineRunner` に登録するかの情報を与えるために必要になります。
+基本的には`Create`メソッドを使用します。
+
+`AwaitableCoroutine`をまとめて作成したタプルを返すなど、`AwaitableCoroutien`または`AwaitableCoroutien<T>`以外の型を返したい場合は、以下のように`Context`メソッドを利用します。
+
+```csharp
+var (c1, c2) = runner.Context(() => (AwaitableCoroutine.DelayCount(1), AwaitableCoroutine.DelayCount(1)));
+```
+
+非同期ラムダ式を利用して`AwaitableCoroutine`を作成する場合、ジェネリックパラメータを明示しないと`Task`として推論されてしまうので気をつけてください。
 
 コルーチンの作成に引数を与えたい場合は以下のようにします。
 
@@ -341,10 +358,44 @@ coroutine.UntilCompleted(async () => {
 基本的には標準の`CoroutineRunner`の利用が推奨されますが、インターフェースを実装することでランナーを自作することもできます。
 
 #### メソッド・拡張メソッド
-| Name | Desc |
-| --- | --- |
-| `Update()` | 登録済みのコルーチンを次に進めます。 実行されたコルーチンの例外がスローされる場合があります。|
-| `Context` | ランナーをコンテキストにセットした中でコールバックメソッドを実行します。 |
+
+##### Update
+登録済みのコルーチンを次に進めます。 実行されたコルーチンの例外がスローされる場合があります。
+
+##### Create
+ランナーをコンテキストにセットした中でコールバックメソッドを実行して、`AwaitableCoroutine`または`AwaitableCoroutine<T>`を作成します。
+
+**引数**
+* `Create`
+  * `Func<AwaitableCoroutine> init`
+* `Create<T>`
+  * `Func<AwaitableCoroutine<T>> init`
+
+```csharp
+var co = runner.Create(async () => {
+  Console.WriteLine("Hello");
+  await AwaitableCoroutine.Yield();
+  Console.WriteLine("AwaitableCoroutine!");
+});
+```
+
+##### Context
+ランナーをコンテキストにセットした中でコールバックメソッドを実行します。
+
+**引数**
+* オーバーロード1
+  * `Action action`
+* オーバーロード2
+  * `Func<T> init`
+
+```csharp
+var (co1, co2, waitAll) = runner.Context(() => {
+  var co1 = MyCoroutine1();
+  var co2 = MyCoroutine2();
+  return (co1, co2, AwaitableCoroutine.WaitAll(co1, co2));
+});
+```
+
 
 #### 静的メンバー
 | Name | Desc |
@@ -402,13 +453,14 @@ runner.Update()
 
 ゲームエンジン[Altseed2](https://altseed.github.io)向けの拡張パッケージです。
 
-### モジュール
+### Altseed2Coroutine
+#### モジュール
 
-#### DelaySecond
+##### DelaySecond
 [`DelaySecond(float)`](../src/AwaitableCoroutine.Altseed2/Modules.cs#L11)
 は、指定した秒数待機するコルーチンを生成します。
 
-`AwaitableCoroutine.DelaySecond(5.0f)`など、静的メソッドとして呼び出します。
+`Altseed2Coroutine.DelaySecond(5.0f)`など、静的メソッドとして呼び出します。
 
 Altseed2の提供する`Engine.DeltaSecond`を利用して秒数のカウントを行います。
 
@@ -417,7 +469,9 @@ Altseed2の提供する`Engine.DeltaSecond`を利用して秒数のカウント�
 
 ### ノード
 #### [CoroutineNode](../src/AwaitableCoroutine.Altseed2/CoroutineNode.cs)
-コルーチンを登録・更新するノード。
+コルーチンを登録・更新するノードです。
+
+エンジンに登録すると、更新時に自動的に`Update`拡張メソッドが呼び出されます。
 
 **継承**
 * `Altseed2.Node`

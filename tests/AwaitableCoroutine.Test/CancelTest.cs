@@ -16,9 +16,9 @@ namespace AwaitableCoroutine.Test
         {
             var runner = new CoroutineRunner();
 
-            var delay = runner.Context(() => AwaitableCoroutine.DelayCount(5));
+            var delay = runner.Create(() => AwaitableCoroutine.DelayCount(5));
 
-            var co = runner.Context<AwaitableCoroutine>(async () =>
+            var co = runner.Create(async () =>
             {
                 await delay;
             });
@@ -51,7 +51,7 @@ namespace AwaitableCoroutine.Test
         {
             var runner = new CoroutineRunner();
 
-            var delay = runner.Context(() => AwaitableCoroutine.DelayCount(5));
+            var delay = runner.Create(() => AwaitableCoroutine.DelayCount(5));
 
             var co = runner.Context<AwaitableCoroutine>(() => AwaitableCoroutine.WaitAll(delay, delay));
 

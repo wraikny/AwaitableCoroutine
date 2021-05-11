@@ -11,7 +11,7 @@ namespace AwaitableCoroutine.ConsoleTest
             var runner = new CoroutineRunner();
             var count = 0;
 
-            var c = runner.Context(() =>
+            var c = runner.Create(() =>
                 AwaitableCoroutine.DelayCount(0)
                     .AndThen(() => AwaitableCoroutine.DelayCount(0).OnCompleted(() =>
                     {

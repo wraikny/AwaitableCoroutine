@@ -122,5 +122,15 @@ namespace AwaitableCoroutine
                 }
             }
         }
+
+        public static AwaitableCoroutine Create(this ICoroutineRunner runner, Func<AwaitableCoroutine> init)
+        {
+            return Context<AwaitableCoroutine>(runner, init);
+        }
+
+        public static AwaitableCoroutine<T> Create<T>(this ICoroutineRunner runner, Func<AwaitableCoroutine<T>> init)
+        {
+            return Context<AwaitableCoroutine<T>>(runner, init);
+        }
     }
 }

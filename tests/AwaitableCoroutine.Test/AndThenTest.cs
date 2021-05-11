@@ -17,7 +17,7 @@ namespace AwaitableCoroutine.Test
         {
             var runner = new CoroutineRunner();
             var counter = new Counter();
-            var c = runner.Context(() =>
+            var c = runner.Create(() =>
                 AwaitableCoroutine.DelayCount(2)
                     .AndThen(() => AwaitableCoroutine.DelayCount(2).OnCompleted(() =>
                     {
@@ -53,7 +53,7 @@ namespace AwaitableCoroutine.Test
 
             var target = 5;
 
-            var c = runner.Context(() => CreateCoroutine(target, counter));
+            var c = runner.Create(() => CreateCoroutine(target, counter));
 
             while (!c.IsCompleted) runner.Update();
 

@@ -72,7 +72,7 @@ namespace AwaitableCoroutine.Test
             var runner = new CoroutineRunner();
             var counter = new Counter();
 
-            _ = runner.Context(() => GetCoroutine(counter));
+            _ = runner.Create(() => GetCoroutine(counter));
         }
 
         [Fact]
@@ -81,7 +81,7 @@ namespace AwaitableCoroutine.Test
             var runner = new CoroutineRunner();
             var counter = new Counter();
 
-            var co = runner.Context(() => SingleYieldCoroutine(counter));
+            var co = runner.Create(() => SingleYieldCoroutine(counter));
 
             Assert.False(co.IsCompleted);
             Assert.Equal(0, counter.Count);
@@ -101,7 +101,7 @@ namespace AwaitableCoroutine.Test
             var runner = new CoroutineRunner();
             var counter = new Counter();
 
-            _ = runner.Context(() => GetCoroutine(counter));
+            _ = runner.Create(() => GetCoroutine(counter));
 
             var i = 0;
             while (i < 3)
@@ -119,7 +119,7 @@ namespace AwaitableCoroutine.Test
             var runner = new CoroutineRunner();
             var counter = new Counter();
 
-            _ = runner.Context(() => GetCoroutine2(counter));
+            _ = runner.Create(() => GetCoroutine2(counter));
 
             var i = 0;
             while (i < 10)
@@ -140,9 +140,9 @@ namespace AwaitableCoroutine.Test
             var runner1 = new CoroutineRunner();
             var runner2 = new CoroutineRunner();
 
-            var coroutine1 = runner1.Context(() => AwaitableCoroutine.DelayCount(0));
+            var coroutine1 = runner1.Create(() => AwaitableCoroutine.DelayCount(0));
 
-            var coroutine2 = runner2.Context(() =>
+            var coroutine2 = runner2.Create(() =>
                 coroutine1.AndThen(() => AwaitableCoroutine.DelayCount(0))
             );
 
@@ -170,7 +170,7 @@ namespace AwaitableCoroutine.Test
         {
             var runner = new CoroutineRunner();
 
-            var co = runner.Context(CreateWithException);
+            var co = runner.Create(CreateWithException);
 
             Assert.False(co.IsCompleted);
 
@@ -191,7 +191,7 @@ namespace AwaitableCoroutine.Test
                 (CreateWithException(), AwaitableCoroutine.While(() => true), CreateWithException())
             );
 
-            var waitAll = runner.Context(() => AwaitableCoroutine.WaitAll(co1, co2, co3));
+            var waitAll = runner.Create(() => AwaitableCoroutine.WaitAll(co1, co2, co3));
 
             Assert.False(co1.IsCompleted);
             Assert.False(co2.IsCompleted);

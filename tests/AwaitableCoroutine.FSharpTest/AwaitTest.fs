@@ -21,7 +21,7 @@ type AwaitTest(outputHelper: ITestOutputHelper) =
 
     let counter = new Counter()
 
-    let ac = runner.Context(fun () ->
+    let ac = runner.Create(fun () ->
         awaitableCoroutine {
           counter.Inc() // 1
           do! AwaitableCoroutine.Yield()
@@ -45,7 +45,7 @@ type AwaitTest(outputHelper: ITestOutputHelper) =
 
     let counter = new Counter()
 
-    let ac = runner.Context(fun () ->
+    let ac = runner.Create(fun () ->
         awaitableCoroutine {
           counter.Inc()
           do! AwaitableCoroutine.DelayCount(3)
@@ -72,7 +72,7 @@ type AwaitTest(outputHelper: ITestOutputHelper) =
 
     let counter = new Counter()
 
-    let ac = runner.Context(fun () ->
+    let ac = runner.Create(fun () ->
         awaitableCoroutine {
           counter.Inc()
           for i=1 to 3 do
@@ -98,7 +98,7 @@ type AwaitTest(outputHelper: ITestOutputHelper) =
 
     let counter = new Counter()
 
-    let ac = runner.Context(fun () ->
+    let ac = runner.Create(fun () ->
         awaitableCoroutine {
           counter.Inc()
           let mutable i = 0
@@ -124,7 +124,7 @@ type AwaitTest(outputHelper: ITestOutputHelper) =
   member __.``If Test`` (cond: bool) =
     let runner = CoroutineRunner()
     let counter = new Counter()
-    let ac = runner.Context(fun () ->
+    let ac = runner.Create(fun () ->
       awaitableCoroutine {
         counter.Inc()
         do! AwaitableCoroutine.Yield()
@@ -158,7 +158,7 @@ type AwaitTest(outputHelper: ITestOutputHelper) =
 
     let counter = new Counter()
 
-    let ac = runner.Context(fun () ->
+    let ac = runner.Create(fun () ->
         awaitableCoroutine {
           counter.Inc()
           do! AwaitableCoroutine.Yield()
@@ -194,7 +194,7 @@ type AwaitTest(outputHelper: ITestOutputHelper) =
 
     let counter = new Counter()
 
-    let ac = runner.Context(fun () ->
+    let ac = runner.Create(fun () ->
         awaitableCoroutine {
           counter.Inc()
           do! AwaitableCoroutine.Yield()

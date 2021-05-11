@@ -20,8 +20,9 @@ namespace AwaitableCoroutine.Altseed2.Example
                 }
 
                 var runner = new CoroutineNode();
+                Engine.AddNode(runner);
 
-                var coroutine = runner.Context<AwaitableCoroutine>(async () => {
+                var coroutine = runner.Create(async () => {
                     var i = 0;
                     await Altseed2Coroutine.DelaySecond(2.0f).UntilCompleted(async () => {
                         Console.WriteLine($"Stepping: {i++}");
@@ -32,8 +33,6 @@ namespace AwaitableCoroutine.Altseed2.Example
 
                 while (Engine.DoEvents())
                 {
-                    runner.Update();
-
                     if (coroutine.IsCompleted) break;
 
                     Engine.Update();

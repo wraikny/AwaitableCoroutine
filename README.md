@@ -38,7 +38,7 @@ public class Program
     {
         var runner = new CoroutineRunner();
 
-        var coroutine = runner.Context(CreateCoroutine);
+        var coroutine = runner.Create(CreateCoroutine);
 
         Console.WriteLine("Started!");
 
