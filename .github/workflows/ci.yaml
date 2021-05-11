@@ -53,6 +53,7 @@ jobs:
         dotnet pack -c Release
         cp src/AwaitableCoroutine/bin/Release/netstandard2.1/AwaitableCoroutine.dll output
         cp src/AwaitableCoroutine.Altseed2/bin/Release/netstandard2.1/AwaitableCoroutine.Altseed2.dll output
+        cp src/AwaitableCoroutine.FSharp/bin/Release/netstandard2.1/AwaitableCoroutine.FSharp.dll output
 
     - name: Upload artifact
       if: startsWith( github.ref, 'refs/tags/')
