@@ -1,9 +1,9 @@
 # ICoroutineRunner
 
-[`ICoroutineRunner`](../../src/AwaitableCoroutine/ICoroutineRunner.cs)
-は、コルーチンを登録・実行するオブジェクトを表すインターフェースです。
+[`ICoroutineRunner`](../../src/AwaitableCoroutine/ICoroutineRunner.cs) 
+is an interface that represents an object that registers and executes coroutines.
 
-基本的には標準の`CoroutineRunner`の利用が推奨されますが、インターフェースを実装することでランナーを自作することもできます。
+Basically, it is recommended to use the standard `CoroutineRunner`, but you can also create your own runner by implementing the interface.
 
 **Table of contents**
 - [ICoroutineRunner](#icoroutinerunner)

@@ -4,7 +4,7 @@
 - [AwaitableCoroutine Document](#awaitablecoroutine-document)
   - [What is AwaitableCoroutine?](#what-is-awaitablecoroutine)
   - [What it does.](#what-it-does)
-  - [使い方](#使い方)
+  - [How to use](#how-to-use)
   - [Notes.](#notes)
   - [AwaitableCoroutine, AwaitableCoroutine<T> classes](#awaitablecoroutine-awaitablecoroutinet-classes)
   - [ICoroutineRunner interface](#icoroutinerunner-interface)
@@ -29,7 +29,7 @@ This package provides `AwaitableCoroutine`, a coroutine that can use async/await
 * Computation expressions based on TaskBuilder.fs are provided for F#. (AwaitableCoroutine.FSharp package)
 
 
-## 使い方
+## How to use
 
 For example, you can define a coroutine as follows
 
