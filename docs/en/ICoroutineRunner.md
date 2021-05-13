@@ -5,23 +5,23 @@
 
 基本的には標準の`CoroutineRunner`の利用が推奨されますが、インターフェースを実装することでランナーを自作することもできます。
 
-**目次**
+**Table of contents**
 - [ICoroutineRunner](#icoroutinerunner)
-  - [メソッド・拡張メソッド](#メソッド拡張メソッド)
+  - [Methods and extension methods](#methods-and-extension-methods)
     - [Update](#update)
     - [Create](#create)
     - [Context](#context)
-  - [静的メンバー](#静的メンバー)
+  - [Static method](#static-method)
 
-## メソッド・拡張メソッド
+## Methods and extension methods
 
 ### Update
-`Update`メソッドは、登録済みのコルーチンを次に進めます。 実行されたコルーチンが例外を吐いた場合、全てのコルーチンの更新後に例外がスローされます。
+The `Update` extension method moves registered coroutines to the next step. If executed coroutines throw exceptions, the exception will be thrown after all coroutines have been updated.
 
 ### Create
-ランナーをコンテキストにセットした内側でコールバックメソッドを実行して、`AwaitableCoroutine`または`AwaitableCoroutine<T>`を作成します。
+Create an `AwaitableCoroutine` or `AwaitableCoroutine<T>` by executing the callback method inside the runner set to the context.
 
-**引数**
+**Arguments**
 * `Create`
   * `init`: `Func<AwaitableCoroutine>`
 * `Create<T>`
@@ -36,12 +36,12 @@ var co = runner.Create(async () => {
 ```
 
 ### Context
-ランナーをコンテキストにセットした中でコールバックメソッドを実行します。
+Execute the callback method with the runner set to the context.
 
-**引数**
-* オーバーロード1
+**Arguments**
+* Overload 1
   * `action`: `Action`
-* オーバーロード2
+* Overload 2
   * `init`: `Func<T>`
 
 ```csharp
@@ -53,7 +53,7 @@ var (co1, co2, waitAll) = runner.Context(() => {
 ```
 
 
-## 静的メンバー
+## Static method
 | Name | Desc |
 | --- | --- |
-| `GetContext()` | 現在のコンテキストにセットされた`ICoroutineRunner`のインスタンスを取得します |
+| `GetContext()` | Get an instance of `ICoroutineRunner` set to the current context |

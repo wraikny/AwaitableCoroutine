@@ -20,9 +20,10 @@ Install from NuGet Gallery
 
 ## Documentation
 
-| lang | folder |
+| lang | link |
 | --- | --- |
 | ja | [ドキュメント](docs/ja) |
+| en | [Document](docs/en) |
 
 
 ## Example

@@ -28,7 +28,7 @@ C#でasync/await構文を利用可能なコルーチン`AwaitableCoroutine`を�
 * 様々な便利なメソッドを標準で提供している。
 * ステートマシン生成のコストが気になる場合は、継承を利用して自作可能
 * インターフェースを利用して、一部の処理の挙動を書き換え可能
-* F#向けにTaskBuilderを基にしたコンピューテーション式を提供している。（AwaitableCoroutine.FSharp パッケージ）
+* F#向けに TaskBuilder.fs を基にしたコンピューテーション式を提供している。（AwaitableCoroutine.FSharp パッケージ）
 
 ## 使い方
 
@@ -65,14 +65,14 @@ public static void Main(string[] _)
     var runner = new CoroutineRunner();
 
     // 注意: AwaitableCoroutineはCreate拡張メソッドまたはContext拡張メソッドに渡すコールバック内で作成する必要があります
-    var co = runner.Create(CreateCoroutine);
+    var coroutine = runner.Create(CreateCoroutine);
     /*
       // Context拡張メソッドを利用する場合
-      _ = runner.Context(CreateCoroutine);
+      var coroutine = runner.Context(CreateCoroutine);
     */
 
     // メインループ
-    while(!co.IsCompleted)
+    while(!coroutine.IsCompleted)
     {
         // ICoroutineRunnerのUpdate拡張メソッドを呼び出すことで、登録されているコルーチンを次に進めます
         runner.Update();
@@ -87,24 +87,23 @@ public static void Main(string[] _)
 {
     var runner = new CoroutineRunner();
 
-    // 非同期ラムダ式を利用してAwaitableCoroutineを作成する
-    var co = runner.Create(async () => {
+    // 非同期ラムダ式を利用して`AwaitableCoroutine`を作成する
+    var coroutine = runner.Create(async () => {
         for (var i = 0; i < 5; i++)
         {
-            Console.WriteLine($"Hello with lambda {i}");
-            // Yieldを利用して、一度だけawaitで待機（中断）する
+            Console.WriteLine($"Hello with async lambda {i}");
             await AwaitableCoroutine.Yield();
         }
     });
 
-    // 注意: 非同期ラムダ式をContextメソッドで利用する場合はジェネリックパラメータの明示的な宣言が必要です
+    // 注意: 非同期ラムダ式を`Context`メソッドで利用する場合はジェネリックパラメータの明示的な宣言が必要です
     /*
-      var co = runner.Context<AwaitableCoroutine>(async () => {
+      var coroutine = runner.Context<AwaitableCoroutine>(async () => {
         await AwaitableCoroutine.Yield();
       });
     */
 
-    while(!co.IsCompleted)
+    while(!coroutine.IsCompleted)
     {
         runner.Update();
     }

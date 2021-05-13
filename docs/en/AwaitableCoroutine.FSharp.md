@@ -1,24 +1,23 @@
 # AwaitableCoroutine.FSharp
 
-F#向けの拡張パッケージです。
+Extension package for F#.
 
-**目次**
+**Table of contents**
 
 - [AwaitableCoroutine.FSharp](#awaitablecoroutinefsharp)
-  - [コンピューテーション式](#コンピューテーション式)
+  - [Computation Expressions](#computation-expressions)
     - [awaitableCoroutine](#awaitablecoroutine)
     - [ICoroutineRunner.Do](#icoroutinerunnerdo)
 
-## コンピューテーション式
+## Computation Expressions
 
-[TaskBuilder.fs](https://github.com/rspeele/TaskBuilder.fs)
-を参考にして、最適化されたコンピューテーション式を提供しています。
+The optimized computation expression is provided by referring to [TaskBuilder.fs](https://github.com/rspeele/TaskBuilder.fs).
 
 [AwaitableCoroutineBuilder.fs](../../src/AwaitableCoroutine.FSharp/AwaitableCoroutineBuilder.fs)
 
 ### awaitableCoroutine
 
-サンプルコード
+Sample code.
 
 ```fsharp
 let runner = CoroutineRunner()
@@ -39,7 +38,7 @@ runner.Update()
 
 ### ICoroutineRunner.Do
 
-サンプルコード
+Sample code.
 
 ```fsharp
 let runner = CoroutineRunner()
