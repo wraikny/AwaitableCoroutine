@@ -9,7 +9,7 @@ namespace AwaitableCoroutine.Internal
 
     public abstract class WaitingCoroutineRegisterNotifier
     {
-        public static WaitingCoroutineRegisterNotifier Instance { get; private set; }
+        public static WaitingCoroutineRegisterNotifier Instance { get; set; }
 
         public abstract bool RegisterWaitingCoroutine<T>(ref T awaiter, AwaitableCoroutineBase coroutine);
 

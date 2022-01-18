@@ -15,7 +15,7 @@
 ### モジュール
 
 #### DelaySecond
-[`DelaySecond(float)`](../../src/AwaitableCoroutine.Altseed2/Modules.cs)
+[`DelaySecond(float, Action<float>)`](../../src/AwaitableCoroutine.Altseed2/Modules.cs)
 は、指定した秒数待機するコルーチンを生成します。
 
 `Altseed2Coroutine.DelaySecond(5.0f)`など、静的メソッドとして呼び出します。
@@ -30,8 +30,17 @@ coroutineNode.Create(() =>
 );
 ```
 
+```csharp
+coroutineNode.Create(() =>
+    Altseed2Coroutine.DelaySecond(2.0f, t => {
+        node.Position += new Vector2F(t, 0f)
+    })
+);
+```
+
 **引数**
 * `float second`
+* `Action<float> onUpdating = null`
 
 ## ノード
 ### [CoroutineNode](../../src/AwaitableCoroutine.Altseed2/CoroutineNode.cs)
