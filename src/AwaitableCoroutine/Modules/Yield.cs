@@ -1,4 +1,4 @@
-namespace AwaitableCoroutine
+﻿namespace AwaitableCoroutine
 {
     public partial class AwaitableCoroutine
     {
