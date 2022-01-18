@@ -6,7 +6,8 @@ The generic version, `AwaitableCoroutine<T>`, returns the result value.
 
 **Table of contents**
 - [AwaitableCoroutine](#awaitablecoroutine)
-  - [Member](#member)
+  - [Method](#method)
+  - [Extension method](#extension-method)
   - [Modules](#modules)
     - [Yield](#yield)
     - [While](#while)
@@ -19,13 +20,21 @@ The generic version, `AwaitableCoroutine<T>`, returns the result value.
     - [UntilCompleted](#untilcompleted)
     - [CanceledException](#canceledexception)
 
-## Member
+## Method
 
 | Name | Desc
 | --- | --- | `IsCompleted
 | `IsCompleted` | Get whether the coroutine is completed or not |
 | `IsCanceled` | Get whether the coroutine is canceled or not |
 | `Cancel()` | Cancel the coroutine |
+
+## Extension method
+
+| Name | Desc |
+| --- | --- |
+| `OnCompleted (Action)` | Register the process to be executed when the coroutine is completed |
+| `OnUpdating (Action)` | Register the process to be executed before updating the coroutine |
+| `OnCanceled (Action)` | Register the process to be executed when the coroutine is canceled |
 
 ## Modules
 

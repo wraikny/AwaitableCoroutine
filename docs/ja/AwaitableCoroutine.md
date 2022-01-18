@@ -7,7 +7,8 @@
 **目次**
 
 - [AwaitableCoroutine](#awaitablecoroutine)
-  - [メンバー](#メンバー)
+  - [メソッド](#メソッド)
+  - [拡張メソッド](#拡張メソッド)
   - [モジュール](#モジュール)
     - [Yield](#yield)
     - [While](#while)
@@ -20,13 +21,21 @@
     - [UntilCompleted](#untilcompleted)
     - [CanceledException](#canceledexception)
 
-## メンバー
+## メソッド
 
 | Name | Desc |
 | --- | --- |
 | `IsCompleted` | コルーチンが完了したかどうかを取得 |
 | `IsCanceled` | コルーチンがキャンセルされたかどうかを取得 |
-| `Cancel()` | コルーチンをキャンセルする |
+| `Cancel()` | コルーチンをキャンセル |
+
+## 拡張メソッド
+
+| Name | Desc |
+| --- | --- |
+| `OnCompleted(Action)` | コルーチンが完了したときに実行される処理を登録 |
+| `OnUpdating(Action)` | コルーチン更新直前に実行される処理を登録 |
+| `OnCanceled(Action)` | コルーチンがキャンセルされたときに実行される処理を登録 |
 
 ## モジュール
 
