@@ -52,7 +52,7 @@ Target.create "Format.Check" (fun _ ->
   ++ "tests/**/*.csproj"
   ++ "example/**/*.csproj"
   |> Seq.iter (fun proj ->
-    dotnet "format" $"{proj} --check -v diag"
+    dotnet "format" $"{proj} --verify-no-changes -v diag"
   )
 )
 
@@ -82,17 +82,11 @@ Target.create "Build" (fun _ ->
 )
 
 Target.create "Test" (fun _ ->
-  let configuration =
-    args
-    |> Option.bind Array.tryHead
-    |> getConfiguration
-
   !! "tests/**/*.*proj"
   |> Seq.iter(fun proj ->
     DotNet.test (fun p ->
       { p with
           Logger = Some "console;verbosity=normal"
-          Configuration = configuration
       }
     ) proj
   )
