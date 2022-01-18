@@ -29,32 +29,31 @@ Install from NuGet Gallery
 ## Example
 
 ```C#
-public class Program
-{
-    public static void Main(string[] args)
+using System;
+
+using AwaitableCoroutine;
+using AwCo = AwaitableCoroutine.AwaitableCoroutine;
+
+var runner = new CoroutineRunner();
+
+int count = 0;
+
+var coroutine = runner.Create(async () => {
+    Console.WriteLine("Started!");
+
+    for (var i = 0; i < 10; i++)
     {
-        var runner = new CoroutineRunner();
-
-        int count = 0;
-
-        var coroutine = runner.Create(async () => {
-            for (var i = 0; i < 10; i++)
-            {
-                count++;
-                await AwaitableCoroutine.Yield();
-            }
-        });
-
-        Console.WriteLine("Started!");
-
-        while (!coroutine.IsCompleted)
-        {
-            Console.WriteLine($"{count}");
-            runner.Update();
-        }
-
-        Console.WriteLine("Finished!");
+        count++;
+        await AwCo.Yield();
     }
+}).OnCompleted(() => Console.WriteLine("Finished!"));
+
+while (true)
+{
+    runner.Update();
+    if (coroutine.IsCompleted) break;
+
+    Console.WriteLine($"{count}");
 }
 ```
 

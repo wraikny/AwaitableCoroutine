@@ -5,43 +5,37 @@ using Altseed2;
 using AwaitableCoroutine;
 using AwaitableCoroutine.Altseed2;
 
-namespace AwaitableCoroutine.Altseed2.Example
+using AwCo = AwaitableCoroutine.AwaitableCoroutine;
+using A2Co = AwaitableCoroutine.Altseed2.Altseed2Coroutine;
+
+static class Program
 {
-    class Program
+    [STAThread]
+    static void Main()
     {
-        static void Main(string[] args)
+        Engine.Initialize("AwaitableCoroutine", 400, 300);
+
+        var runner = new CoroutineNode();
+        Engine.AddNode(runner);
+
+        var node = new RectangleNode { RectangleSize = new Vector2F(10f, 10f)};
+        Engine.AddNode(node);
+
+        var coroutine = runner.Create(() => {
+            var initPos = node.Position;
+            return A2Co.DelaySecond(2f, a => {
+                var ea = Easing.GetEasing(EasingType.InOutQuad, a);
+                node.Position = initPos + new Vector2F(ea * 400f, 0f);
+            });
+        });
+
+        while (Engine.DoEvents())
         {
-            try
-            {
-                var config = new Configuration { EnabledCoreModules = CoreModules.None };
-                if (!Engine.Initialize("AwaitableCoroutine", 1, 1, config))
-                {
-                    throw new Exception("Failed to initialize the engine");
-                }
+            if (coroutine.IsCompleted) break;
 
-                var runner = new CoroutineNode();
-                Engine.AddNode(runner);
-
-                var coroutine = runner.Create(async () => {
-                    var i = 0;
-                    await Altseed2Coroutine.DelaySecond(2.0f).UntilCompleted(async () => {
-                        Console.WriteLine($"Stepping: {i++}");
-                        await Altseed2Coroutine.DelaySecond(0.2f);
-                    });
-                    Console.WriteLine("Hello, AwaitableCoroutine.Altseed2");
-                });
-
-                while (Engine.DoEvents())
-                {
-                    if (coroutine.IsCompleted) break;
-
-                    Engine.Update();
-                }
-            }
-            finally
-            {
-                Engine.Terminate();
-            }
+            Engine.Update();
         }
+
+        Engine.Terminate();
     }
 }
