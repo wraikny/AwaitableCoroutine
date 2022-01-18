@@ -24,7 +24,7 @@ namespace AwaitableCoroutine.ConsoleTest
             Assert.True(count == 1);
         }
 
-        private static void Main(string[] args)
+        private static void Main(string[] _)
         {
             Internal.Logger.SetLogger(Console.WriteLine);
 
