@@ -93,22 +93,18 @@ Target.create "Test" (fun _ ->
 )
 
 Target.create "CopyDlls" (fun _ ->
-  let shell cmd args =
-    let res = Shell.Exec(cmd, args)
-    if res <> 0 then failwithf "failed '%s %s'" cmd args
-
   Directory.ensure "output"
 
   [ "netstandard2.1"
     "net5.0"
     "net6.0"
   ] |> Seq.iter (fun target ->
-    shell "mkdir" $"output/%s{target}"
+    Shell.mkdir $"output/%s{target}"
     [ ""
       ".Altseed2"
       ".FSharp"
     ] |> Seq.iter (fun sufix ->
-      shell "cp" $"src/AwaitableCoroutine%s{sufix}/bin/Release/%s{target}/AwaitableCoroutine%s{sufix}.dll output/%s{target}/."
+      Shell.cp $"src/AwaitableCoroutine%s{sufix}/bin/Release/%s{target}/AwaitableCoroutine%s{sufix}.dll" $"output/%s{target}/."
     )
   )
 )
