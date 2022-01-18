@@ -57,9 +57,9 @@ namespace AwaitableCoroutine
                 return;
             }
 
-            var runner = ICoroutineRunner.GetContext();
+            var runner = ICoroutineRunner.Instance;
 
-            if (Runner == runner)
+            if (runner is null || Runner == runner)
             {
                 OnCompleted += action;
             }
@@ -89,9 +89,9 @@ namespace AwaitableCoroutine
                 return;
             }
 
-            var runner = ICoroutineRunner.GetContext();
+            var runner = ICoroutineRunner.Instance;
 
-            if (Runner == runner)
+            if (runner is null || Runner == runner)
             {
                 OnCalceled += onCanceled;
             }
