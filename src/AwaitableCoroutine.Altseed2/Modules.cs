@@ -6,9 +6,17 @@ namespace AwaitableCoroutine.Altseed2
 {
     public static class Altseed2Coroutine
     {
-        public static async AwaitableCoroutine DelaySecond(float second)
+        public static async AwaitableCoroutine DelaySecond(float second, Action<float> onUpdating = null)
         {
-            for (var i = 0.0f; i < second; i += Engine.DeltaSecond) await AwaitableCoroutine.Yield();
+            if (second <= 0f) return;
+
+            for (var t = 0.0f; t < second; t += Engine.DeltaSecond)
+            {
+                onUpdating?.Invoke(t / second);
+                await AwaitableCoroutine.Yield();
+            }
+
+            onUpdating?.Invoke(1f);
         }
     }
 }
