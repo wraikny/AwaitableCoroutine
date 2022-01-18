@@ -17,10 +17,12 @@ namespace AwaitableCoroutine.Test
             var runner = new CoroutineRunner();
             var counter = new Counter();
 
+#pragma warning disable CS1998
             var co = runner.Create(async () =>
             {
                 counter.Inc();
             });
+#pragma warning restore CS1998
 
             Assert.False(co.IsCompleted);
             Assert.Equal(0, counter.Count);

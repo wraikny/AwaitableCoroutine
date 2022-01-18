@@ -31,28 +31,25 @@ Install from NuGet Gallery
 ```C#
 public class Program
 {
-    private static int s_count;
-
-    private static async AwaitableCoroutine CreateCoroutine()
-    {
-        for (var i = 0; i < 10; i++)
-        {
-            s_count++;
-            await AwaitableCoroutine.Yield();
-        }
-    }
-
     public static void Main(string[] args)
     {
         var runner = new CoroutineRunner();
 
-        var coroutine = runner.Create(CreateCoroutine);
+        int count = 0;
+
+        var coroutine = runner.Create(async () => {
+            for (var i = 0; i < 10; i++)
+            {
+                count++;
+                await AwaitableCoroutine.Yield();
+            }
+        });
 
         Console.WriteLine("Started!");
 
         while (!coroutine.IsCompleted)
         {
-            Console.WriteLine($"{s_count}");
+            Console.WriteLine($"{count}");
             runner.Update();
         }
 
@@ -62,7 +59,7 @@ public class Program
 ```
 
 ```sh
-$ dotnet run -p examples/AwaitableCoroutine.Example
+$ dotnet run --project examples/AwaitableCoroutine.Example
 Started!
 0
 1

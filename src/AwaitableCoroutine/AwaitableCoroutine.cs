@@ -10,7 +10,7 @@ namespace AwaitableCoroutine
     public abstract class AwaitableCoroutineBase
     {
         internal event Action OnUpdating = null;
-        internal protected ICoroutineRunner Runner { get; set; }
+        protected internal ICoroutineRunner Runner { get; set; }
         internal Action OnCompleted { get; set; }
 
         public bool IsCompleted { get; protected internal set; } = false;
@@ -22,7 +22,7 @@ namespace AwaitableCoroutine
 
         internal List<AwaitableCoroutineBase> WaitingCoroutines { get; set; }
 
-        internal protected abstract void _Pseudo();
+        protected internal abstract void _Pseudo();
 
         public AwaitableCoroutineBase()
         {
@@ -184,7 +184,7 @@ namespace AwaitableCoroutine
         [EditorBrowsable(EditorBrowsableState.Never)]
         public CoroutineAwaiter GetAwaiter() => new CoroutineAwaiter(this);
 
-        internal protected sealed override void _Pseudo() { }
+        protected internal sealed override void _Pseudo() { }
 
         public AwaitableCoroutine() { }
 
@@ -216,7 +216,7 @@ namespace AwaitableCoroutine
         [EditorBrowsable(EditorBrowsableState.Never)]
         public CoroutineAwaiter<T> GetAwaiter() => new CoroutineAwaiter<T>(this);
 
-        internal protected sealed override void _Pseudo() { }
+        protected internal sealed override void _Pseudo() { }
 
         public AwaitableCoroutine() { }
 

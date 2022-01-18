@@ -1,10 +1,8 @@
 ﻿using System;
 
-using AwaitableCoroutine;
-
 namespace AwaitableCoroutine.ConsoleTest
 {
-    class Program
+    internal class Program
     {
         private static void RunAndThen()
         {
@@ -26,7 +24,7 @@ namespace AwaitableCoroutine.ConsoleTest
             Assert.True(count == 1);
         }
 
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             Internal.Logger.SetLogger(Console.WriteLine);
 

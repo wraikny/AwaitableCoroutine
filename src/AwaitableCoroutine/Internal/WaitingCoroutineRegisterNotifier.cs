@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace AwaitableCoroutine.Internal
+﻿namespace AwaitableCoroutine.Internal
 {
     public interface IWaitingCoroutineRegisterer
     {

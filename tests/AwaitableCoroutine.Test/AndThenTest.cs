@@ -35,7 +35,7 @@ namespace AwaitableCoroutine.Test
 
         private async AwaitableCoroutine CreateCoroutine(int target, Counter counter)
         {
-            int count = 0;
+            var count = 0;
             while (true)
             {
                 count++;

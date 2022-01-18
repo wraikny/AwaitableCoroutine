@@ -18,7 +18,7 @@ namespace AwaitableCoroutine.Test
 
             var count = 5;
 
-            bool flag = false;
+            var flag = false;
 
             var coroutine = runner.Create(() => AwaitableCoroutine.DelayCount(count).OnCompleted(() => flag = true));
 
