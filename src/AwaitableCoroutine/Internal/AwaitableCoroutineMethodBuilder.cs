@@ -29,6 +29,7 @@ namespace AwaitableCoroutine.Internal
         // 1. Static Create method.
         public static AwaitableCoroutineMethodBuilder Create()
         {
+            Logger.Log("AwaitableCoroutineMethodBuilder.Create");
             return new AwaitableCoroutineMethodBuilder(ICoroutineRunner.GetContext());
         }
 
@@ -113,6 +114,7 @@ namespace AwaitableCoroutine.Internal
         // 1. Static Create method.
         public static AwaitableCoroutineMethodBuilder<T> Create()
         {
+            Logger.Log($"AwaitableCoroutineMethodBuilder<{typeof(T).Name}>.Create");
             return new AwaitableCoroutineMethodBuilder<T>(ICoroutineRunner.GetContext());
         }
 

@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace AwaitableCoroutine
+namespace AwaitableCoroutine.Internal
 {
 
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -31,15 +31,6 @@ namespace AwaitableCoroutine
             }
 
             public void GetResult() { }
-        }
-    }
-
-    public partial class AwaitableCoroutine
-    {
-        public static YieldAwaitable Yield()
-        {
-            Internal.Logger.Log("AwaitableCoroutine.Yield()");
-            return new YieldAwaitable();
         }
     }
 }
