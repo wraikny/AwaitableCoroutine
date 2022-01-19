@@ -13,8 +13,6 @@ open AwaitableCoroutine
 type Step<'a> =
   | Await of Internal.ICoroutineAwaiter * (unit -> Step<'a>)
   | Return of 'a
-  /// We model tail calls explicitly, but still can't run them without O(n) memory usage.
-  | ReturnFrom of 'a AwaitableCoroutine
 
 module private Helper =
   let getYieldAwaiter () = AwaitableCoroutine.Internal.YieldAwaitable()
@@ -39,9 +37,6 @@ module private Helper =
           match continuation() with
           | Return r ->
             methodBuilder.SetResult (r)
-          
-          | ReturnFrom a ->
-            methodBuilder.SetResult(a.Result)
           
           | Await (await, next) ->
             continuation <- next
@@ -83,8 +78,6 @@ module private Helper =
   let rec combine (step : Step<unit>) (continuation : unit -> Step<'b>) =
     match step with
     | Return _ -> continuation()
-    | ReturnFrom t ->
-      Await (t.GetAwaiter() :> Internal.ICoroutineAwaiter, continuation)
     | Await (awaitable, next) ->
       Await (awaitable, fun () -> combine (next()) continuation)
 
@@ -97,7 +90,6 @@ module private Helper =
           let body = body()
           match body with
           | Return _ -> repeat()
-          | ReturnFrom t -> Await(t.GetAwaiter(), repeat)
           | Await (awaitable, next) ->
               Await (awaitable, fun () -> combine (next()) repeat)
         else zero
@@ -111,13 +103,6 @@ module private Helper =
     try
       match step() with
       | Return _ as i -> i
-      | ReturnFrom t ->
-        let awaitable = t.GetAwaiter()
-        Await(awaitable, fun () ->
-          try
-            awaitable.GetResult() |> Return
-          with
-          | exn -> catch exn)
       | Await (awaitable, next) -> Await (awaitable, fun () -> tryWith next catch)
     with
     | exn -> catch exn
@@ -138,18 +123,6 @@ module private Helper =
     | Return _ as i ->
       fin()
       i
-    | ReturnFrom t ->
-      let awaitable = t.GetAwaiter()
-      Await(awaitable, fun () ->
-        let result =
-          try
-            awaitable.GetResult() |> Return
-          with
-          | _ ->
-            fin()
-            reraise()
-        fin() // if we got here we haven't run fin(), because we would've reraised after doing so
-        result)
     | Await (awaitable, next) ->
         Await (awaitable, fun () -> tryFinally next fin)
 
@@ -187,7 +160,7 @@ module Builders =
     member __.TryWith(body : unit -> _ Step, catch : exn -> _ Step) = tryWith body catch
     member __.TryFinally(body : unit -> _ Step, fin : unit -> unit) = tryFinally body fin
     member __.Using(disp : #IDisposable, body : #IDisposable -> _ Step) = using disp body
-    member inline __.ReturnFrom a : _ Step = ReturnFrom a
+    member inline __.ReturnFrom a : _ Step = genericAwait(a, Return)
     member inline __.Bind(abl, continuation) = genericAwait (abl, continuation)
 
   [<Struct>]
@@ -202,7 +175,7 @@ module Builders =
     member __.TryWith(body : unit -> _ Step, catch : exn -> _ Step) = tryWith body catch
     member __.TryFinally(body : unit -> _ Step, fin : unit -> unit) = tryFinally body fin
     member __.Using(disp : #IDisposable, body : #IDisposable -> _ Step) = using disp body
-    member inline __.ReturnFrom a : _ Step = ReturnFrom a
+    member inline __.ReturnFrom a : _ Step = genericAwait(a, Return)
     member inline __.Bind(abl, continuation) = genericAwait (abl, continuation)
 
 open Builders
