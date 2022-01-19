@@ -69,7 +69,7 @@ namespace AwaitableCoroutine.Internal
             where TStateMachine : IAsyncStateMachine
         {
             Logger.Log("AwaitableCoroutineMethodBuilder.AwaitUnsafeOnCompleted");
-            awaiter.OnCompleted(stateMachine.MoveNext);
+            awaiter.UnsafeOnCompleted(stateMachine.MoveNext);
 
             WaitingCoroutineRegisterNotifier.Register<TAwaiter>(ref awaiter, _coroutine);
         }
@@ -153,7 +153,7 @@ namespace AwaitableCoroutine.Internal
             where TStateMachine : IAsyncStateMachine
         {
             Logger.Log($"AwaitableCoroutineMethodBuilder<{typeof(T).Name}>.AwaitUnsafeOnCompleted");
-            awaiter.OnCompleted(stateMachine.MoveNext);
+            awaiter.UnsafeOnCompleted(stateMachine.MoveNext);
 
             WaitingCoroutineRegisterNotifier.Register<TAwaiter>(ref awaiter, _coroutine);
         }
