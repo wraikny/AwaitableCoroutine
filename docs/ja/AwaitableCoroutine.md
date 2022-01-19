@@ -21,6 +21,7 @@
     - [FromEnumerator](#fromenumerator)
     - [AwaitTask](#awaittask)
     - [AwaitObservable](#awaitobservable)
+    - [AwaitObservableCompleted](#awaitobservablecompleted)
     - [CanceledException](#canceledexception)
 
 ## メソッド
@@ -221,6 +222,13 @@ AwaitableCoroutine.DelayCount(10)
 ### AwaitObservable
 [`AwaitObservable(IObservable<T>)`](../../src/AwaitableCoroutine/Modules/AwaitObservable.cs)
 メソッドは、`IObservable<T>.MoveNext`を待機するコルーチンを生成します。
+
+**引数**
+* `observable`: `IObservable<T>`
+
+### AwaitObservableCompleted
+[`AwaitObservableCompleted(IObservable<T>)`](../../src/AwaitableCoroutine/Modules/AwaitObservable.cs)
+メソッドは、`IObservable<T>`の完了を待機するコルーチンを生成します。
 
 **引数**
 * `observable`: `IObservable<T>`

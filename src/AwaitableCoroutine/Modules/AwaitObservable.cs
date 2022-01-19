@@ -22,7 +22,7 @@ namespace AwaitableCoroutine
         {
             var observer = new CoroutineObserver<T>();
 
-            var d = observable.Subscribe(observer);
+            using var d = observable.Subscribe(observer);
 
             while (!observer.IsObserved)
             {
@@ -30,9 +30,16 @@ namespace AwaitableCoroutine
                 await Yield();
             }
 
-            d.Dispose();
-
             return observer.Result;
+        }
+
+        public static async AwaitableCoroutine AwaitObservableCompleted<T>(IObservable<T> observable)
+        {
+            var observer = new CoroutineObserver<T>();
+
+            using var d = observable.Subscribe(observer);
+
+            while (!observer.IsCompleted) await Yield();
         }
     }
 }

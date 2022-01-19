@@ -20,6 +20,7 @@ The generic version, `AwaitableCoroutine<T>`, returns the result value.
     - [FromEnumerator](#fromenumerator)
     - [AwaitTask](#awaittask)
     - [AwaitObservable](#awaitobservable)
+    - [AwaitObservableCompleted](#awaitobservablecompleted)
     - [CanceledException](#canceledexception)
 
 ## Method
@@ -224,6 +225,12 @@ method creates a coroutine that waits for the `IObservable<T>.MoveNext`.
 **Argument**
 * `observable`: `IObservable <T>`
 
+### AwaitObservableCompleted
+[`AwaitObservableCompleted(IObservable<T>)`](../../src/AwaitableCoroutine/Modules/AwaitObservable.cs)
+The method creates a coroutine that waits for the `IObservable <T>` to complete.
+
+**Argument**
+* `observable`: `IObservable <T>`
 
 ### CanceledException
 
