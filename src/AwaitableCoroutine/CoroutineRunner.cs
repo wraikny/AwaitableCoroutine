@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.ExceptionServices;
 
 namespace AwaitableCoroutine
 {
@@ -103,7 +104,7 @@ namespace AwaitableCoroutine
 
             if (exns is { })
             {
-                if (exns.Count == 1) throw exns[0];
+                if (exns.Count == 1) ExceptionDispatchInfo.Capture(exns[0]).Throw();
                 throw new AggregateException(exns).Flatten();
             }
         }
