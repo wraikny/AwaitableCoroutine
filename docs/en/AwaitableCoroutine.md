@@ -84,6 +84,7 @@ method creates a coroutine that waits for the specified number of counts.
 
 **Argument**
 * `count`: `int`
+* * `Action<int> onUpdating = null`
 
 Call it as a static method as below.
 

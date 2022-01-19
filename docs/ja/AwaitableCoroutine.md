@@ -85,6 +85,7 @@ AwaitableCoroutine.While(() => true)
 
 **引数**
 * `count`: `int`
+* `Action<int> onUpdating = null`
 
 以下のように静的メソッドとして呼び出します。
 
