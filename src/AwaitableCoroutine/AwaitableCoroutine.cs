@@ -20,6 +20,11 @@ namespace AwaitableCoroutine
         public bool IsCanceled { get; private set; } = false;
         private Action OnCalceled { get; set; }
 
+        ///<summary>
+        /// Get AwaitableCoroutine is completed successfully or canceled
+        ///</summary>
+        public bool IsCompleted => IsCompletedSuccessfully || IsCanceled;
+
         internal List<AwaitableCoroutineBase> WaitingCoroutines { get; set; }
 
         protected internal abstract void _Pseudo();
@@ -123,7 +128,7 @@ namespace AwaitableCoroutine
             {
                 foreach (var child in WaitingCoroutines)
                 {
-                    if (child.IsCanceled || child.IsCompletedSuccessfully) continue;
+                    if (child.IsCompleted) continue;
                     child.Cancel();
                 }
             }
@@ -144,7 +149,7 @@ namespace AwaitableCoroutine
         {
             if (IsCanceled)
             {
-                if (coroutine.IsCanceled || coroutine.IsCompletedSuccessfully) return;
+                if (coroutine.IsCompleted) return;
                 coroutine.Cancel();
                 return;
             }
