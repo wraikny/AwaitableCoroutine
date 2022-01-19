@@ -18,28 +18,33 @@ namespace AwaitableCoroutine
             }
         }
 
-        public static async AwaitableCoroutine<T> AwaitObservable<T>(IObservable<T> observable)
+        public static AwaitableCoroutine<T> AwaitObservable<T>(IObservable<T> observable)
         {
             var observer = new CoroutineObserver<T>();
 
-            using var d = observable.Subscribe(observer);
+            var d = observable.Subscribe(observer);
 
-            while (!observer.IsObserved)
-            {
-                if (observer.IsCompleted) AwaitableCoroutine.ThrowCancel();
-                await Yield();
-            }
-
-            return observer.Result;
+            return Lambda(async () => {
+                while (!observer.IsObserved)
+                {
+                    if (observer.IsCompleted) AwaitableCoroutine.ThrowCancel("waiting observable is completed.");
+                    await Yield();
+                }
+                d.Dispose();
+                return observer.Result;
+            });
         }
 
-        public static async AwaitableCoroutine AwaitObservableCompleted<T>(IObservable<T> observable)
+        public static AwaitableCoroutine AwaitObservableCompleted<T>(IObservable<T> observable)
         {
             var observer = new CoroutineObserver<T>();
 
-            using var d = observable.Subscribe(observer);
+            var d = observable.Subscribe(observer);
 
-            while (!observer.IsCompleted) await Yield();
+            return Lambda(async () => {
+                while (!observer.IsCompleted) await Yield();
+                d.Dispose();
+            });
         }
     }
 }

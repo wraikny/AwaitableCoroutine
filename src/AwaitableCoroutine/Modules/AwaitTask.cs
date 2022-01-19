@@ -6,7 +6,7 @@ namespace AwaitableCoroutine
     {
         public static async AwaitableCoroutine AwaitTask(Task task)
         {
-            while (!task.IsCompleted)
+            while (!task.IsCompletedSuccessfully)
             {
                 if (task.IsCanceled)
                 {
@@ -23,7 +23,7 @@ namespace AwaitableCoroutine
 
         public static async AwaitableCoroutine<T> AwaitTask<T>(Task<T> task)
         {
-            while (!task.IsCompleted)
+            while (!task.IsCompletedSuccessfully)
             {
                 if (task.IsCanceled)
                 {
@@ -42,7 +42,7 @@ namespace AwaitableCoroutine
 
         public static async AwaitableCoroutine AwaitTask(ValueTask task)
         {
-            while (!task.IsCompleted)
+            while (!task.IsCompletedSuccessfully)
             {
                 if (task.IsCanceled)
                 {
@@ -59,7 +59,7 @@ namespace AwaitableCoroutine
 
         public static async AwaitableCoroutine<T> AwaitTask<T>(ValueTask<T> task)
         {
-            while (!task.IsCompleted)
+            while (!task.IsCompletedSuccessfully)
             {
                 if (task.IsCanceled)
                 {
