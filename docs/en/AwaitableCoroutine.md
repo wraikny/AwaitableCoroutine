@@ -220,21 +220,21 @@ method creates a coroutine that waits for the `Task` to complete.
 
 ### AwaitObservable
 [`AwaitObservable(IObservable <T>)`](../../src/AwaitableCoroutine/Modules/AwaitObservable.cs) 
-method creates a coroutine that waits for the `IObservable<T>.MoveNext`.
+method creates a coroutine that waits for the next value of `IObservable<T>`.
 
 **Argument**
 * `observable`: `IObservable <T>`
 
 ### AwaitObservableCompleted
-[`AwaitObservableCompleted(IObservable<T>)`](../../src/AwaitableCoroutine/Modules/AwaitObservable.cs)
-The method creates a coroutine that waits for the `IObservable <T>` to complete.
+[`AwaitObservableCompleted(IObservable<T>)`](../../src/AwaitableCoroutine/Modules/AwaitObservable.cs) 
+method creates a coroutine that waits for the `IObservable <T>` to complete.
 
 **Argument**
 * `observable`: `IObservable <T>`
 
 ### CanceledException
 
-`CanceledException`は、非同期メソッドによって作成されるコルーチンの実行をそのメソッド内からキャンセルしたいときに利用するための例外です。
+`CanceledException` is an exception to use when you want to cancel the execution of a coroutine created by an asynchronous method from within that method.
 
 Use the `Cancel` method if you want to cancel the coroutine in any other case.
 

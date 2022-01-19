@@ -221,7 +221,7 @@ AwaitableCoroutine.DelayCount(10)
 
 ### AwaitObservable
 [`AwaitObservable(IObservable<T>)`](../../src/AwaitableCoroutine/Modules/AwaitObservable.cs)
-メソッドは、`IObservable<T>.MoveNext`を待機するコルーチンを生成します。
+メソッドは、`IObservable<T>`の次の値を待機するコルーチンを生成します。
 
 **引数**
 * `observable`: `IObservable<T>`
