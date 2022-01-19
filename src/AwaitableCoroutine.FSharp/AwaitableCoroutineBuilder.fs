@@ -15,8 +15,6 @@ type Step<'a> =
   | Return of 'a
 
 module private Helper =
-  let getYieldAwaiter () = AwaitableCoroutine.Internal.YieldAwaitable()
-
   // Implements the machinery of running a `Step<'m, 'm>` as a awaitablecoroutine returning a continuation awaitablecoroutine.
   [<Sealed>]
   type StepStateMachine<'a>(firstStep: unit -> Step<'a>) as this =
@@ -162,6 +160,7 @@ module Builders =
     member __.Using(disp : #IDisposable, body : #IDisposable -> _ Step) = using disp body
     member inline __.ReturnFrom a : _ Step = genericAwait(a, Return)
     member inline __.Bind(abl, continuation) = genericAwait (abl, continuation)
+    member __.Yield(_: unit) = genericAwait(AwaitableCoroutine.Yield(), Return)
 
   [<Struct>]
   type DoAwaitableCoroutineBuilder(fin: unit -> unit) =
@@ -177,6 +176,7 @@ module Builders =
     member __.Using(disp : #IDisposable, body : #IDisposable -> _ Step) = using disp body
     member inline __.ReturnFrom a : _ Step = genericAwait(a, Return)
     member inline __.Bind(abl, continuation) = genericAwait (abl, continuation)
+    member __.Yield(_: unit) = genericAwait(AwaitableCoroutine.Yield(), Return)
 
 open Builders
 

@@ -16,7 +16,7 @@ type AwaitTest(outputHelper: ITestOutputHelper) =
     Internal.Logger.SetLogger(fun (s) -> try log s with _ -> ())
 
   [<Fact>]
-  member __.``Yield Test`` () =
+  member __.``Await Yield Test`` () =
     let runner = CoroutineRunner()
 
     let counter = new Counter()
@@ -244,3 +244,25 @@ type AwaitTest(outputHelper: ITestOutputHelper) =
     runner.Update()
     Assert.Equal(2, counter.Count)
     Assert.True(ac.IsCompleted)
+
+  [<Fact>]
+  member __.``Yield Test`` () =
+    let runner = CoroutineRunner()
+
+    let ac = runner.Do {
+      yield ()
+      yield ()
+    }
+
+    Assert.False(ac.IsCompleted)
+
+    runner.Update()
+    Assert.False(ac.IsCompleted)
+
+    runner.Update()
+    Assert.False(ac.IsCompleted)
+
+    runner.Update()
+    Assert.True(ac.IsCompleted)
+
+    ()
