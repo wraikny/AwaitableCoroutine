@@ -72,7 +72,7 @@ public static void Main(string[] _)
     */
 
     // メインループ
-    while(!coroutine.IsCompleted)
+    while(!coroutine.IsCompletedSuccessfully)
     {
         // ICoroutineRunnerのUpdate拡張メソッドを呼び出すことで、登録されているコルーチンを次に進めます
         runner.Update();
@@ -103,7 +103,7 @@ public static void Main(string[] _)
       });
     */
 
-    while(!coroutine.IsCompleted)
+    while(!coroutine.IsCompletedSuccessfully)
     {
         runner.Update();
     }

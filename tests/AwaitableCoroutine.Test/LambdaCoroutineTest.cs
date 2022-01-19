@@ -24,12 +24,12 @@ namespace AwaitableCoroutine.Test
             });
 #pragma warning restore CS1998
 
-            Assert.False(co.IsCompleted);
+            Assert.False(co.IsCompletedSuccessfully);
             Assert.Equal(0, counter.Count);
 
             runner.Update();
             Assert.Equal(1, counter.Count);
-            Assert.True(co.IsCompleted);
+            Assert.True(co.IsCompletedSuccessfully);
         }
 
         [Fact]
@@ -45,17 +45,17 @@ namespace AwaitableCoroutine.Test
                 counter.Inc();
             });
 
-            Assert.False(co.IsCompleted);
+            Assert.False(co.IsCompletedSuccessfully);
             Assert.Equal(0, counter.Count);
-            Assert.False(co.IsCompleted);
+            Assert.False(co.IsCompletedSuccessfully);
 
             runner.Update();
             Assert.Equal(1, counter.Count);
-            Assert.False(co.IsCompleted);
+            Assert.False(co.IsCompletedSuccessfully);
 
             runner.Update();
             Assert.Equal(2, counter.Count);
-            Assert.True(co.IsCompleted);
+            Assert.True(co.IsCompletedSuccessfully);
         }
 
         [Fact]
@@ -74,21 +74,21 @@ namespace AwaitableCoroutine.Test
                 counter.Inc();
             });
 
-            Assert.False(co.IsCompleted);
+            Assert.False(co.IsCompletedSuccessfully);
             Assert.Equal(0, counter.Count);
-            Assert.False(co.IsCompleted);
+            Assert.False(co.IsCompletedSuccessfully);
 
             for (var i = 1; i <= 5; i++)
             {
                 runner.Update();
-                Assert.False(co.IsCompleted);
+                Assert.False(co.IsCompletedSuccessfully);
                 Assert.Equal(i, counter.Count);
-                Assert.False(co.IsCompleted);
+                Assert.False(co.IsCompletedSuccessfully);
             }
 
             runner.Update();
             Assert.Equal(6, counter.Count);
-            Assert.True(co.IsCompleted);
+            Assert.True(co.IsCompletedSuccessfully);
         }
 
         [Fact]
@@ -104,25 +104,25 @@ namespace AwaitableCoroutine.Test
                 counter.Inc();
             });
 
-            Assert.False(co.IsCompleted);
+            Assert.False(co.IsCompletedSuccessfully);
             Assert.Equal(0, counter.Count);
-            Assert.False(co.IsCompleted);
+            Assert.False(co.IsCompletedSuccessfully);
 
             runner.Update();
             Assert.Equal(1, counter.Count);
-            Assert.False(co.IsCompleted);
+            Assert.False(co.IsCompletedSuccessfully);
 
             for (var i = 0; i < 5; i++)
             {
                 runner.Update();
-                Assert.False(co.IsCompleted);
+                Assert.False(co.IsCompletedSuccessfully);
                 Assert.Equal(1, counter.Count);
-                Assert.False(co.IsCompleted);
+                Assert.False(co.IsCompletedSuccessfully);
             }
 
             runner.Update();
             Assert.Equal(2, counter.Count);
-            Assert.True(co.IsCompleted);
+            Assert.True(co.IsCompletedSuccessfully);
         }
 
 

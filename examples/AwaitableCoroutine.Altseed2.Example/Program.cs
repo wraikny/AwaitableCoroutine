@@ -31,7 +31,7 @@ static class Program
 
         while (Engine.DoEvents())
         {
-            if (coroutine.IsCompleted) break;
+            if (coroutine.IsCompletedSuccessfully) break;
 
             Engine.Update();
         }

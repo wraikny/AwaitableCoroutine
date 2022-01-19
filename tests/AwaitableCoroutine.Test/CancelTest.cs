@@ -23,26 +23,26 @@ namespace AwaitableCoroutine.Test
                 await delay;
             });
 
-            Assert.False(delay.IsCompleted);
+            Assert.False(delay.IsCompletedSuccessfully);
             Assert.False(delay.IsCanceled);
 
-            Assert.False(co.IsCompleted);
+            Assert.False(co.IsCompletedSuccessfully);
             Assert.False(co.IsCanceled);
 
             runner.Update();
 
-            Assert.False(delay.IsCompleted);
+            Assert.False(delay.IsCompletedSuccessfully);
             Assert.False(delay.IsCanceled);
 
-            Assert.False(co.IsCompleted);
+            Assert.False(co.IsCompletedSuccessfully);
             Assert.False(co.IsCanceled);
 
             delay.Cancel();
 
-            Assert.False(delay.IsCompleted);
+            Assert.False(delay.IsCompletedSuccessfully);
             Assert.True(delay.IsCanceled);
 
-            Assert.False(co.IsCompleted);
+            Assert.False(co.IsCompletedSuccessfully);
             Assert.True(co.IsCanceled);
         }
 
@@ -55,31 +55,31 @@ namespace AwaitableCoroutine.Test
 
             var co = runner.Context<AwaitableCoroutine>(() => AwaitableCoroutine.WaitAll(delay, delay));
 
-            Assert.False(delay.IsCompleted);
+            Assert.False(delay.IsCompletedSuccessfully);
             Assert.False(delay.IsCanceled);
 
-            Assert.False(co.IsCompleted);
+            Assert.False(co.IsCompletedSuccessfully);
             Assert.False(co.IsCanceled);
 
             runner.Update();
 
-            Assert.False(delay.IsCompleted);
+            Assert.False(delay.IsCompletedSuccessfully);
             Assert.False(delay.IsCanceled);
 
-            Assert.False(co.IsCompleted);
+            Assert.False(co.IsCompletedSuccessfully);
             Assert.False(co.IsCanceled);
 
             delay.Cancel();
 
-            Assert.False(delay.IsCompleted);
+            Assert.False(delay.IsCompletedSuccessfully);
             Assert.True(delay.IsCanceled);
 
-            Assert.False(co.IsCompleted);
+            Assert.False(co.IsCompletedSuccessfully);
             Assert.False(co.IsCanceled);
 
             runner.Update();
 
-            Assert.False(co.IsCompleted);
+            Assert.False(co.IsCompletedSuccessfully);
             Assert.True(co.IsCanceled);
             Assert.True(co.Exception is ChildCanceledException<AwaitableCoroutineBase>);
         }

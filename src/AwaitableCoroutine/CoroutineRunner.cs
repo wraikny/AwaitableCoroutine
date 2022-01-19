@@ -62,7 +62,7 @@ namespace AwaitableCoroutine
 
                 foreach (var c in _coroutines)
                 {
-                    if (!c.IsCompleted && !c.IsCanceled) c.MoveNext();
+                    if (!c.IsCompletedSuccessfully && !c.IsCanceled) c.MoveNext();
 
                     if (c.Exception is CanceledException)
                     {
@@ -80,9 +80,9 @@ namespace AwaitableCoroutine
                     {
                         Internal.Logger.Log($"CoroutineRunner.OnUpdate {c.GetType().Name} is canceled");
                     }
-                    else if (c.IsCompleted)
+                    else if (c.IsCompletedSuccessfully)
                     {
-                        Internal.Logger.Log($"CoroutineRunner.OnUpdate {c.GetType().Name} is completed");
+                        Internal.Logger.Log($"CoroutineRunner.OnUpdate {c.GetType().Name} is completed successfully");
                     }
                     else
                     {

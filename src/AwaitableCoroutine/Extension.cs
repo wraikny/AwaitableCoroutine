@@ -39,9 +39,9 @@ namespace AwaitableCoroutine
                 ThrowHelper.InvalidOp("Coroutine is already canceled");
             }
 
-            if (coroutine.IsCompleted)
+            if (coroutine.IsCompletedSuccessfully)
             {
-                ThrowHelper.InvalidOp("Coroutine is already completed");
+                ThrowHelper.InvalidOp("Coroutine is already completed successfully");
             }
 
             coroutine.OnUpdating += onUpdating;

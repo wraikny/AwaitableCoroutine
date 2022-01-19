@@ -23,12 +23,12 @@ namespace AwaitableCoroutine.Test
             for (var i = 0; i < 3; i++)
             {
                 runner.Update();
-                Assert.False(coroutine.IsCompleted);
+                Assert.False(coroutine.IsCompletedSuccessfully);
             }
 
             condition = true;
             runner.Update();
-            Assert.True(coroutine.IsCompleted);
+            Assert.True(coroutine.IsCompletedSuccessfully);
         }
     }
 }

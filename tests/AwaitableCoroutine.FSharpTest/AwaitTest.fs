@@ -29,14 +29,14 @@ type AwaitTest(outputHelper: ITestOutputHelper) =
         }
     )
 
-    Assert.False(ac.IsCompleted)
+    Assert.False(ac.IsCompletedSuccessfully)
     Assert.Equal(0, counter.Count)
 
     runner.Update() // 1
     Assert.Equal(1, counter.Count)
 
     runner.Update() // 2
-    Assert.True(ac.IsCompleted)
+    Assert.True(ac.IsCompletedSuccessfully)
     Assert.Equal(2, counter.Count)
 
   [<Fact>]
@@ -53,7 +53,7 @@ type AwaitTest(outputHelper: ITestOutputHelper) =
         }
     )
 
-    Assert.False(ac.IsCompleted)
+    Assert.False(ac.IsCompletedSuccessfully)
     Assert.Equal(0, counter.Count)
 
     runner.Update()
@@ -63,7 +63,7 @@ type AwaitTest(outputHelper: ITestOutputHelper) =
 
     runner.Update()
 
-    Assert.True(ac.IsCompleted)
+    Assert.True(ac.IsCompletedSuccessfully)
     Assert.Equal(2, counter.Count)
 
   [<Fact>]
@@ -81,7 +81,7 @@ type AwaitTest(outputHelper: ITestOutputHelper) =
         }
     )
 
-    Assert.False(ac.IsCompleted)
+    Assert.False(ac.IsCompletedSuccessfully)
     Assert.Equal(0, counter.Count)
 
     runner.Update()
@@ -89,7 +89,7 @@ type AwaitTest(outputHelper: ITestOutputHelper) =
 
     for i in 1..3 do runner.Update()
 
-    Assert.True(ac.IsCompleted)
+    Assert.True(ac.IsCompletedSuccessfully)
     Assert.Equal(2, counter.Count)
 
   [<Fact>]
@@ -109,7 +109,7 @@ type AwaitTest(outputHelper: ITestOutputHelper) =
         }
     )
 
-    Assert.False(ac.IsCompleted)
+    Assert.False(ac.IsCompletedSuccessfully)
     Assert.Equal(0, counter.Count)
 
     runner.Update()
@@ -117,7 +117,7 @@ type AwaitTest(outputHelper: ITestOutputHelper) =
 
     for i in 1..3 do runner.Update()
 
-    Assert.True(ac.IsCompleted)
+    Assert.True(ac.IsCompletedSuccessfully)
     Assert.Equal(2, counter.Count)
 
   [<Theory; InlineData(false); InlineData(true)>]
@@ -136,20 +136,20 @@ type AwaitTest(outputHelper: ITestOutputHelper) =
       }
     )
 
-    Assert.False(ac.IsCompleted)
+    Assert.False(ac.IsCompletedSuccessfully)
     Assert.Equal(0, counter.Count)
 
     runner.Update()
-    Assert.False(ac.IsCompleted)
+    Assert.False(ac.IsCompletedSuccessfully)
     Assert.Equal(1, counter.Count)
 
     if cond then
       runner.Update()
-      Assert.False(ac.IsCompleted)
+      Assert.False(ac.IsCompletedSuccessfully)
       Assert.Equal(1, counter.Count)
     
     runner.Update()
-    Assert.True(ac.IsCompleted)
+    Assert.True(ac.IsCompletedSuccessfully)
     Assert.Equal(2, counter.Count)
 
   [<Fact>]
@@ -178,13 +178,13 @@ type AwaitTest(outputHelper: ITestOutputHelper) =
         }
     )
 
-    Assert.False(ac.IsCompleted)
+    Assert.False(ac.IsCompletedSuccessfully)
 
     for i in 0..4 do
       Assert.Equal(i, counter.Count)
       runner.Update()
 
-    Assert.True(ac.IsCompleted)
+    Assert.True(ac.IsCompletedSuccessfully)
     Assert.Equal(4, counter.Count)
 
 
@@ -208,7 +208,7 @@ type AwaitTest(outputHelper: ITestOutputHelper) =
         }
     )
 
-    Assert.False(ac.IsCompleted)
+    Assert.False(ac.IsCompletedSuccessfully)
     Assert.Equal(0, counter.Count)
 
     runner.Update()
@@ -235,7 +235,7 @@ type AwaitTest(outputHelper: ITestOutputHelper) =
       counter.Inc()
     }
 
-    Assert.False(ac.IsCompleted)
+    Assert.False(ac.IsCompletedSuccessfully)
     Assert.Equal(0, counter.Count)
 
     runner.Update()
@@ -243,7 +243,7 @@ type AwaitTest(outputHelper: ITestOutputHelper) =
 
     runner.Update()
     Assert.Equal(2, counter.Count)
-    Assert.True(ac.IsCompleted)
+    Assert.True(ac.IsCompletedSuccessfully)
 
   [<Fact>]
   member __.``Yield Test`` () =
@@ -254,15 +254,15 @@ type AwaitTest(outputHelper: ITestOutputHelper) =
       yield ()
     }
 
-    Assert.False(ac.IsCompleted)
+    Assert.False(ac.IsCompletedSuccessfully)
 
     runner.Update()
-    Assert.False(ac.IsCompleted)
+    Assert.False(ac.IsCompletedSuccessfully)
 
     runner.Update()
-    Assert.False(ac.IsCompleted)
+    Assert.False(ac.IsCompletedSuccessfully)
 
     runner.Update()
-    Assert.True(ac.IsCompleted)
+    Assert.True(ac.IsCompletedSuccessfully)
 
     ()

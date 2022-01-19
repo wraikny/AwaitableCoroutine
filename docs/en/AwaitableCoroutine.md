@@ -25,8 +25,8 @@ The generic version, `AwaitableCoroutine<T>`, returns the result value.
 ## Method
 
 | Name | Desc
-| --- | --- | `IsCompleted
-| `IsCompleted` | Get whether the coroutine is completed or not |
+| --- | --- | `IsCompletedSuccessfully
+| `IsCompletedSuccessfully` | Get whether the coroutine is completed successfully or not |
 | `IsCanceled` | Get whether the coroutine is canceled or not |
 | `Cancel()` | Cancel the coroutine |
 

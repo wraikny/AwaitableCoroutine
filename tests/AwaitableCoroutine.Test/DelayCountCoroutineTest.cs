@@ -25,11 +25,11 @@ namespace AwaitableCoroutine.Test
             for (var i = 0; i < count; i++)
             {
                 runner.Update();
-                Assert.False(coroutine.IsCompleted);
+                Assert.False(coroutine.IsCompletedSuccessfully);
             }
 
             runner.Update();
-            Assert.True(coroutine.IsCompleted);
+            Assert.True(coroutine.IsCompletedSuccessfully);
             Assert.True(flag);
         }
 
@@ -50,7 +50,7 @@ namespace AwaitableCoroutine.Test
 
             var co = runner.Create(() => CreateAwaitDelayCount(counter));
 
-            Assert.False(co.IsCompleted);
+            Assert.False(co.IsCompletedSuccessfully);
 
             runner.Update();
             Assert.Equal(1, counter.Count);
@@ -65,7 +65,7 @@ namespace AwaitableCoroutine.Test
             runner.Update();
             Assert.Equal(3, counter.Count);
 
-            Assert.True(co.IsCompleted);
+            Assert.True(co.IsCompletedSuccessfully);
         }
     }
 }

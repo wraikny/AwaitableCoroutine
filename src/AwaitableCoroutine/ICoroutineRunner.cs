@@ -42,7 +42,7 @@ namespace AwaitableCoroutine
     {
         internal static void Register(this ICoroutineRunner runner, AwaitableCoroutineBase coroutine)
         {
-            if (coroutine.IsCompleted)
+            if (coroutine.IsCompletedSuccessfully)
             {
                 return;
             }

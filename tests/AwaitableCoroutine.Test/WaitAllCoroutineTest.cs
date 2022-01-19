@@ -25,10 +25,10 @@ namespace AwaitableCoroutine.Test
                 })
             );
 
-            Assert.False(waitAll.IsCompleted);
+            Assert.False(waitAll.IsCompletedSuccessfully);
 
             runner.Update();
-            Assert.True(waitAll.IsCompleted);
+            Assert.True(waitAll.IsCompletedSuccessfully);
         }
 
         [Fact]
@@ -45,14 +45,14 @@ namespace AwaitableCoroutine.Test
                 })
             );
 
-            Assert.False(waitAll.IsCompleted);
+            Assert.False(waitAll.IsCompletedSuccessfully);
 
             for (var i = 0; i < 4; i++)
             {
                 runner.Update();
             }
             runner.Update();
-            Assert.True(waitAll.IsCompleted);
+            Assert.True(waitAll.IsCompletedSuccessfully);
         }
 
         [Fact]
@@ -67,12 +67,12 @@ namespace AwaitableCoroutine.Test
                 )
             );
 
-            Assert.False(waitAll.IsCompleted);
+            Assert.False(waitAll.IsCompletedSuccessfully);
 
             // completes children
             runner.Update();
 
-            Assert.True(waitAll.IsCompleted);
+            Assert.True(waitAll.IsCompletedSuccessfully);
         }
 
         [Fact]
@@ -90,11 +90,11 @@ namespace AwaitableCoroutine.Test
                 return AwaitableCoroutine.WaitAll<int>(coroutines);
             });
 
-            Assert.False(waitAll.IsCompleted);
+            Assert.False(waitAll.IsCompletedSuccessfully);
 
             runner.Update();
 
-            Assert.True(waitAll.IsCompleted);
+            Assert.True(waitAll.IsCompletedSuccessfully);
 
             var res = waitAll.Result;
             Assert.NotNull(res);

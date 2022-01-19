@@ -22,8 +22,8 @@ namespace AwaitableCoroutine.Test
             var coroutine1 = runner1.Create(() => AwaitableCoroutine.DelayCount(3));
             var coroutine2 = runner2.Create(() => coroutine1.UntilCompleted(counter.Inc));
 
-            Assert.False(coroutine1.IsCompleted);
-            Assert.False(coroutine2.IsCompleted);
+            Assert.False(coroutine1.IsCompletedSuccessfully);
+            Assert.False(coroutine2.IsCompletedSuccessfully);
 
             runner2.Update();
             Assert.Equal(1, counter.Count);
@@ -35,19 +35,19 @@ namespace AwaitableCoroutine.Test
             {
                 runner1.Update();
                 Assert.Equal(2, counter.Count);
-                Assert.False(coroutine1.IsCompleted);
-                Assert.False(coroutine2.IsCompleted);
+                Assert.False(coroutine1.IsCompletedSuccessfully);
+                Assert.False(coroutine2.IsCompletedSuccessfully);
             }
 
             runner2.Update();
             Assert.Equal(3, counter.Count);
 
             runner1.Update();
-            Assert.True(coroutine1.IsCompleted);
-            Assert.False(coroutine2.IsCompleted);
+            Assert.True(coroutine1.IsCompletedSuccessfully);
+            Assert.False(coroutine2.IsCompletedSuccessfully);
 
             runner2.Update();
-            Assert.True(coroutine2.IsCompleted);
+            Assert.True(coroutine2.IsCompletedSuccessfully);
             Assert.Equal(3, counter.Count);
         }
     }

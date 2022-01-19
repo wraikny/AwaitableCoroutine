@@ -26,9 +26,9 @@ namespace AwaitableCoroutine.Test
                     }))
             );
 
-            while (!c.IsCompleted) runner.Update();
+            while (!c.IsCompletedSuccessfully) runner.Update();
 
-            Assert.True(c.IsCompleted);
+            Assert.True(c.IsCompletedSuccessfully);
 
             Assert.Equal(1, counter.Count);
         }
@@ -55,7 +55,7 @@ namespace AwaitableCoroutine.Test
 
             var c = runner.Create(() => CreateCoroutine(target, counter));
 
-            while (!c.IsCompleted) runner.Update();
+            while (!c.IsCompletedSuccessfully) runner.Update();
 
             Assert.Equal(target, counter.Count);
         }

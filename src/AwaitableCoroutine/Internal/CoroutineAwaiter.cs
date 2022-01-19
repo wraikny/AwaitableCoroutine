@@ -18,7 +18,7 @@ namespace AwaitableCoroutine.Internal
             _target = target;
         }
 
-        public bool IsCompleted => _target.IsCompleted;
+        public bool IsCompleted => _target.IsCompletedSuccessfully;
 
         void INotifyCompletion.OnCompleted(Action continuation)
         {
@@ -50,7 +50,7 @@ namespace AwaitableCoroutine.Internal
             _target = target;
         }
 
-        public bool IsCompleted => _target.IsCompleted;
+        public bool IsCompleted => _target.IsCompletedSuccessfully;
 
         void INotifyCompletion.OnCompleted(Action continuation)
         {

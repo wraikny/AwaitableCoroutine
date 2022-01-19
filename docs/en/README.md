@@ -71,7 +71,7 @@ public static void Main(string[] _)
     */
 
     // Main loop
-    while(!coroutine.IsCompleted)
+    while(!coroutine.IsCompletedSuccessfully)
     {
          // Move registered coroutines to the next by calling the `Update` extension method of ICoroutineRunner
         runner.Update();
@@ -102,7 +102,7 @@ public static void Main(string[] _)
       });
     */
 
-    while(!coroutine.IsCompleted)
+    while(!coroutine.IsCompletedSuccessfully)
     {
         runner.Update();
     }

@@ -6,7 +6,7 @@ namespace AwaitableCoroutine
     {
         public static async AwaitableCoroutine<T> SelectTo<T>(this AwaitableCoroutineBase coroutine, T result)
         {
-            while (!coroutine.IsCompleted)
+            while (!coroutine.IsCompletedSuccessfully)
             {
                 if (coroutine.IsCanceled)
                 {
@@ -30,7 +30,7 @@ namespace AwaitableCoroutine
                 ThrowHelper.ArgNull(nameof(thunk));
             }
 
-            while (!coroutine.IsCompleted)
+            while (!coroutine.IsCompletedSuccessfully)
             {
                 if (coroutine.IsCanceled)
                 {
@@ -54,7 +54,7 @@ namespace AwaitableCoroutine
                 ThrowHelper.ArgNull(nameof(thunk));
             }
 
-            while (!coroutine.IsCompleted)
+            while (!coroutine.IsCompletedSuccessfully)
             {
                 if (coroutine.IsCanceled)
                 {

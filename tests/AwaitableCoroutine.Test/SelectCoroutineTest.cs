@@ -24,14 +24,14 @@ namespace AwaitableCoroutine.Test
                 return (c1, c2, c3);
             });
 
-            Assert.False(c1.IsCompleted);
-            Assert.False(c2.IsCompleted);
-            Assert.False(c3.IsCompleted);
+            Assert.False(c1.IsCompletedSuccessfully);
+            Assert.False(c2.IsCompletedSuccessfully);
+            Assert.False(c3.IsCompletedSuccessfully);
 
             runner.Update();
-            Assert.True(c1.IsCompleted);
-            Assert.True(c2.IsCompleted);
-            Assert.True(c3.IsCompleted);
+            Assert.True(c1.IsCompletedSuccessfully);
+            Assert.True(c2.IsCompletedSuccessfully);
+            Assert.True(c3.IsCompletedSuccessfully);
 
             Assert.Equal(2, c2.Result);
             Assert.Equal(4, c3.Result);

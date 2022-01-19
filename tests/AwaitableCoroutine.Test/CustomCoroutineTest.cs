@@ -28,11 +28,11 @@ namespace AwaitableCoroutine.Test
 
             var c = runner.Create(() => new CustomCoroutine());
 
-            Assert.False(c.IsCompleted);
+            Assert.False(c.IsCompletedSuccessfully);
 
             runner.Update();
 
-            Assert.True(c.IsCompleted);
+            Assert.True(c.IsCompletedSuccessfully);
         }
     }
 }

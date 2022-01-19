@@ -16,7 +16,7 @@ namespace AwaitableCoroutine
                 ThrowHelper.ArgNull(nameof(action));
             }
 
-            while (!coroutine.IsCompleted)
+            while (!coroutine.IsCompletedSuccessfully)
             {
                 if (coroutine.IsCanceled)
                 {
@@ -39,7 +39,7 @@ namespace AwaitableCoroutine
                 ThrowHelper.ArgNull(nameof(createCoroutine));
             }
 
-            while (!coroutine.IsCompleted)
+            while (!coroutine.IsCompletedSuccessfully)
             {
                 if (coroutine.IsCanceled)
                 {
@@ -61,7 +61,7 @@ namespace AwaitableCoroutine
                 ThrowHelper.ArgNull(nameof(action));
             }
 
-            while (!coroutine.IsCompleted)
+            while (!coroutine.IsCompletedSuccessfully)
             {
                 if (coroutine.IsCanceled)
                 {

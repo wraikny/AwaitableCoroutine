@@ -13,7 +13,7 @@ namespace AwaitableCoroutine
         protected internal ICoroutineRunner Runner { get; set; }
         internal Action OnCompleted { get; set; }
 
-        public bool IsCompleted { get; protected internal set; } = false;
+        public bool IsCompletedSuccessfully { get; protected internal set; } = false;
 
         public Exception Exception { get; private set; } = null;
 
@@ -51,7 +51,7 @@ namespace AwaitableCoroutine
                 ThrowHelper.InvalidOp("Coroutine is already canceled");
             }
 
-            if (IsCompleted)
+            if (IsCompletedSuccessfully)
             {
                 action.Invoke();
                 return;
@@ -78,9 +78,9 @@ namespace AwaitableCoroutine
                 ThrowHelper.ArgNull(nameof(onCanceled));
             }
 
-            if (IsCompleted)
+            if (IsCompletedSuccessfully)
             {
-                ThrowHelper.InvalidOp("Coroutine is already completed");
+                ThrowHelper.InvalidOp("Coroutine is already completed successfully");
             }
 
             if (IsCanceled)
@@ -108,9 +108,9 @@ namespace AwaitableCoroutine
                 ThrowHelper.InvalidOp("Coroutien is already canceled");
             }
 
-            if (IsCompleted)
+            if (IsCompletedSuccessfully)
             {
-                ThrowHelper.InvalidOp("Coroutine is already completed");
+                ThrowHelper.InvalidOp("Coroutine is already completed successfully");
             }
 
             IsCanceled = true;
@@ -123,7 +123,7 @@ namespace AwaitableCoroutine
             {
                 foreach (var child in WaitingCoroutines)
                 {
-                    if (child.IsCanceled || child.IsCompleted) continue;
+                    if (child.IsCanceled || child.IsCompletedSuccessfully) continue;
                     child.Cancel();
                 }
             }
@@ -144,7 +144,7 @@ namespace AwaitableCoroutine
         {
             if (IsCanceled)
             {
-                if (coroutine.IsCanceled || coroutine.IsCompleted) return;
+                if (coroutine.IsCanceled || coroutine.IsCompletedSuccessfully) return;
                 coroutine.Cancel();
                 return;
             }
@@ -160,9 +160,9 @@ namespace AwaitableCoroutine
                 ThrowHelper.InvalidOp("Coroutine is alread canceled");
             }
 
-            if (IsCompleted)
+            if (IsCompletedSuccessfully)
             {
-                ThrowHelper.InvalidOp("Coroutine is alread completed");
+                ThrowHelper.InvalidOp("Coroutine is alread completed successfully");
             }
 
             try
@@ -192,9 +192,9 @@ namespace AwaitableCoroutine
 
         protected void Complete()
         {
-            if (IsCompleted)
+            if (IsCompletedSuccessfully)
             {
-                ThrowHelper.InvalidOp("Coroutine already completed");
+                ThrowHelper.InvalidOp("Coroutine already completed successfully");
             }
 
             if (IsCanceled)
@@ -202,7 +202,7 @@ namespace AwaitableCoroutine
                 ThrowHelper.InvalidOp($"Coroutine is already canceled");
             }
 
-            IsCompleted = true;
+            IsCompletedSuccessfully = true;
             OnCompleted?.Invoke();
             OnCompleted = null;
             Runner = null;
@@ -226,9 +226,9 @@ namespace AwaitableCoroutine
 
         protected void Complete(T result)
         {
-            if (IsCompleted)
+            if (IsCompletedSuccessfully)
             {
-                ThrowHelper.InvalidOp("Coroutine already completed");
+                ThrowHelper.InvalidOp("Coroutine already completed successfully");
             }
 
             if (IsCanceled)
@@ -236,7 +236,7 @@ namespace AwaitableCoroutine
                 ThrowHelper.InvalidOp($"Coroutine is already canceled");
             }
 
-            IsCompleted = true;
+            IsCompletedSuccessfully = true;
             Result = result;
 
             OnCompleted?.Invoke();

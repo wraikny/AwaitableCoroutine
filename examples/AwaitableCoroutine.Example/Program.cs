@@ -20,7 +20,7 @@ var coroutine = runner.Create(async () => {
 while (true)
 {
     runner.Update();
-    if (coroutine.IsCompleted) break;
+    if (coroutine.IsCompletedSuccessfully) break;
 
     Console.WriteLine($"{count}");
 }

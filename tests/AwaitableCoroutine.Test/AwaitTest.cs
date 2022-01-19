@@ -83,15 +83,15 @@ namespace AwaitableCoroutine.Test
 
             var co = runner.Create(() => SingleYieldCoroutine(counter));
 
-            Assert.False(co.IsCompleted);
+            Assert.False(co.IsCompletedSuccessfully);
             Assert.Equal(0, counter.Count);
 
             runner.Update();
-            Assert.False(co.IsCompleted);
+            Assert.False(co.IsCompletedSuccessfully);
             Assert.Equal(1, counter.Count);
 
             runner.Update();
-            Assert.True(co.IsCompleted);
+            Assert.True(co.IsCompletedSuccessfully);
             Assert.Equal(2, counter.Count);
         }
 
@@ -146,23 +146,23 @@ namespace AwaitableCoroutine.Test
                 coroutine1.AndThen(() => AwaitableCoroutine.DelayCount(0))
             );
 
-            Assert.False(coroutine1.IsCompleted);
-            Assert.False(coroutine2.IsCompleted);
+            Assert.False(coroutine1.IsCompletedSuccessfully);
+            Assert.False(coroutine2.IsCompletedSuccessfully);
 
             runner1.Update();
-            Assert.True(coroutine1.IsCompleted);
-            Assert.False(coroutine2.IsCompleted);
+            Assert.True(coroutine1.IsCompletedSuccessfully);
+            Assert.False(coroutine2.IsCompletedSuccessfully);
 
             for (var i = 0; i < 5; i++)
             {
                 runner1.Update();
-                Assert.False(coroutine2.IsCompleted);
+                Assert.False(coroutine2.IsCompletedSuccessfully);
             }
 
             runner2.Update();
             runner2.Update();
             runner2.Update();
-            Assert.True(coroutine2.IsCompleted);
+            Assert.True(coroutine2.IsCompletedSuccessfully);
         }
 
         [Fact]
@@ -172,7 +172,7 @@ namespace AwaitableCoroutine.Test
 
             var co = runner.Create(CreateWithException);
 
-            Assert.False(co.IsCompleted);
+            Assert.False(co.IsCompletedSuccessfully);
 
             runner.Update();
 
@@ -193,8 +193,8 @@ namespace AwaitableCoroutine.Test
 
             var waitAll = runner.Create(() => AwaitableCoroutine.WaitAll(co1, co2, co3));
 
-            Assert.False(co1.IsCompleted);
-            Assert.False(co2.IsCompleted);
+            Assert.False(co1.IsCompletedSuccessfully);
+            Assert.False(co2.IsCompletedSuccessfully);
 
             runner.Update();
 

@@ -33,11 +33,11 @@ namespace AwaitableCoroutine.Test
             for (var i = 0; i < n; i++)
             {
                 runner.Update();
-                Assert.False(coroutine.IsCompleted);
+                Assert.False(coroutine.IsCompletedSuccessfully);
             }
 
             runner.Update();
-            Assert.True(coroutine.IsCompleted);
+            Assert.True(coroutine.IsCompletedSuccessfully);
         }
     }
 }

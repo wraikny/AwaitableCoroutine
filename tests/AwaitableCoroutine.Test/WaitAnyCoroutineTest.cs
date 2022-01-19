@@ -28,15 +28,15 @@ namespace AwaitableCoroutine.Test
                 })
             );
 
-            Assert.False(waitAny.IsCompleted);
+            Assert.False(waitAny.IsCompletedSuccessfully);
 
             runner.Update();
-            Assert.False(waitAny.IsCompleted);
+            Assert.False(waitAny.IsCompletedSuccessfully);
 
             flag = true;
 
             runner.Update();
-            Assert.True(waitAny.IsCompleted);
+            Assert.True(waitAny.IsCompletedSuccessfully);
         }
 
         [Fact]
@@ -53,15 +53,15 @@ namespace AwaitableCoroutine.Test
                 )
             );
 
-            Assert.False(waitAny.IsCompleted);
+            Assert.False(waitAny.IsCompletedSuccessfully);
 
             runner.Update();
-            Assert.False(waitAny.IsCompleted);
+            Assert.False(waitAny.IsCompletedSuccessfully);
 
             flag = true;
 
             runner.Update();
-            Assert.True(waitAny.IsCompleted);
+            Assert.True(waitAny.IsCompletedSuccessfully);
         }
 
         [Fact]
@@ -81,16 +81,16 @@ namespace AwaitableCoroutine.Test
                 });
             });
 
-            Assert.False(waitAny.IsCompleted);
+            Assert.False(waitAny.IsCompletedSuccessfully);
 
             runner.Update();
-            Assert.False(waitAny.IsCompleted);
+            Assert.False(waitAny.IsCompletedSuccessfully);
 
             flag = true;
 
             runner.Update();
 
-            Assert.True(waitAny.IsCompleted);
+            Assert.True(waitAny.IsCompletedSuccessfully);
 
             var res = waitAny.Result;
             Assert.Equal(1, res);
