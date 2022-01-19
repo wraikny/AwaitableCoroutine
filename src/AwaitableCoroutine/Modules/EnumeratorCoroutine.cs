@@ -17,12 +17,4 @@ namespace AwaitableCoroutine
             }
         }
     }
-
-    public static class IEnumeratorExt
-    {
-        public static AwaitableCoroutine ToAwaitable(this IEnumerator enumerator)
-        {
-            return AwaitableCoroutine.FromEnumerator(enumerator);
-        }
-    }
 }

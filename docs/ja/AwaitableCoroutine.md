@@ -15,10 +15,12 @@
     - [DelayCount](#delaycount)
     - [WaitAll](#waitall)
     - [WaitAny](#waitany)
-    - [FromEnumerator](#fromenumerator)
     - [Select, SelectTo](#select-selectto)
     - [AndThen](#andthen)
     - [UntilCompleted](#untilcompleted)
+    - [FromEnumerator](#fromenumerator)
+    - [AwaitTask](#awaittask)
+    - [AwaitObservable](#awaitobservable)
     - [CanceledException](#canceledexception)
 
 ## メソッド
@@ -121,15 +123,6 @@ AwaitableCoroutine.WaitAll(coroutine1, coroutine2)
 AwaitableCoroutine.WaitAny(coroutine1, coroutine2)
 ```
 
-### FromEnumerator
-[`FromEnumerator(IEnumerator)`](../../src/AwaitableCoroutine/Modules/EnumeratorCoroutine.cs)
-メソッドは、`IEnumerator`を元にコルーチンを生成します。
-
-**引数**
-* `enumerator`: `IEnumerator`
-
-`IEnumerator`の拡張メソッドとして`ToAwaitable()`も提供しています。
-
 ### Select, SelectTo
 
 [`Select`, `SelectTo`](../../src/AwaitableCoroutine/Modules/SelectCoroutine.cs)
@@ -210,6 +203,27 @@ AwaitableCoroutine.DelayCount(10)
 * `UntilCompleted<T>`（`AwaitableCoroutine`を実行する）
   * `AwaitableCoroutineBase coroutine`
   * `Func<AwaitableCoroutine<T>> action`
+
+### FromEnumerator
+[`FromEnumerator(IEnumerator)`](../../src/AwaitableCoroutine/Modules/EnumeratorCoroutine.cs)
+メソッドは、`IEnumerator`を元にコルーチンを生成します。
+
+**引数**
+* `enumerator`: `IEnumerator`
+
+### AwaitTask
+[`AwaitTask(Task)`](../../src/AwaitableCoroutine/Modules/AwaitTask.cs)
+メソッドは、`Task`の完了を待機するコルーチンを生成します。
+
+**引数**
+* `task`: `Task` または `Task<T>` または `ValueTask` または `ValueTask<T>`
+
+### AwaitObservable
+[`AwaitObservable(IObservable<T>)`](../../src/AwaitableCoroutine/Modules/AwaitObservable.cs)
+メソッドは、`IObservable<T>.MoveNext`を待機するコルーチンを生成します。
+
+**引数**
+* `observable`: `IObservable<T>`
 
 ### CanceledException
 

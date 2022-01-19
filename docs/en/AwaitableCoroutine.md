@@ -14,10 +14,12 @@ The generic version, `AwaitableCoroutine<T>`, returns the result value.
     - [DelayCount](#delaycount)
     - [WaitAll](#waitall)
     - [WaitAny](#waitany)
-    - [FromEnumerator](#fromenumerator)
     - [Select, SelectTo](#select-selectto)
     - [AndThen](#andthen)
     - [UntilCompleted](#untilcompleted)
+    - [FromEnumerator](#fromenumerator)
+    - [AwaitTask](#awaittask)
+    - [AwaitObservable](#awaitobservable)
     - [CanceledException](#canceledexception)
 
 ## Method
@@ -120,15 +122,6 @@ Call it as a static method as below.
 AwaitableCoroutine.WaitAny(coroutine1, coroutine2)
 ```
 
-### FromEnumerator
-[`FromEnumerator(IEnumerator)`](../../src/AwaitableCoroutine/Modules/EnumeratorCoroutine.cs) 
-method creates a coroutine based on the `IEnumerator`.
-
-**Arguments**.
-* `enumerator`: `IEnumerator`
-
-It also provides `ToAwaitable()` as an extension method to `IEnumerator`.
-
 ### Select, SelectTo
 
 [`Select`, `SelectTo`](../../src/AwaitableCoroutine/Modules/SelectCoroutine.cs) 
@@ -209,6 +202,28 @@ In this example, a coroutine is created to output the string `Hello` every three
 * `UntilCompleted<T>`（`AwaitableCoroutine`を実行する）
   * `AwaitableCoroutineBase coroutine`
   * `Func<AwaitableCoroutine<T>> action`
+
+### FromEnumerator
+[`FromEnumerator(IEnumerator)`](../../src/AwaitableCoroutine/Modules/EnumeratorCoroutine.cs) 
+method creates a coroutine based on the `IEnumerator`.
+
+**Argument**.
+* `enumerator`: `IEnumerator`
+
+### AwaitTask
+[`AwaitTask(Task)`](../../src/AwaitableCoroutine/Modules/AwaitTask.cs) 
+method creates a coroutine that waits for the `Task` to complete.
+
+**Argument**
+* `task`:` Task` or `Task <T>` or `ValueTask` or` ValueTask <T> `
+
+### AwaitObservable
+[`AwaitObservable(IObservable <T>)`](../../src/AwaitableCoroutine/Modules/AwaitObservable.cs) 
+method creates a coroutine that waits for the `IObservable<T>.MoveNext`.
+
+**Argument**
+* `observable`: `IObservable <T>`
+
 
 ### CanceledException
 
