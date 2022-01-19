@@ -1,7 +1,6 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-using Xunit;
 using Xunit.Abstractions;
 
 namespace AwaitableCoroutine.Test
@@ -48,7 +47,7 @@ namespace AwaitableCoroutine.Test
 
             public void Notify(T value)
             {
-                foreach(var o in observers)
+                foreach (var o in observers)
                 {
                     o.OnNext(value);
                 }
@@ -56,31 +55,13 @@ namespace AwaitableCoroutine.Test
 
             public void Complete()
             {
-                foreach(var o in observers)
+                foreach (var o in observers)
                 {
                     o.OnCompleted();
                 }
 
                 observers.Clear();
             }
-        }
-
-        [Fact]
-        private void AwaitObservable()
-        {
-            var runner = new CoroutineRunner();
-
-            var observable = new Observable<int>();
-
-            var co = runner.Create(() => AwaitableCoroutine.AwaitObservable<int>(observable));
-
-            Assert.False(co.IsCompletedSuccessfully);
-
-            observable.Notify(2);
-
-            runner.Update();
-            Assert.True(co.IsCompletedSuccessfully);
-            Assert.Equal(2, co.Result);
         }
     }
 }

@@ -24,7 +24,8 @@ namespace AwaitableCoroutine
 
             var d = observable.Subscribe(observer);
 
-            return Lambda(async () => {
+            return Lambda(async () =>
+            {
                 while (!observer.IsObserved)
                 {
                     if (observer.IsCompleted) AwaitableCoroutine.ThrowCancel("waiting observable is completed.");
@@ -41,7 +42,8 @@ namespace AwaitableCoroutine
 
             var d = observable.Subscribe(observer);
 
-            return Lambda(async () => {
+            return Lambda(async () =>
+            {
                 while (!observer.IsCompleted) await Yield();
                 d.Dispose();
             });
