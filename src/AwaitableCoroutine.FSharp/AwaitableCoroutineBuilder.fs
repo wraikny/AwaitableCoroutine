@@ -17,12 +17,7 @@ type Step<'a> =
   | ReturnFrom of 'a AwaitableCoroutine
 
 module private Helper =
-  [<Sealed>]
-  type ReturnCoroutine<'a>(x) =
-    inherit AwaitableCoroutine<'a>()
-    override this.OnMoveNext() = this.Complete(x)
-
-  let fromResult x = ReturnCoroutine(x) :> AwaitableCoroutine<_>
+  let getYieldAwaiter () = AwaitableCoroutine.Internal.YieldAwaitable()
 
   // Implements the machinery of running a `Step<'m, 'm>` as a awaitablecoroutine returning a continuation awaitablecoroutine.
   [<Sealed>]
@@ -30,25 +25,9 @@ module private Helper =
     let methodBuilder = Internal.AwaitableCoroutineMethodBuilder<'a>.Create()
     /// The continuation we left off awaiting on our last MoveNext().
     let mutable continuation = firstStep
-    /// Returns next pending awaitable or null if exiting (including tail call).
-    let nextAwaitable() =
-      try
-        match continuation() with
-        | Return r ->
-          methodBuilder.SetResult (r)
-          null
-        | ReturnFrom a ->
-          methodBuilder.SetResult(a.Result)
-          null
-        | Await (await, next) ->
-          continuation <- next
-          await
-      with
-      | exn ->
-        methodBuilder.SetException(exn)
-        null
 
     let mutable self = this
+
 
     member __.Run() =
       methodBuilder.Start(&self)
@@ -56,9 +35,22 @@ module private Helper =
 
     interface IAsyncStateMachine with
       member __.MoveNext() =
-        let mutable await = nextAwaitable()
-        if not (isNull await) then
-          methodBuilder.AwaitOnCompleted(&await, &self)
+        try
+          match continuation() with
+          | Return r ->
+            methodBuilder.SetResult (r)
+          
+          | ReturnFrom a ->
+            methodBuilder.SetResult(a.Result)
+          
+          | Await (await, next) ->
+            continuation <- next
+            let mutable await = await
+            methodBuilder.AwaitOnCompleted(&await, &self)
+
+        with
+        | exn ->
+          methodBuilder.SetException(exn)
 
       member __.SetStateMachine(_) = ()
 
