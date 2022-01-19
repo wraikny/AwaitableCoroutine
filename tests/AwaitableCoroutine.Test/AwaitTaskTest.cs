@@ -1,5 +1,4 @@
-using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 
 using Xunit;
 using Xunit.Abstractions;
@@ -14,15 +13,14 @@ namespace AwaitableCoroutine.Test
 
         }
 
-
-        static async Task<T> CreateTask<T>(T x)
+        private static async Task<T> CreateTask<T>(T x)
         {
             await Task.Yield();
             return x;
         }
 
         [Fact]
-        private void AwaitCompletedTask()
+        public void AwaitCompletedTask()
         {
             var runner = new CoroutineRunner();
 
@@ -35,7 +33,7 @@ namespace AwaitableCoroutine.Test
         }
 
         [Fact]
-        private async Task AwaitTask()
+        public async Task AwaitTask()
         {
             var runner = new CoroutineRunner();
 

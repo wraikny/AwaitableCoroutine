@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 using Xunit;
@@ -48,7 +48,7 @@ namespace AwaitableCoroutine.Test
 
             public void Notify(T value)
             {
-                foreach(var o in observers)
+                foreach (var o in observers)
                 {
                     o.OnNext(value);
                 }
@@ -56,7 +56,7 @@ namespace AwaitableCoroutine.Test
 
             public void Complete()
             {
-                foreach(var o in observers)
+                foreach (var o in observers)
                 {
                     o.OnCompleted();
                 }
@@ -66,7 +66,7 @@ namespace AwaitableCoroutine.Test
         }
 
         [Fact]
-        private void AwaitObservable()
+        public void AwaitObservable()
         {
             var runner = new CoroutineRunner();
 
