@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace AwaitableCoroutine.Internal
+namespace AwaitableCoroutine
 {
 
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -12,7 +12,7 @@ namespace AwaitableCoroutine.Internal
         public YieldAwaiter GetAwaiter() => new YieldAwaiter();
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public readonly struct YieldAwaiter : ICoroutineAwaiter
+        public readonly struct YieldAwaiter : Internal.ICoroutineAwaiter
         {
             public bool IsCompleted
             {

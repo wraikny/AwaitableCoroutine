@@ -2,10 +2,10 @@
 {
     public partial class AwaitableCoroutine
     {
-        public static Internal.YieldAwaitable Yield()
+        public static YieldAwaitable Yield()
         {
             Internal.Logger.Log("AwaitableCoroutine.Yield()");
-            return new Internal.YieldAwaitable();
+            return new YieldAwaitable();
         }
     }
 }
