@@ -4,8 +4,10 @@ using System.Runtime.CompilerServices;
 
 namespace AwaitableCoroutine.Internal
 {
+    public interface ICoroutineAwaiter : INotifyCompletion, ICriticalNotifyCompletion { }
+
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public readonly struct CoroutineAwaiter : INotifyCompletion, IWaitingCoroutineRegisterer
+    public readonly struct CoroutineAwaiter : ICoroutineAwaiter, IWaitingCoroutineRegisterer
     {
         private readonly AwaitableCoroutine _target;
 
@@ -18,7 +20,12 @@ namespace AwaitableCoroutine.Internal
 
         public bool IsCompleted => _target.IsCompleted;
 
-        public void OnCompleted(Action continuation)
+        void INotifyCompletion.OnCompleted(Action continuation)
+        {
+            _target.ContinueWith(continuation);
+        }
+
+        void ICriticalNotifyCompletion.UnsafeOnCompleted(Action continuation)
         {
             _target.ContinueWith(continuation);
         }
@@ -32,7 +39,7 @@ namespace AwaitableCoroutine.Internal
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public readonly struct CoroutineAwaiter<T> : INotifyCompletion, IWaitingCoroutineRegisterer
+    public readonly struct CoroutineAwaiter<T> : ICoroutineAwaiter, IWaitingCoroutineRegisterer
     {
         private readonly AwaitableCoroutine<T> _target;
 
@@ -45,7 +52,12 @@ namespace AwaitableCoroutine.Internal
 
         public bool IsCompleted => _target.IsCompleted;
 
-        public void OnCompleted(Action continuation)
+        void INotifyCompletion.OnCompleted(Action continuation)
+        {
+            _target.ContinueWith(continuation);
+        }
+
+        void ICriticalNotifyCompletion.UnsafeOnCompleted(Action continuation)
         {
             _target.ContinueWith(continuation);
         }

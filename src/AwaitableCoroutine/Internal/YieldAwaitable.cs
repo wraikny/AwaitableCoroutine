@@ -12,7 +12,7 @@ namespace AwaitableCoroutine.Internal
         public YieldAwaiter GetAwaiter() => new YieldAwaiter();
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public readonly struct YieldAwaiter : INotifyCompletion
+        public readonly struct YieldAwaiter : ICoroutineAwaiter
         {
             public bool IsCompleted
             {
@@ -23,11 +23,21 @@ namespace AwaitableCoroutine.Internal
                 }
             }
 
-            public void OnCompleted(Action continuation)
+            private static void OnCompleted(Action continuation)
             {
                 Internal.Logger.Log("YieldAwaiter.OnCompleted");
                 var runner = ICoroutineRunner.GetContext();
                 runner.Post(continuation);
+            }
+
+            void INotifyCompletion.OnCompleted(Action continuation)
+            {
+                YieldAwaiter.OnCompleted(continuation);
+            }
+
+            void ICriticalNotifyCompletion.UnsafeOnCompleted(Action continuation)
+            {
+                YieldAwaiter.OnCompleted(continuation);
             }
 
             public void GetResult() { }

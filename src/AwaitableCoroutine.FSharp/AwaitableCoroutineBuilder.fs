@@ -11,7 +11,7 @@ open AwaitableCoroutine
 /// either awaiting something with a continuation,
 /// or completed with a return value.
 type Step<'a> =
-  | Await of INotifyCompletion * (unit -> Step<'a>)
+  | Await of Internal.ICoroutineAwaiter * (unit -> Step<'a>)
   | Return of 'a
   /// We model tail calls explicitly, but still can't run them without O(n) memory usage.
   | ReturnFrom of 'a AwaitableCoroutine
@@ -68,10 +68,10 @@ module private Helper =
   /// Used to return a value.
   let ret (x : 'a) = Return x
   
-  let inline private isCompleted (awaiter: ^awt): _ when ^awt :> INotifyCompletion =
+  let inline private isCompleted (awaiter: ^awt): _ when ^awt :> Internal.ICoroutineAwaiter =
     (^awt: (member get_IsCompleted : unit -> bool) awaiter)
 
-  let inline private getResult (awaiter: ^awt): _ when ^awt :> INotifyCompletion =
+  let inline private getResult (awaiter: ^awt): _ when ^awt :> Internal.ICoroutineAwaiter =
     (^awt: (member GetResult : unit -> ^inp) awaiter)
 
   let inline private getAwaiter (awaitable: ^abl): _ =
@@ -92,7 +92,7 @@ module private Helper =
     match step with
     | Return _ -> continuation()
     | ReturnFrom t ->
-      Await (t.GetAwaiter() :> INotifyCompletion, continuation)
+      Await (t.GetAwaiter() :> Internal.ICoroutineAwaiter, continuation)
     | Await (awaitable, next) ->
       Await (awaitable, fun () -> combine (next()) continuation)
 

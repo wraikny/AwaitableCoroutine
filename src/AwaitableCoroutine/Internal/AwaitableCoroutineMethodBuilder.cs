@@ -53,7 +53,7 @@ namespace AwaitableCoroutine.Internal
         // 5. AwaitOnCompleted
         public void AwaitOnCompleted<TAwaiter, TStateMachine>(
             ref TAwaiter awaiter, ref TStateMachine stateMachine)
-            where TAwaiter : INotifyCompletion
+            where TAwaiter : ICoroutineAwaiter
             where TStateMachine : IAsyncStateMachine
         {
             Logger.Log("AwaitableCoroutineMethodBuilder.AwaitOnCompleted");
@@ -65,7 +65,7 @@ namespace AwaitableCoroutine.Internal
         // 6. AwaitUnsafeOnCompleted
         public void AwaitUnsafeOnCompleted<TAwaiter, TStateMachine>(
             ref TAwaiter awaiter, ref TStateMachine stateMachine)
-            where TAwaiter : ICriticalNotifyCompletion
+            where TAwaiter : ICoroutineAwaiter
             where TStateMachine : IAsyncStateMachine
         {
             Logger.Log("AwaitableCoroutineMethodBuilder.AwaitUnsafeOnCompleted");
@@ -138,7 +138,7 @@ namespace AwaitableCoroutine.Internal
         // 5. AwaitOnCompleted
         public void AwaitOnCompleted<TAwaiter, TStateMachine>(
             ref TAwaiter awaiter, ref TStateMachine stateMachine)
-            where TAwaiter : INotifyCompletion
+            where TAwaiter : ICoroutineAwaiter
             where TStateMachine : IAsyncStateMachine
         {
             Logger.Log($"AwaitableCoroutineMethodBuilder<{typeof(T).Name}>.AwaitOnCompleted");
@@ -149,7 +149,7 @@ namespace AwaitableCoroutine.Internal
         // 6. AwaitUnsafeOnCompleted
         public void AwaitUnsafeOnCompleted<TAwaiter, TStateMachine>(
             ref TAwaiter awaiter, ref TStateMachine stateMachine)
-            where TAwaiter : ICriticalNotifyCompletion
+            where TAwaiter : ICoroutineAwaiter
             where TStateMachine : IAsyncStateMachine
         {
             Logger.Log($"AwaitableCoroutineMethodBuilder<{typeof(T).Name}>.AwaitUnsafeOnCompleted");
