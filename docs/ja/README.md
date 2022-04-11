@@ -7,7 +7,7 @@
     - [嬉しいところ](#嬉しいところ)
   - [使い方](#使い方)
   - [注意事項](#注意事項)
-  - [AwaitableCoroutine, Coroutine<T> クラス](#awaitablecoroutine-coroutinet-クラス)
+  - [Coroutine, Coroutine<T> クラス](#coroutine-coroutinet-クラス)
   - [ICoroutineRunner インターフェース](#icoroutinerunner-インターフェース)
   - [AwaitableCoroutine.FSharp パッケージ](#awaitablecoroutinefsharp-パッケージ)
   - [AwaitableCoroutine.Altseed2 パッケージ](#awaitablecoroutinealtseed2-パッケージ)
@@ -130,7 +130,7 @@ var (c1, c2) = runner.Context(() => (Coroutine.DelayCount(1), Coroutine.DelayCou
 var coroutine = runner.Context(() => FooBarCoroutine(arg1, arg2));
 ```
 
-## AwaitableCoroutine, Coroutine<T> クラス
+## Coroutine, Coroutine<T> クラス
 
 待機可能なコルーチンのクラスです。
 
