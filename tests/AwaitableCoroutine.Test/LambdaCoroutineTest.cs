@@ -41,7 +41,7 @@ namespace AwaitableCoroutine.Test
             var co = runner.Create(async () =>
             {
                 counter.Inc();
-                await AwaitableCoroutine.Yield();
+                await Coroutine.Yield();
                 counter.Inc();
             });
 
@@ -69,7 +69,7 @@ namespace AwaitableCoroutine.Test
                 for (var i = 0; i < 5; i++)
                 {
                     counter.Inc();
-                    await AwaitableCoroutine.Yield();
+                    await Coroutine.Yield();
                 }
                 counter.Inc();
             });
@@ -100,7 +100,7 @@ namespace AwaitableCoroutine.Test
             var co = runner.Create(async () =>
             {
                 counter.Inc();
-                await AwaitableCoroutine.DelayCount(5);
+                await Coroutine.DelayCount(5);
                 counter.Inc();
             });
 

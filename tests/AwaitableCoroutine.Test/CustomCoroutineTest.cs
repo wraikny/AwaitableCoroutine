@@ -11,7 +11,7 @@ namespace AwaitableCoroutine.Test
 
         }
 
-        private sealed class CustomCoroutine : AwaitableCoroutine
+        private sealed class CustomCoroutine : Coroutine
         {
             public CustomCoroutine() { }
 

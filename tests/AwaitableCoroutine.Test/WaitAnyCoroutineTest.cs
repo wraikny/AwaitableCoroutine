@@ -20,11 +20,11 @@ namespace AwaitableCoroutine.Test
             var flag = false;
 
             var waitAny = runner.Create(() =>
-                AwaitableCoroutine.WaitAny(new AwaitableCoroutineBase[] {
-                    AwaitableCoroutine.While(() => true),
-                    AwaitableCoroutine.While(() => true),
-                    AwaitableCoroutine.While(() => true),
-                    AwaitableCoroutine.While(() => !flag),
+                Coroutine.WaitAny(new CoroutineBase[] {
+                    Coroutine.While(() => true),
+                    Coroutine.While(() => true),
+                    Coroutine.While(() => true),
+                    Coroutine.While(() => !flag),
                 })
             );
 
@@ -47,9 +47,9 @@ namespace AwaitableCoroutine.Test
             var flag = false;
 
             var waitAny = runner.Create(() =>
-                AwaitableCoroutine.WaitAny(
-                    AwaitableCoroutine.While(() => true),
-                    AwaitableCoroutine.While(() => !flag)
+                Coroutine.WaitAny(
+                    Coroutine.While(() => true),
+                    Coroutine.While(() => !flag)
                 )
             );
 
@@ -73,11 +73,11 @@ namespace AwaitableCoroutine.Test
 
             var waitAny = runner.Create(() =>
             {
-                return AwaitableCoroutine.WaitAny<int>(new AwaitableCoroutine<int>[] {
-                    AwaitableCoroutine.While(() => true).SelectTo(0),
-                    AwaitableCoroutine.While(() => !flag).SelectTo(1),
-                    AwaitableCoroutine.While(() => true).SelectTo(2),
-                    AwaitableCoroutine.While(() => !flag).SelectTo(3),
+                return Coroutine.WaitAny<int>(new Coroutine<int>[] {
+                    Coroutine.While(() => true).SelectTo(0),
+                    Coroutine.While(() => !flag).SelectTo(1),
+                    Coroutine.While(() => true).SelectTo(2),
+                    Coroutine.While(() => !flag).SelectTo(3),
                 });
             });
 

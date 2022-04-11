@@ -18,8 +18,8 @@ namespace AwaitableCoroutine.Test
             var runner = new CoroutineRunner();
             var counter = new Counter();
             var c = runner.Create(() =>
-                AwaitableCoroutine.DelayCount(2)
-                    .AndThen(() => AwaitableCoroutine.DelayCount(2).OnCompleted(() =>
+                Coroutine.DelayCount(2)
+                    .AndThen(() => Coroutine.DelayCount(2).OnCompleted(() =>
                     {
                         counter.Inc();
                         Log($"Count: {counter.Count}");
@@ -33,7 +33,7 @@ namespace AwaitableCoroutine.Test
             Assert.Equal(1, counter.Count);
         }
 
-        private async AwaitableCoroutine CreateCoroutine(int target, Counter counter)
+        private async Coroutine CreateCoroutine(int target, Counter counter)
         {
             var count = 0;
             while (true)
@@ -41,7 +41,7 @@ namespace AwaitableCoroutine.Test
                 count++;
                 counter.Inc();
                 if (count >= target) return;
-                await AwaitableCoroutine.Yield();
+                await Coroutine.Yield();
             }
         }
 

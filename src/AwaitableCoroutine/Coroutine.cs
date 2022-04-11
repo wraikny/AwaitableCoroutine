@@ -7,7 +7,7 @@ using AwaitableCoroutine.Internal;
 
 namespace AwaitableCoroutine
 {
-    public abstract class AwaitableCoroutineBase
+    public abstract class CoroutineBase
     {
         internal event Action OnUpdating = null;
         protected internal ICoroutineRunner Runner { get; set; }
@@ -25,18 +25,18 @@ namespace AwaitableCoroutine
         ///</summary>
         public bool IsCompleted => IsCompletedSuccessfully || IsCanceled;
 
-        internal List<AwaitableCoroutineBase> WaitingCoroutines { get; set; }
+        internal List<CoroutineBase> WaitingCoroutines { get; set; }
 
         protected internal abstract void _Pseudo();
 
-        public AwaitableCoroutineBase()
+        public CoroutineBase()
         {
             Runner = ICoroutineRunner.GetContext();
             Internal.Logger.Log($"{GetType()} is created");
             Runner.Register(this);
         }
 
-        internal AwaitableCoroutineBase(ICoroutineRunner runner)
+        internal CoroutineBase(ICoroutineRunner runner)
         {
             Runner = runner;
             Internal.Logger.Log($"{GetType()} is created");
@@ -145,7 +145,7 @@ namespace AwaitableCoroutine
             Cancel();
         }
 
-        internal void RegisterWaitingCoroutine(AwaitableCoroutineBase coroutine)
+        internal void RegisterWaitingCoroutine(CoroutineBase coroutine)
         {
             if (IsCanceled)
             {
@@ -154,7 +154,7 @@ namespace AwaitableCoroutine
                 return;
             }
 
-            WaitingCoroutines ??= new List<AwaitableCoroutineBase>();
+            WaitingCoroutines ??= new List<CoroutineBase>();
             WaitingCoroutines.Add(coroutine);
         }
 
@@ -184,16 +184,16 @@ namespace AwaitableCoroutine
     }
 
     [AsyncMethodBuilder(typeof(AwaitableCoroutineMethodBuilder))]
-    public abstract partial class AwaitableCoroutine : AwaitableCoroutineBase
+    public abstract partial class Coroutine : CoroutineBase
     {
         [EditorBrowsable(EditorBrowsableState.Never)]
         public CoroutineAwaiter GetAwaiter() => new CoroutineAwaiter(this);
 
         protected internal sealed override void _Pseudo() { }
 
-        public AwaitableCoroutine() { }
+        public Coroutine() { }
 
-        internal AwaitableCoroutine(ICoroutineRunner runner) : base(runner) { }
+        internal Coroutine(ICoroutineRunner runner) : base(runner) { }
 
         protected void Complete()
         {
@@ -216,16 +216,17 @@ namespace AwaitableCoroutine
     }
 
     [AsyncMethodBuilder(typeof(AwaitableCoroutineMethodBuilder<>))]
-    public abstract class AwaitableCoroutine<T> : AwaitableCoroutineBase
+    public abstract class Coroutine
+        <T> : CoroutineBase
     {
         [EditorBrowsable(EditorBrowsableState.Never)]
         public CoroutineAwaiter<T> GetAwaiter() => new CoroutineAwaiter<T>(this);
 
         protected internal sealed override void _Pseudo() { }
 
-        public AwaitableCoroutine() { }
+        public Coroutine() { }
 
-        internal AwaitableCoroutine(ICoroutineRunner runner) : base(runner) { }
+        internal Coroutine(ICoroutineRunner runner) : base(runner) { }
 
         public T Result { get; private set; }
 

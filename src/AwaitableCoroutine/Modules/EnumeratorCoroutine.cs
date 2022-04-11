@@ -2,9 +2,9 @@
 
 namespace AwaitableCoroutine
 {
-    public partial class AwaitableCoroutine
+    public partial class Coroutine
     {
-        public static async AwaitableCoroutine FromEnumerator(IEnumerator enumerator)
+        public static async Coroutine FromEnumerator(IEnumerator enumerator)
         {
             if (enumerator is null)
             {

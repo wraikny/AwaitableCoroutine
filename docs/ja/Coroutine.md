@@ -1,8 +1,8 @@
 # AwaitableCoroutine
-[`AwaitableCoroutine`](../../src/AwaitableCoroutine/AwaitableCoroutine.cs)
-は、待機可能かつasyncメソッドを使って作成可能なコルーチンです。
+[`Coroutine`](../../src/AwaitableCoroutine/Coroutine.cs)
+クラスは、待機可能かつasyncメソッドを使って作成可能なコルーチンです。
 
-ジェネリック版の`AwaitableCoroutine<T>`は結果の値を返します。
+ジェネリック版の`Coroutine<T>`は結果の値を返します。
 
 **目次**
 
@@ -49,7 +49,7 @@
 以下のように静的メソッドとして呼び出します。
 
 ```csharp
-await AwaitableCoroutine.Yield();
+await Coroutine.Yield();
 ```
 
 通常のコルーチンと同じように利用することはできませんが、最適化のために構造体による実装をしています。
@@ -59,12 +59,12 @@ await AwaitableCoroutine.Yield();
 例
 
 ```csharp
-private async AwaitableCoroutine CreateCoroutine()
+private async Coroutine CreateCoroutine()
 {
   for (int i = 0; i < 10; i++)
   {
       // do something
-      await AwaitableCoroutine.Yield();
+      await Coroutine.Yield();
   }
 }
 ```
@@ -79,7 +79,7 @@ private async AwaitableCoroutine CreateCoroutine()
 以下のように静的メソッドとして呼び出します。
 
 ```csharp
-AwaitableCoroutine.While(() => true)
+Coroutine.While(() => true)
 ```
 
 ### DelayCount
@@ -93,7 +93,7 @@ AwaitableCoroutine.While(() => true)
 以下のように静的メソッドとして呼び出します。
 
 ```csharp
-AwaitableCoroutine.DelayCount(5)
+Coroutine.DelayCount(5)
 ```
 
 ### WaitAll
@@ -102,12 +102,12 @@ AwaitableCoroutine.DelayCount(5)
 
 **引数**
 タプル版では2〜7個のコルーチンを渡すオーバーロードが用意してあります。
-それ以上の場合は`Span<AwaitableCoroutineBase>`または`Span<AwaitableCoroutine<T>>`を引数として渡すことができます。
+それ以上の場合は`Span<CoroutineBase>`または`Span<Coroutine<T>>`を引数として渡すことができます。
 
 以下のように静的メソッドとして呼び出します。
 
 ```csharp
-AwaitableCoroutine.WaitAll(coroutine1, coroutine2)
+Coroutine.WaitAll(coroutine1, coroutine2)
 ```
 
 ### WaitAny
@@ -116,12 +116,12 @@ AwaitableCoroutine.WaitAll(coroutine1, coroutine2)
 
 **引数**
 タプル版では2〜7個のコルーチンを渡すオーバーロードが用意してあります。
-それ以上の場合は`Span<AwaitableCoroutineBase>`または`Span<AwaitableCoroutine<T>>`を引数として渡すことができます。
+それ以上の場合は`Span<CoroutineBase>`または`Span<Coroutine<T>>`を引数として渡すことができます。
 
 以下のように静的メソッドとして呼び出します。
 
 ```csharp
-AwaitableCoroutine.WaitAny(coroutine1, coroutine2)
+Coroutine.WaitAny(coroutine1, coroutine2)
 ```
 
 ### Select, SelectTo
@@ -137,13 +137,13 @@ var res = await someCoroutine.Select(x => x * x);
 
 **引数**
 * `SelectTo<T>`
-  * `coroutine`: `AwaitableCoroutineBase`
+  * `coroutine`: `CoroutineBase`
   * `result`: `T`
 * `Select<T>`
-  * `coroutine`: `AwaitableCoroutine`
+  * `coroutine`: `Coroutine`
   * `thunk`: `Func<T>`
 * `Select<T, U>`
-  * `coroutine`: `AwaitableCoroutine<T>`
+  * `coroutine`: `Coroutine<T>`
   * `thunk`: `Func<T, U>`
 
 ### AndThen
@@ -156,25 +156,25 @@ var res = await someCoroutine.Select(x => x * x);
 ```csharp
 runner.Create(() =>
     someCoroutine.AndThen(async x => {
-        await AwaitableCoroutine.Yield();
+        await Coroutine.Yield();
         return x * x;
     })
 );
 ```
 
 **引数**
-* `AwaitableCoroutine.AndThen`
-  * `coroutine`: `AwaitableCoroutine`
-  * `thunk`: `Func<AwaitableCoroutine>`
-* `AwaitableCoroutine.AndThen<T>`
-  * `coroutine`: `AwaitableCoroutine`
-  * `thunk`: `Func<AwaitableCoroutine<T>>`
-* `AwaitableCoroutine<T>.AndThen`
-  * `coroutine`: `AwaitableCoroutine<T>`
-  * `thunk`: `Func<T, AwaitableCoroutine>`
-* `AwaitableCoroutine<T>.AndThen<U>`
-  * `coroutine`: `AwaitableCoroutine<T>`
-  * `thunk`: `Func<T< AwaitableCoroutine<U>>`
+* `Coroutine.AndThen`
+  * `coroutine`: `Coroutine`
+  * `thunk`: `Func<Coroutine>`
+* `Coroutine.AndThen<T>`
+  * `coroutine`: `Coroutine`
+  * `thunk`: `Func<Coroutine<T>>`
+* `Coroutine<T>.AndThen`
+  * `coroutine`: `Coroutine<T>`
+  * `thunk`: `Func<T, Coroutine>`
+* `Coroutine<T>.AndThen<U>`
+  * `coroutine`: `Coroutine<T>`
+  * `thunk`: `Func<T< Coroutine<U>>`
 
 
 ### UntilCompleted
@@ -185,10 +185,10 @@ runner.Create(() =>
 以下のように拡張メソッドとして呼び出します。
 
 ```csharp
-AwaitableCoroutine.DelayCount(10)
+Coroutine.DelayCount(10)
     .UntilCompleted(async () => {
         Console.WriteLine("Hello");
-        await AwaitableCoroutine.DelayCount(3);
+        await Coroutine.DelayCount(3);
     });
 ```
 
@@ -196,14 +196,14 @@ AwaitableCoroutine.DelayCount(10)
 
 **引数**
 * `UntilCompleted`（Action版）
-  * `AwaitableCoroutineBase coroutine`
+  * `CoroutineBase coroutine`
   * `Action action`
-* `UntilCompleted`（`AwaitableCoroutine`を実行する）
-  * `AwaitableCoroutineBase coroutine`
-  * `Func<AwaitableCoroutine> action`
-* `UntilCompleted<T>`（`AwaitableCoroutine`を実行する）
-  * `AwaitableCoroutineBase coroutine`
-  * `Func<AwaitableCoroutine<T>> action`
+* `UntilCompleted`（`Coroutine`を実行する）
+  * `CoroutineBase coroutine`
+  * `Func<Coroutine> action`
+* `UntilCompleted<T>`（`Coroutine`を実行する）
+  * `CoroutineBase coroutine`
+  * `Func<Coroutine<T>> action`
 
 ### FromEnumerator
 [`FromEnumerator(IEnumerator)`](../../src/AwaitableCoroutine/Modules/EnumeratorCoroutine.cs)
@@ -237,7 +237,7 @@ AwaitableCoroutine.DelayCount(10)
 
 `CanceledException`は、非同期メソッドによって作成されるコルーチンの実行をそのメソッド内からキャンセルしたいときに利用するための例外です。
 
-それ以外の場合でコルーチンをキャンセルしたい場合、`AwaitableCoroutine.Cancel()`メソッドを利用してください。
+それ以外の場合でコルーチンをキャンセルしたい場合、`Coroutine.Cancel()`メソッドを利用してください。
 
 | Name | Desc |
 | --- | --- |
@@ -245,7 +245,7 @@ AwaitableCoroutine.DelayCount(10)
 | `ChildCanceledException` | 待機しているコルーチンがキャンセルされたことによるコルーチンのキャンセルを表す例外 |
 | `ChildrenCanceledException` | 待機している複数のコルーチンがキャンセルされたことによるコルーチンのキャンセルを表す例外 |
 
-`AwaitableCoroutine`クラスの静的メソッドとして、以下の補助メソッドを提供しています。
+`Coroutine`クラスの静的メソッドとして、以下の補助メソッドを提供しています。
 
 | Name | Desc |
 | --- | --- |

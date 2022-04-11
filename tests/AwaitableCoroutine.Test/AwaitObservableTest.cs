@@ -72,7 +72,7 @@ namespace AwaitableCoroutine.Test
 
             var observable = new Observable<int>();
 
-            var co = runner.Create(() => AwaitableCoroutine.AwaitObservable<int>(observable));
+            var co = runner.Create(() => Coroutine.AwaitObservable<int>(observable));
 
             Assert.False(co.IsCompletedSuccessfully);
 

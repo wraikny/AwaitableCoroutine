@@ -2,9 +2,9 @@
 
 namespace AwaitableCoroutine
 {
-    public partial class AwaitableCoroutine
+    public partial class Coroutine
     {
-        public static AwaitableCoroutine Lambda(Func<AwaitableCoroutine> lambda)
+        public static Coroutine Lambda(Func<Coroutine> lambda)
         {
             if (lambda is null)
             {
@@ -14,7 +14,7 @@ namespace AwaitableCoroutine
             return lambda.Invoke();
         }
 
-        public static AwaitableCoroutine<T> Lambda<T>(Func<AwaitableCoroutine<T>> lambda)
+        public static Coroutine<T> Lambda<T>(Func<Coroutine<T>> lambda)
         {
             if (lambda is null)
             {

@@ -14,7 +14,7 @@ F#向けの拡張パッケージです。
 [TaskBuilder.fs](https://github.com/rspeele/TaskBuilder.fs)
 を参考にして、最適化されたコンピューテーション式を提供しています。
 
-[AwaitableCoroutineBuilder.fs](../../src/AwaitableCoroutine.FSharp/AwaitableCoroutineBuilder.fs)
+[CoroutineBuilder.fs](../../src/AwaitableCoroutine.FSharp/CoroutineBuilder.fs)
 
 ### awaitableCoroutine
 
@@ -24,7 +24,7 @@ F#向けの拡張パッケージです。
 let runner = CoroutineRunner()
 
 let coroutine = runner.Create(fun () ->
-  awaitableCoroutine {
+  coroutine {
     printfn "Hello"
     do! AwaitableCoroutnie.Yield()
     printfn "Awaitable"

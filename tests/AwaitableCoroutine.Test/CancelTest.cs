@@ -16,7 +16,7 @@ namespace AwaitableCoroutine.Test
         {
             var runner = new CoroutineRunner();
 
-            var delay = runner.Create(() => AwaitableCoroutine.DelayCount(5));
+            var delay = runner.Create(() => Coroutine.DelayCount(5));
 
             var co = runner.Create(async () =>
             {
@@ -51,9 +51,9 @@ namespace AwaitableCoroutine.Test
         {
             var runner = new CoroutineRunner();
 
-            var delay = runner.Create(() => AwaitableCoroutine.DelayCount(5));
+            var delay = runner.Create(() => Coroutine.DelayCount(5));
 
-            var co = runner.Context<AwaitableCoroutine>(() => AwaitableCoroutine.WaitAll(delay, delay));
+            var co = runner.Context<Coroutine>(() => Coroutine.WaitAll(delay, delay));
 
             Assert.False(delay.IsCompletedSuccessfully);
             Assert.False(delay.IsCanceled);
@@ -81,7 +81,7 @@ namespace AwaitableCoroutine.Test
 
             Assert.False(co.IsCompletedSuccessfully);
             Assert.True(co.IsCanceled);
-            Assert.True(co.Exception is ChildCanceledException<AwaitableCoroutineBase>);
+            Assert.True(co.Exception is ChildCanceledException<CoroutineBase>);
         }
     }
 }

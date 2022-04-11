@@ -57,7 +57,7 @@ var co = coroutineNode.Create(async () => {
   while (true)
   {
     doSomething1();
-    await AwaitableCoroutine.Yield();
+    await Coroutine.Yield();
   }
 });
 ```

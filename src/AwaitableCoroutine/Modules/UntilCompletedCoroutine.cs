@@ -4,7 +4,7 @@ namespace AwaitableCoroutine
 {
     public static class UntilCompletedCoroutineExt
     {
-        public static async AwaitableCoroutine UntilCompleted(this AwaitableCoroutineBase coroutine, Action action)
+        public static async Coroutine UntilCompleted(this CoroutineBase coroutine, Action action)
         {
             if (coroutine is null)
             {
@@ -20,14 +20,14 @@ namespace AwaitableCoroutine
             {
                 if (coroutine.IsCanceled)
                 {
-                    AwaitableCoroutine.ThrowChildCancel<AwaitableCoroutineBase>(coroutine);
+                    Coroutine.ThrowChildCancel<CoroutineBase>(coroutine);
                 }
                 action.Invoke();
-                await AwaitableCoroutine.Yield();
+                await Coroutine.Yield();
             }
         }
 
-        public static async AwaitableCoroutine UntilCompleted(this AwaitableCoroutineBase coroutine, Func<AwaitableCoroutine> createCoroutine)
+        public static async Coroutine UntilCompleted(this CoroutineBase coroutine, Func<Coroutine> createCoroutine)
         {
             if (coroutine is null)
             {
@@ -43,13 +43,13 @@ namespace AwaitableCoroutine
             {
                 if (coroutine.IsCanceled)
                 {
-                    AwaitableCoroutine.ThrowChildCancel<AwaitableCoroutineBase>(coroutine);
+                    Coroutine.ThrowChildCancel<CoroutineBase>(coroutine);
                 }
                 await createCoroutine.Invoke();
             }
         }
 
-        public static async AwaitableCoroutine UntilCompleted<T>(this AwaitableCoroutineBase coroutine, Func<AwaitableCoroutine<T>> action)
+        public static async Coroutine UntilCompleted<T>(this CoroutineBase coroutine, Func<Coroutine<T>> action)
         {
             if (coroutine is null)
             {
@@ -65,7 +65,7 @@ namespace AwaitableCoroutine
             {
                 if (coroutine.IsCanceled)
                 {
-                    AwaitableCoroutine.ThrowChildCancel<AwaitableCoroutineBase>(coroutine);
+                    Coroutine.ThrowChildCancel<CoroutineBase>(coroutine);
                 }
                 _ = await action.Invoke();
             }

@@ -9,11 +9,11 @@ namespace AwaitableCoroutine.Internal
     [EditorBrowsable(EditorBrowsableState.Never)]
     public readonly struct CoroutineAwaiter : ICoroutineAwaiter, IWaitingCoroutineRegisterer
     {
-        private readonly AwaitableCoroutine _target;
+        private readonly Coroutine _target;
 
-        public AwaitableCoroutine Target => _target;
+        public Coroutine Target => _target;
 
-        public CoroutineAwaiter(AwaitableCoroutine target)
+        public CoroutineAwaiter(Coroutine target)
         {
             _target = target;
         }
@@ -32,7 +32,7 @@ namespace AwaitableCoroutine.Internal
 
         public void GetResult() { }
 
-        void IWaitingCoroutineRegisterer.RegisterWaitingCoroutine(AwaitableCoroutineBase child)
+        void IWaitingCoroutineRegisterer.RegisterWaitingCoroutine(CoroutineBase child)
         {
             Target.RegisterWaitingCoroutine(child);
         }
@@ -41,11 +41,11 @@ namespace AwaitableCoroutine.Internal
     [EditorBrowsable(EditorBrowsableState.Never)]
     public readonly struct CoroutineAwaiter<T> : ICoroutineAwaiter, IWaitingCoroutineRegisterer
     {
-        private readonly AwaitableCoroutine<T> _target;
+        private readonly Coroutine<T> _target;
 
-        public AwaitableCoroutine<T> Target => _target;
+        public Coroutine<T> Target => _target;
 
-        public CoroutineAwaiter(AwaitableCoroutine<T> target)
+        public CoroutineAwaiter(Coroutine<T> target)
         {
             _target = target;
         }
@@ -64,7 +64,7 @@ namespace AwaitableCoroutine.Internal
 
         public T GetResult() => _target.Result;
 
-        void IWaitingCoroutineRegisterer.RegisterWaitingCoroutine(AwaitableCoroutineBase child)
+        void IWaitingCoroutineRegisterer.RegisterWaitingCoroutine(CoroutineBase child)
         {
             Target.RegisterWaitingCoroutine(child);
         }

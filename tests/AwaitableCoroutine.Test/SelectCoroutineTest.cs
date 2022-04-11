@@ -18,7 +18,7 @@ namespace AwaitableCoroutine.Test
 
             var (c1, c2, c3) = runner.Context(() =>
             {
-                var c1 = AwaitableCoroutine.DelayCount(0);
+                var c1 = Coroutine.DelayCount(0);
                 var c2 = c1.SelectTo(2);
                 var c3 = c2.Select(x => x * x);
                 return (c1, c2, c3);

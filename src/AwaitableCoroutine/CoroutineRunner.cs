@@ -8,8 +8,8 @@ namespace AwaitableCoroutine
     {
         private readonly Queue<Action> _continuations;
 
-        private List<AwaitableCoroutineBase> _coroutines;
-        private List<AwaitableCoroutineBase> _coroutinesTmp;
+        private List<CoroutineBase> _coroutines;
+        private List<CoroutineBase> _coroutinesTmp;
 
         public bool IsUpdating { get; private set; } = false;
 
@@ -18,11 +18,11 @@ namespace AwaitableCoroutine
         public CoroutineRunner()
         {
             _continuations = new Queue<Action>();
-            _coroutines = new List<AwaitableCoroutineBase>();
-            _coroutinesTmp = new List<AwaitableCoroutineBase>();
+            _coroutines = new List<CoroutineBase>();
+            _coroutinesTmp = new List<CoroutineBase>();
         }
 
-        void ICoroutineRunner.OnRegistering(AwaitableCoroutineBase coroutine)
+        void ICoroutineRunner.OnRegistering(CoroutineBase coroutine)
         {
             Internal.Logger.Log($"CoroutineRunner.Registering {coroutine.GetType().Name}");
             _coroutinesTmp.Add(coroutine);

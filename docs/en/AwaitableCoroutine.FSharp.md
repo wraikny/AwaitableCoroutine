@@ -13,7 +13,7 @@ Extension package for F#.
 
 The optimized computation expression is provided by referring to [TaskBuilder.fs](https://github.com/rspeele/TaskBuilder.fs).
 
-[AwaitableCoroutineBuilder.fs](../../src/AwaitableCoroutine.FSharp/AwaitableCoroutineBuilder.fs)
+[CoroutineBuilder.fs](../../src/AwaitableCoroutine.FSharp/CoroutineBuilder.fs)
 
 ### awaitableCoroutine
 
@@ -23,7 +23,7 @@ Sample code.
 let runner = CoroutineRunner()
 
 let coroutine = runner.Create(fun () ->
-  awaitableCoroutine {
+  coroutine {
     printfn "Hello"
     do! AwaitableCoroutnie.Yield()
     printfn "Awaitable"
