@@ -5,7 +5,7 @@
     <PackageOutputPath>../../output</PackageOutputPath>
 
     <PackageId>AwaitableCoroutine</PackageId>
-    <Version>1.6.0</Version>
+    <Version>1.7.0</Version>
     <Description>AwaitableCoroutine is a library for C# that provides a coroutine that allows the use of async/await syntax.</Description>
     <PackageProjectUrl>https://github.com/wraikny/AwaitableCoroutine</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
