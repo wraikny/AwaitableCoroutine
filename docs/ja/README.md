@@ -116,7 +116,7 @@ public static void Main(string[] _)
 コルーチンをどの `ICoroutineRunner` に登録するかの情報を与えるために必要になります。
 基本的には`Create`拡張メソッドを使用します。
 
-`Coroutine`をまとめて作成したタプルを返すなど、`AwaitableCoroutien`または`AwaitableCoroutien<T>`以外の型を返したい場合は、以下のように`Context`拡張メソッドを利用します。
+`Coroutine`をまとめて作成したタプルを返すなど、`Coroutine`または`Coroutine<T>`以外の型を返したい場合は、以下のように`Context`拡張メソッドを利用します。
 
 ```csharp
 var (c1, c2) = runner.Context(() => (Coroutine.DelayCount(1), Coroutine.DelayCount(1)));

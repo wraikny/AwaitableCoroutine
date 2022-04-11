@@ -115,7 +115,7 @@ Note that `Coroutine` and `Coroutine<T>` are generated in the callback function 
 It is needed to give information about which `ICoroutineRunner` the coroutine should be registered with.
 Basically, use the `Create` extension method.
 
-If you want to return a type other than `AwaitableCoroutien` or `AwaitableCoroutien<T>`, such as returning a tuple of `Coroutine`, use the `Context` extension method as follows.
+If you want to return a type other than `Coroutine` or `Coroutine<T>`, such as returning a tuple of `Coroutine`, use the `Context` extension method as follows.
 
 ```csharp
 var (c1, c2) = runner.Context(() => (Coroutine.DelayCount(1), Coroutine.DelayCount(1)));
