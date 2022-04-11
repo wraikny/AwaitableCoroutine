@@ -24,7 +24,7 @@ namespace AwaitableCoroutine.Test
         {
             var runner = new CoroutineRunner();
 
-            var co = runner.Create(() => AwaitableCoroutine.AwaitTask(Task.CompletedTask));
+            var co = runner.Create(() => Coroutine.AwaitTask(Task.CompletedTask));
 
             Assert.False(co.IsCompletedSuccessfully);
 
@@ -39,7 +39,7 @@ namespace AwaitableCoroutine.Test
 
             var task = CreateTask<int>(3);
 
-            var co = runner.Create(() => AwaitableCoroutine.AwaitTask(task));
+            var co = runner.Create(() => Coroutine.AwaitTask(task));
 
             Assert.False(co.IsCompletedSuccessfully);
 

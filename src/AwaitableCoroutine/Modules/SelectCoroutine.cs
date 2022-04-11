@@ -2,23 +2,23 @@
 
 namespace AwaitableCoroutine
 {
-    public static class AwaitableCoroutineSelectExt
+    public static class CoroutineSelectExt
     {
-        public static async AwaitableCoroutine<T> SelectTo<T>(this AwaitableCoroutineBase coroutine, T result)
+        public static async Coroutine<T> SelectTo<T>(this CoroutineBase coroutine, T result)
         {
             while (!coroutine.IsCompletedSuccessfully)
             {
                 if (coroutine.IsCanceled)
                 {
-                    AwaitableCoroutine.ThrowChildCancel<AwaitableCoroutineBase>(coroutine);
+                    Coroutine.ThrowChildCancel<CoroutineBase>(coroutine);
                 }
-                await AwaitableCoroutine.Yield();
+                await Coroutine.Yield();
             }
 
             return result;
         }
 
-        public static async AwaitableCoroutine<T> Select<T>(this AwaitableCoroutine coroutine, Func<T> thunk)
+        public static async Coroutine<T> Select<T>(this Coroutine coroutine, Func<T> thunk)
         {
             if (coroutine is null)
             {
@@ -34,15 +34,15 @@ namespace AwaitableCoroutine
             {
                 if (coroutine.IsCanceled)
                 {
-                    AwaitableCoroutine.ThrowChildCancel<AwaitableCoroutineBase>(coroutine);
+                    Coroutine.ThrowChildCancel<CoroutineBase>(coroutine);
                 }
-                await AwaitableCoroutine.Yield();
+                await Coroutine.Yield();
             }
 
             return thunk();
         }
 
-        public static async AwaitableCoroutine<U> Select<T, U>(this AwaitableCoroutine<T> coroutine, Func<T, U> thunk)
+        public static async Coroutine<U> Select<T, U>(this Coroutine<T> coroutine, Func<T, U> thunk)
         {
             if (coroutine is null)
             {
@@ -58,9 +58,9 @@ namespace AwaitableCoroutine
             {
                 if (coroutine.IsCanceled)
                 {
-                    AwaitableCoroutine.ThrowChildCancel<AwaitableCoroutineBase>(coroutine);
+                    Coroutine.ThrowChildCancel<CoroutineBase>(coroutine);
                 }
-                await AwaitableCoroutine.Yield();
+                await Coroutine.Yield();
             }
 
             return thunk(coroutine.Result);

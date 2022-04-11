@@ -27,7 +27,7 @@ namespace AwaitableCoroutine
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        void OnRegistering(AwaitableCoroutineBase coroutine);
+        void OnRegistering(CoroutineBase coroutine);
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         void OnUpdate();
@@ -40,7 +40,7 @@ namespace AwaitableCoroutine
 
     public static class ICoroutineRunnerExt
     {
-        internal static void Register(this ICoroutineRunner runner, AwaitableCoroutineBase coroutine)
+        internal static void Register(this ICoroutineRunner runner, CoroutineBase coroutine)
         {
             if (coroutine.IsCompletedSuccessfully)
             {
@@ -123,14 +123,14 @@ namespace AwaitableCoroutine
             }
         }
 
-        public static AwaitableCoroutine Create(this ICoroutineRunner runner, Func<AwaitableCoroutine> init)
+        public static Coroutine Create(this ICoroutineRunner runner, Func<Coroutine> init)
         {
-            return Context<AwaitableCoroutine>(runner, init);
+            return Context<Coroutine>(runner, init);
         }
 
-        public static AwaitableCoroutine<T> Create<T>(this ICoroutineRunner runner, Func<AwaitableCoroutine<T>> init)
+        public static Coroutine<T> Create<T>(this ICoroutineRunner runner, Func<Coroutine<T>> init)
         {
-            return Context<AwaitableCoroutine<T>>(runner, init);
+            return Context<Coroutine<T>>(runner, init);
         }
     }
 }

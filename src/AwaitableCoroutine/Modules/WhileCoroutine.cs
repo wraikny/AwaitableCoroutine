@@ -2,9 +2,9 @@
 
 namespace AwaitableCoroutine
 {
-    public partial class AwaitableCoroutine
+    public partial class Coroutine
     {
-        public static async AwaitableCoroutine While(Func<bool> predicate)
+        public static async Coroutine While(Func<bool> predicate)
         {
             if (predicate is null)
             {

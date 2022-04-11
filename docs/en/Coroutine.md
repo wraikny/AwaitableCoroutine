@@ -1,11 +1,11 @@
-# AwaitableCoroutine
-[`AwaitableCoroutine`](../../src/AwaitableCoroutine/AwaitableCoroutine.cs) 
+# Coroutine
+[`Coroutine`](../../src/AwaitableCoroutine/AwaitableCoroutine.cs) 
 is a coroutine that is both awaitable and can be created using the async method.
 
-The generic version, `AwaitableCoroutine<T>`, returns the result value.
+The generic version, `Coroutine<T>`, returns the result value.
 
 **Table of contents**
-- [AwaitableCoroutine](#awaitablecoroutine)
+- [Coroutine](#coroutine)
   - [Method](#method)
   - [Extension method](#extension-method)
   - [Modules](#modules)
@@ -48,22 +48,22 @@ method creates a struct just for `await` once in the `async` method.
 Call it as a static method, as below.
 
 ```csharp
-await AwaitableCoroutine.Yield();
+await Coroutine.Yield();
 ```
 
-It cannot be used in the same way as `AwaitableCoroutine` class, because it is implemented by a struct for optimization purposes.
+It cannot be used in the same way as `Coroutine` class, because it is implemented by a struct for optimization purposes.
 
 If you want to `await` only once, use this method. (Using `DelayCount(0)` cause extra overhead).
 
 Example
 
 ```csharp
-private async AwaitableCoroutine CreateCoroutine()
+private async Coroutine CreateCoroutine()
 {
   for (int i = 0; i < 10; i++)
   {
       // do something
-      await AwaitableCoroutine.Yield();
+      await Coroutine.Yield();
   }
 }
 ```
@@ -92,7 +92,7 @@ method creates a coroutine that waits for the specified number of counts.
 Call it as a static method as below.
 
 ```csharp
-AwaitableCoroutine.DelayCount(5)
+Coroutine.DelayCount(5)
 ```
 
 ### WaitAll
@@ -101,7 +101,7 @@ method creats a coroutine that waits until all specified coroutines are complete
 
 **Arguments**
 The tuple version provides an overload that passes 2 to 7 coroutines.
-For more than that, you can pass `Span<AwaitableCoroutineBase>` or `Span<AwaitableCoroutine<T>>` as arguments.
+For more than that, you can pass `Span<CoroutineBase>` or `Span<Coroutine<T>>` as arguments.
 
 Call it as a static method as below.
 
@@ -115,7 +115,7 @@ method creates a coroutine that waits until one of the specified coroutines is f
 
 **Arguments**
 The tuple version provides an overload that passes 2 to 7 coroutines.
-For more than that, you can pass `Span<AwaitableCoroutineBase>` or `Span<AwaitableCoroutine<T>>` as arguments.
+For more than that, you can pass `Span<CoroutineBase>` or `Span<Coroutine<T>>` as arguments.
 
 Call it as a static method as below.
 
@@ -136,13 +136,13 @@ var res = await someCoroutine.Select(x => x * x);
 
 **Argument**.
 * `SelectTo<T>`
-  * `coroutine`: `AwaitableCoroutineBase`
+  * `coroutine`: `CoroutineBase`
   * `result`: `T`
 * `Select<T>`
-  * `coroutine`: `AwaitableCoroutine`
+  * `coroutine`: `Coroutine`
   * `thunk`: `Func<T>`
 * `Select<T, U>`
-  * `coroutine`: `AwaitableCoroutine<T>`
+  * `coroutine`: `Coroutine<T>`
   * `thunk`: `Func<T, U>`
 
 
@@ -156,7 +156,7 @@ Call it as an extension method as below.
 ```csharp
 runner.Create(() =>
     someCoroutine.AndThen(async x => {
-        await AwaitableCoroutine.Yield();
+        await Coroutine.Yield();
         return x * x;
     })
 );
@@ -164,17 +164,17 @@ runner.Create(() =>
 
 **Argument**.
 * `AwaitableCoroutine.AndThen`
-  * `coroutine`: `AwaitableCoroutine`
-  * `thunk`: `Func<AwaitableCoroutine>`
+  * `coroutine`: `Coroutine`
+  * `thunk`: `Func<Coroutine>`
 * `AwaitableCoroutine.AndThen<T>`
-  * `coroutine`: `AwaitableCoroutine`
-  * `thunk`: `Func<AwaitableCoroutine<T>>`
-* `AwaitableCoroutine<T>.AndThen`
-  * `coroutine`: `AwaitableCoroutine<T>`
+  * `coroutine`: `Coroutine`
+  * `thunk`: `Func<Coroutine<T>>`
+* `Coroutine<T>.AndThen`
+  * `coroutine`: `Coroutine<T>`
   * `thunk`: `Func<T, AwaitableCoroutine>`
-* `AwaitableCoroutine<T>.AndThen<U>`
-  * `coroutine`: `AwaitableCoroutine<T>`
-  * `thunk`: `Func<T< AwaitableCoroutine<U>>`
+* `Coroutine<T>.AndThen<U>`
+  * `coroutine`: `Coroutine<T>`
+  * `thunk`: `Func<T< Coroutine<U>>`
 
 ### UntilCompleted
 
@@ -184,10 +184,10 @@ method creates a coroutine that repeats a specific operation while the original 
 Call it as an extension method as below.
 
 ```csharp
-AwaitableCoroutine.DelayCount(10)
+Coroutine.DelayCount(10)
     .UntilCompleted(async () => {
         Console.WriteLine("Hello");
-        await AwaitableCoroutine.DelayCount(3);
+        await Coroutine.DelayCount(3);
     });
 ```
 
@@ -195,14 +195,14 @@ In this example, a coroutine is created to output the string `Hello` every three
 
 **Arguments**
 * `UntilCompleted`（Action版）
-  * `AwaitableCoroutineBase coroutine`
+  * `CoroutineBase coroutine`
   * `Action action`
-* `UntilCompleted`（`AwaitableCoroutine`を実行する）
-  * `AwaitableCoroutineBase coroutine`
-  * `Func<AwaitableCoroutine> action`
-* `UntilCompleted<T>`（`AwaitableCoroutine`を実行する）
-  * `AwaitableCoroutineBase coroutine`
-  * `Func<AwaitableCoroutine<T>> action`
+* `UntilCompleted`（`Coroutine`を実行する）
+  * `CoroutineBase coroutine`
+  * `Func<Coroutine> action`
+* `UntilCompleted<T>`（`Coroutine`を実行する）
+  * `CoroutineBase coroutine`
+  * `Func<Coroutine<T>> action`
 
 ### FromEnumerator
 [`FromEnumerator(IEnumerator)`](../../src/AwaitableCoroutine/Modules/EnumeratorCoroutine.cs) 

@@ -19,18 +19,18 @@
 `Update`メソッドは、登録済みのコルーチンを次に進めます。 実行されたコルーチンが例外を吐いた場合、全てのコルーチンの更新後に例外がスローされます。
 
 ### Create
-ランナーをコンテキストにセットした内側でコールバックメソッドを実行して、`AwaitableCoroutine`または`AwaitableCoroutine<T>`を作成します。
+ランナーをコンテキストにセットした内側でコールバックメソッドを実行して、`Coroutine`または`Coroutine<T>`を作成します。
 
 **引数**
 * `Create`
-  * `init`: `Func<AwaitableCoroutine>`
+  * `init`: `Func<Coroutine>`
 * `Create<T>`
-  * `init`: `Func<AwaitableCoroutine<T>>`
+  * `init`: `Func<Coroutine<T>>`
 
 ```csharp
 var co = runner.Create(async () => {
   Console.WriteLine("Hello");
-  await AwaitableCoroutine.Yield();
+  await Coroutine.Yield();
   Console.WriteLine("AwaitableCoroutine!");
 });
 ```

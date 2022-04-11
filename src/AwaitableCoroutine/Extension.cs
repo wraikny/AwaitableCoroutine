@@ -2,10 +2,10 @@
 
 namespace AwaitableCoroutine
 {
-    public static class AwaitableCoroutineBaseExtension
+    public static class CoroutineBaseExtension
     {
         public static T OnCompleted<T>(this T coroutine, Action onCompleted)
-            where T : AwaitableCoroutineBase
+            where T : CoroutineBase
         {
             if (coroutine is null)
             {
@@ -22,7 +22,7 @@ namespace AwaitableCoroutine
         }
 
         public static T OnUpdating<T>(this T coroutine, Action onUpdating)
-            where T : AwaitableCoroutineBase
+            where T : CoroutineBase
         {
             if (coroutine is null)
             {
@@ -49,7 +49,7 @@ namespace AwaitableCoroutine
         }
 
         public static T OnCanceled<T>(this T coroutine, Action onCanceled)
-            where T : AwaitableCoroutineBase
+            where T : CoroutineBase
         {
             if (coroutine is null)
             {

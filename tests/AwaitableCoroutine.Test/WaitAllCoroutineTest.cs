@@ -17,11 +17,11 @@ namespace AwaitableCoroutine.Test
             var runner = new CoroutineRunner();
 
             var waitAll = runner.Create(() =>
-                AwaitableCoroutine.WaitAll(new AwaitableCoroutineBase[] {
-                    AwaitableCoroutine.DelayCount(0),
-                    AwaitableCoroutine.DelayCount(0),
-                    AwaitableCoroutine.DelayCount(0),
-                    AwaitableCoroutine.DelayCount(0),
+                Coroutine.WaitAll(new CoroutineBase[] {
+                    Coroutine.DelayCount(0),
+                    Coroutine.DelayCount(0),
+                    Coroutine.DelayCount(0),
+                    Coroutine.DelayCount(0),
                 })
             );
 
@@ -37,11 +37,11 @@ namespace AwaitableCoroutine.Test
             var runner = new CoroutineRunner();
 
             var waitAll = runner.Create(() =>
-                AwaitableCoroutine.WaitAll(new AwaitableCoroutineBase[] {
-                    AwaitableCoroutine.DelayCount(1),
-                    AwaitableCoroutine.DelayCount(2),
-                    AwaitableCoroutine.DelayCount(3),
-                    AwaitableCoroutine.DelayCount(4),
+                Coroutine.WaitAll(new CoroutineBase[] {
+                    Coroutine.DelayCount(1),
+                    Coroutine.DelayCount(2),
+                    Coroutine.DelayCount(3),
+                    Coroutine.DelayCount(4),
                 })
             );
 
@@ -61,9 +61,9 @@ namespace AwaitableCoroutine.Test
             var runner = new CoroutineRunner();
 
             var waitAll = runner.Create(() =>
-                AwaitableCoroutine.WaitAll(
-                    AwaitableCoroutine.DelayCount(0),
-                    AwaitableCoroutine.DelayCount(0)
+                Coroutine.WaitAll(
+                    Coroutine.DelayCount(0),
+                    Coroutine.DelayCount(0)
                 )
             );
 
@@ -82,12 +82,12 @@ namespace AwaitableCoroutine.Test
 
             var waitAll = runner.Create(() =>
             {
-                var coroutines = new AwaitableCoroutine<int>[4];
+                var coroutines = new Coroutine<int>[4];
                 for (var i = 0; i < 4; i++)
                 {
-                    coroutines[i] = AwaitableCoroutine.DelayCount(0).SelectTo(i);
+                    coroutines[i] = Coroutine.DelayCount(0).SelectTo(i);
                 }
-                return AwaitableCoroutine.WaitAll<int>(coroutines);
+                return Coroutine.WaitAll<int>(coroutines);
             });
 
             Assert.False(waitAll.IsCompletedSuccessfully);

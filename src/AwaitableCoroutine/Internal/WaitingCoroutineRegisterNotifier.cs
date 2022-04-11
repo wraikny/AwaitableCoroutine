@@ -2,16 +2,16 @@
 {
     public interface IWaitingCoroutineRegisterer
     {
-        void RegisterWaitingCoroutine(AwaitableCoroutineBase coroutine);
+        void RegisterWaitingCoroutine(CoroutineBase coroutine);
     }
 
     public abstract class WaitingCoroutineRegisterNotifier
     {
         public static WaitingCoroutineRegisterNotifier Instance { get; set; }
 
-        public abstract bool RegisterWaitingCoroutine<T>(ref T awaiter, AwaitableCoroutineBase coroutine);
+        public abstract bool RegisterWaitingCoroutine<T>(ref T awaiter, CoroutineBase coroutine);
 
-        public static void Register<T>(ref T awaiter, AwaitableCoroutineBase coroutine)
+        public static void Register<T>(ref T awaiter, CoroutineBase coroutine)
         {
             if (awaiter is YieldAwaitable.YieldAwaiter) return;
 
@@ -21,7 +21,7 @@
 
         public sealed class Default : WaitingCoroutineRegisterNotifier
         {
-            public override bool RegisterWaitingCoroutine<T>(ref T awaiter, AwaitableCoroutineBase coroutine)
+            public override bool RegisterWaitingCoroutine<T>(ref T awaiter, CoroutineBase coroutine)
             {
                 if (awaiter is IWaitingCoroutineRegisterer registerer)
                 {
@@ -46,7 +46,7 @@
                 _notifiers = notifiers;
             }
 
-            public override bool RegisterWaitingCoroutine<T>(ref T awaiter, AwaitableCoroutineBase coroutine)
+            public override bool RegisterWaitingCoroutine<T>(ref T awaiter, CoroutineBase coroutine)
             {
                 foreach (var n in _notifiers)
                 {

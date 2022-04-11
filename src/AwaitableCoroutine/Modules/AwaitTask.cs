@@ -2,37 +2,37 @@
 
 namespace AwaitableCoroutine
 {
-    public partial class AwaitableCoroutine
+    public partial class Coroutine
     {
-        public static async AwaitableCoroutine AwaitTask(Task task)
+        public static async Coroutine AwaitTask(Task task)
         {
             while (!task.IsCompletedSuccessfully)
             {
                 if (task.IsCanceled)
                 {
-                    AwaitableCoroutine.ThrowCancel("task is canceled");
+                    Coroutine.ThrowCancel("task is canceled");
                 }
 
                 if (task.IsFaulted)
                 {
-                    AwaitableCoroutine.ThrowCancel("task is faulted");
+                    Coroutine.ThrowCancel("task is faulted");
                 }
                 await Yield();
             }
         }
 
-        public static async AwaitableCoroutine<T> AwaitTask<T>(Task<T> task)
+        public static async Coroutine<T> AwaitTask<T>(Task<T> task)
         {
             while (!task.IsCompletedSuccessfully)
             {
                 if (task.IsCanceled)
                 {
-                    AwaitableCoroutine.ThrowCancel("task is canceled");
+                    Coroutine.ThrowCancel("task is canceled");
                 }
 
                 if (task.IsFaulted)
                 {
-                    AwaitableCoroutine.ThrowCancel("task is faulted");
+                    Coroutine.ThrowCancel("task is faulted");
                 }
                 await Yield();
             }
@@ -40,35 +40,35 @@ namespace AwaitableCoroutine
             return task.Result;
         }
 
-        public static async AwaitableCoroutine AwaitTask(ValueTask task)
+        public static async Coroutine AwaitTask(ValueTask task)
         {
             while (!task.IsCompletedSuccessfully)
             {
                 if (task.IsCanceled)
                 {
-                    AwaitableCoroutine.ThrowCancel("task is canceled");
+                    Coroutine.ThrowCancel("task is canceled");
                 }
 
                 if (task.IsFaulted)
                 {
-                    AwaitableCoroutine.ThrowCancel("task is faulted");
+                    Coroutine.ThrowCancel("task is faulted");
                 }
                 await Yield();
             }
         }
 
-        public static async AwaitableCoroutine<T> AwaitTask<T>(ValueTask<T> task)
+        public static async Coroutine<T> AwaitTask<T>(ValueTask<T> task)
         {
             while (!task.IsCompletedSuccessfully)
             {
                 if (task.IsCanceled)
                 {
-                    AwaitableCoroutine.ThrowCancel("task is canceled");
+                    Coroutine.ThrowCancel("task is canceled");
                 }
 
                 if (task.IsFaulted)
                 {
-                    AwaitableCoroutine.ThrowCancel("task is faulted");
+                    Coroutine.ThrowCancel("task is faulted");
                 }
                 await Yield();
             }

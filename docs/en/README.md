@@ -6,14 +6,14 @@
   - [What it does.](#what-it-does)
   - [How to use](#how-to-use)
   - [Notes.](#notes)
-  - [AwaitableCoroutine, AwaitableCoroutine<T> classes](#awaitablecoroutine-awaitablecoroutinet-classes)
+  - [Coroutine, Coroutine<T> classes](#coroutine-coroutinet-classes)
   - [ICoroutineRunner interface](#icoroutinerunner-interface)
   - [AwaitableCoroutine.FSharp package](#awaitablecoroutinefsharp-package)
 
 
 ## What is AwaitableCoroutine?
 
-This package provides `AwaitableCoroutine`, a coroutine that can use async/await syntax in C#.
+This package provides `Coroutine`, a coroutine that can use async/await syntax in C#.
 
 ## What it does.
 
@@ -34,8 +34,8 @@ This package provides `AwaitableCoroutine`, a coroutine that can use async/await
 For example, you can define a coroutine as follows
 
 ```csharp
-// AwaitableCoroutine can be created using the async method.
-private static async AwaitableCoroutine CreateCoroutine()
+// Coroutine can be created using the async method.
+private static async Coroutine CreateCoroutine()
 {
     while (true)
     {
@@ -44,13 +44,13 @@ private static async AwaitableCoroutine CreateCoroutine()
             Console.WriteLine($"Hello {i}");
             
             // Use `Yield` to wait (suspend) with await only once.
-            await AwaitableCoroutine.Yield();
+            await Coroutine.Yield();
         }
 
         Console.WriteLine("Start delay");
 
         // Create a coroutine that executes for the specified count, and wait with `await`.
-        await AwaitableCoroutine.DelayCount(10);
+        await Coroutine.DelayCount(10);
     }
 }
 ```
@@ -63,7 +63,7 @@ public static void Main(string[] _)
     // Create an instance of Runner
     var runner = new CoroutineRunner();
 
-    // Note: the `AwaitableCoroutine` must be created in a callback passed to the `Create` or `Context` extension methods
+    // Note: the `Coroutine` must be created in a callback passed to the `Create` or `Context` extension methods
     var coroutine = runner.Create(CreateCoroutine);
     /*
       // When using the `Context` extension method
@@ -86,19 +86,19 @@ public static void Main(string[] _)
 {
     var runner = new CoroutineRunner();
 
-    // Create an `AwaitableCoroutine` using an asynchronous lambda expression.
+    // Create an `Coroutine` using an asynchronous lambda expression.
     var coroutine = runner.Create(async () => {
         for (var i = 0; i < 5; i++)
         {
             Console.WriteLine($"Hello with async lambda {i}");
-            await AwaitableCoroutine.Yield();
+            await Coroutine.Yield();
         }
     });
 
     // Note: When using asynchronous lambda expressions in `Context` methods, Explicit declaration of generic parameters is required.
     /*
-      var coroutine = runner.Context<AwaitableCoroutine>(async () => {
-        await AwaitableCoroutine.Yield();
+      var coroutine = runner.Context<Coroutine>(async () => {
+        await Coroutine.Yield();
       });
     */
 
@@ -111,17 +111,17 @@ public static void Main(string[] _)
 
 ## Notes.
 
-Note that `AwaitableCoroutine` and `AwaitableCoroutine<T>` are generated in the callback function of the `Create` extension method or the `Context` extension method.
+Note that `Coroutine` and `Coroutine<T>` are generated in the callback function of the `Create` extension method or the `Context` extension method.
 It is needed to give information about which `ICoroutineRunner` the coroutine should be registered with.
 Basically, use the `Create` extension method.
 
-If you want to return a type other than `AwaitableCoroutien` or `AwaitableCoroutien<T>`, such as returning a tuple of `AwaitableCoroutine`, use the `Context` extension method as follows.
+If you want to return a type other than `AwaitableCoroutien` or `AwaitableCoroutien<T>`, such as returning a tuple of `Coroutine`, use the `Context` extension method as follows.
 
 ```csharp
-var (c1, c2) = runner.Context(() => (AwaitableCoroutine.DelayCount(1), AwaitableCoroutine.DelayCount(1)));
+var (c1, c2) = runner.Context(() => (Coroutine.DelayCount(1), Coroutine.DelayCount(1)));
 ````
 
-Be careful when creating an `AwaitableCoroutine` using asynchronous lambda expressions, because it will be inferred as a `Task` if you don't specify the generic parameters.
+Be careful when creating an `Coroutine` using asynchronous lambda expressions, because it will be inferred as a `Task` if you don't specify the generic parameters.
 
 If you want to give an argument to the creation of a coroutine, you can do so as follows.
 
@@ -129,11 +129,11 @@ If you want to give an argument to the creation of a coroutine, you can do so as
 Context(() => FooBarCoroutine(arg1, arg2)). var coroutine = runner;
 ```
 
-## AwaitableCoroutine, AwaitableCoroutine<T> classes
+## Coroutine, Coroutine<T> classes
 
 Classes for awaitable coroutines.
 
-See [AwaitableCoroutine.md](AwaitableCoroutine.md).
+See [Coroutine.md](Coroutine.md).
 
 ## ICoroutineRunner interface
 

@@ -2,7 +2,7 @@
 
 namespace AwaitableCoroutine
 {
-    public partial class AwaitableCoroutine
+    public partial class Coroutine
     {
         private sealed class CoroutineObserver<T> : IObserver<T>
         {
@@ -18,7 +18,7 @@ namespace AwaitableCoroutine
             }
         }
 
-        public static AwaitableCoroutine<T> AwaitObservable<T>(IObservable<T> observable)
+        public static Coroutine<T> AwaitObservable<T>(IObservable<T> observable)
         {
             var observer = new CoroutineObserver<T>();
 
@@ -28,7 +28,7 @@ namespace AwaitableCoroutine
             {
                 while (!observer.IsObserved)
                 {
-                    if (observer.IsCompleted) AwaitableCoroutine.ThrowCancel("waiting observable is completed.");
+                    if (observer.IsCompleted) Coroutine.ThrowCancel("waiting observable is completed.");
                     await Yield();
                 }
                 d.Dispose();
@@ -36,7 +36,7 @@ namespace AwaitableCoroutine
             });
         }
 
-        public static AwaitableCoroutine AwaitObservableCompleted<T>(IObservable<T> observable)
+        public static Coroutine AwaitObservableCompleted<T>(IObservable<T> observable)
         {
             var observer = new CoroutineObserver<T>();
 

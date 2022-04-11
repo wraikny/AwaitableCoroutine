@@ -28,7 +28,7 @@ namespace AwaitableCoroutine.Test
             var runner = new CoroutineRunner();
 
             var n = 5;
-            var coroutine = runner.Create(() => AwaitableCoroutine.FromEnumerator(GetEnumerator(n)));
+            var coroutine = runner.Create(() => Coroutine.FromEnumerator(GetEnumerator(n)));
 
             for (var i = 0; i < n; i++)
             {

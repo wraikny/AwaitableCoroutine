@@ -11,22 +11,22 @@ namespace AwaitableCoroutine.Test
 
         }
 
-        private async AwaitableCoroutine SingleYieldCoroutine(Counter counter)
+        private async Coroutine SingleYieldCoroutine(Counter counter)
         {
             counter.Inc();
             Log($"Count: {counter.Count}");
-            await AwaitableCoroutine.Yield();
+            await Coroutine.Yield();
             counter.Inc();
             Log($"Count: {counter.Count}");
         }
 
-        private async AwaitableCoroutine GetCoroutine(Counter counter)
+        private async Coroutine GetCoroutine(Counter counter)
         {
             for (var i = 0; i < 3; i++)
             {
                 counter.Inc();
                 Log($"Count: {counter.Count}");
-                await AwaitableCoroutine.Yield();
+                await Coroutine.Yield();
             }
 
             counter.Inc();
@@ -34,11 +34,11 @@ namespace AwaitableCoroutine.Test
             // inc 4
         }
 
-        private async AwaitableCoroutine GetCoroutine2(Counter counter)
+        private async Coroutine GetCoroutine2(Counter counter)
         {
             counter.Inc();
             Log($"Count: {counter.Count}");
-            await AwaitableCoroutine.Yield(); // 1
+            await Coroutine.Yield(); // 1
 
             counter.Inc();
             Log($"Count: {counter.Count}"); // 2
@@ -60,9 +60,9 @@ namespace AwaitableCoroutine.Test
 
         }
 
-        private async AwaitableCoroutine CreateWithException()
+        private async Coroutine CreateWithException()
         {
-            await AwaitableCoroutine.Yield();
+            await Coroutine.Yield();
             throw new MyException();
         }
 
@@ -140,10 +140,10 @@ namespace AwaitableCoroutine.Test
             var runner1 = new CoroutineRunner();
             var runner2 = new CoroutineRunner();
 
-            var coroutine1 = runner1.Create(() => AwaitableCoroutine.DelayCount(0));
+            var coroutine1 = runner1.Create(() => Coroutine.DelayCount(0));
 
             var coroutine2 = runner2.Create(() =>
-                coroutine1.AndThen(() => AwaitableCoroutine.DelayCount(0))
+                coroutine1.AndThen(() => Coroutine.DelayCount(0))
             );
 
             Assert.False(coroutine1.IsCompletedSuccessfully);
@@ -188,10 +188,10 @@ namespace AwaitableCoroutine.Test
             var runner = new CoroutineRunner();
 
             var (co1, co2, co3) = runner.Context(() =>
-                (CreateWithException(), AwaitableCoroutine.While(() => true), CreateWithException())
+                (CreateWithException(), Coroutine.While(() => true), CreateWithException())
             );
 
-            var waitAll = runner.Create(() => AwaitableCoroutine.WaitAll(co1, co2, co3));
+            var waitAll = runner.Create(() => Coroutine.WaitAll(co1, co2, co3));
 
             Assert.False(co1.IsCompletedSuccessfully);
             Assert.False(co2.IsCompletedSuccessfully);

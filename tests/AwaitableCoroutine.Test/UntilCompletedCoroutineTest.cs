@@ -19,7 +19,7 @@ namespace AwaitableCoroutine.Test
 
             var counter = new Counter();
 
-            var coroutine1 = runner1.Create(() => AwaitableCoroutine.DelayCount(3));
+            var coroutine1 = runner1.Create(() => Coroutine.DelayCount(3));
             var coroutine2 = runner2.Create(() => coroutine1.UntilCompleted(counter.Inc));
 
             Assert.False(coroutine1.IsCompletedSuccessfully);

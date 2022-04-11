@@ -19,18 +19,18 @@ Basically, it is recommended to use the standard `CoroutineRunner`, but you can 
 The `Update` extension method moves registered coroutines to the next step. If executed coroutines throw exceptions, the exception will be thrown after all coroutines have been updated.
 
 ### Create
-Create an `AwaitableCoroutine` or `AwaitableCoroutine<T>` by executing the callback method inside the runner set to the context.
+Create an `Coroutine` or `Coroutine<T>` by executing the callback method inside the runner set to the context.
 
 **Arguments**
 * `Create`
-  * `init`: `Func<AwaitableCoroutine>`
+  * `init`: `Func<Coroutine>`
 * `Create<T>`
-  * `init`: `Func<AwaitableCoroutine<T>>`
+  * `init`: `Func<Coroutine<T>>`
 
 ```csharp
 var co = runner.Create(async () => {
   Console.WriteLine("Hello");
-  await AwaitableCoroutine.Yield();
+  await Coroutine.Yield();
   Console.WriteLine("AwaitableCoroutine!");
 });
 ```
@@ -48,7 +48,7 @@ Execute the callback method with the runner set to the context.
 var (co1, co2, waitAll) = runner.Context(() => {
   var co1 = MyCoroutine1();
   var co2 = MyCoroutine2();
-  return (co1, co2, AwaitableCoroutine.WaitAll(co1, co2));
+  return (co1, co2, Coroutine.WaitAll(co1, co2));
 });
 ```
 

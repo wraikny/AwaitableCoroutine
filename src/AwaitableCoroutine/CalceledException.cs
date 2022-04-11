@@ -17,7 +17,7 @@ namespace AwaitableCoroutine
     }
 
     public sealed class ChildCanceledException<T> : CanceledException
-        where T : AwaitableCoroutineBase
+        where T : CoroutineBase
     {
         public T Child { get; private set; }
         public ChildCanceledException(T child)
@@ -33,7 +33,7 @@ namespace AwaitableCoroutine
     }
 
     public sealed class ChildrenCanceledException<T> : CanceledException
-        where T : AwaitableCoroutineBase
+        where T : CoroutineBase
     {
         public T[] Children { get; private set; }
         public ChildrenCanceledException(T[] children)
@@ -48,7 +48,7 @@ namespace AwaitableCoroutine
         }
     }
 
-    public partial class AwaitableCoroutine
+    public partial class Coroutine
     {
         public static void ThrowCancel(string message = null)
         {
@@ -56,13 +56,13 @@ namespace AwaitableCoroutine
         }
 
         public static void ThrowChildCancel<T>(T child, string message = null)
-            where T : AwaitableCoroutineBase
+            where T : CoroutineBase
         {
             throw new ChildCanceledException<T>(child, message);
         }
 
         public static void ThrowChildrenCancel<T>(T[] children, string message = null)
-            where T : AwaitableCoroutineBase
+            where T : CoroutineBase
         {
             throw new ChildrenCanceledException<T>(children, message);
         }

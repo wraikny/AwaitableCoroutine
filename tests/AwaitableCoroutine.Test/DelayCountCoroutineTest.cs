@@ -20,7 +20,7 @@ namespace AwaitableCoroutine.Test
 
             var flag = false;
 
-            var coroutine = runner.Create(() => AwaitableCoroutine.DelayCount(count).OnCompleted(() => flag = true));
+            var coroutine = runner.Create(() => Coroutine.DelayCount(count).OnCompleted(() => flag = true));
 
             for (var i = 0; i < count; i++)
             {
@@ -33,12 +33,12 @@ namespace AwaitableCoroutine.Test
             Assert.True(flag);
         }
 
-        private async AwaitableCoroutine CreateAwaitDelayCount(Counter counter)
+        private async Coroutine CreateAwaitDelayCount(Counter counter)
         {
             counter.Inc();
-            await AwaitableCoroutine.DelayCount(5);
+            await Coroutine.DelayCount(5);
             counter.Inc();
-            await AwaitableCoroutine.DelayCount(5);
+            await Coroutine.DelayCount(5);
             counter.Inc();
         }
 

@@ -1,7 +1,6 @@
 ﻿using System;
 
 using AwaitableCoroutine;
-using AwCo = AwaitableCoroutine.AwaitableCoroutine;
 
 var runner = new CoroutineRunner();
 
@@ -13,7 +12,7 @@ var coroutine = runner.Create(async () => {
     for (var i = 0; i < 10; i++)
     {
         count++;
-        await AwCo.Yield();
+        await Coroutine.Yield();
     }
 }).OnCompleted(() => Console.WriteLine("Finished!"));
 

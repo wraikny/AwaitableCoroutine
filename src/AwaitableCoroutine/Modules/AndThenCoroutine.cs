@@ -2,9 +2,9 @@
 
 namespace AwaitableCoroutine
 {
-    public static class AwaitableCoroutineAndThenExt
+    public static class CoroutineAndThenExt
     {
-        public static async AwaitableCoroutine AndThen(this AwaitableCoroutine coroutine, Func<AwaitableCoroutine> thunk)
+        public static async Coroutine AndThen(this Coroutine coroutine, Func<Coroutine> thunk)
         {
             if (thunk is null)
             {
@@ -15,7 +15,7 @@ namespace AwaitableCoroutine
             await thunk();
         }
 
-        public static async AwaitableCoroutine<T> AndThen<T>(this AwaitableCoroutine coroutine, Func<AwaitableCoroutine<T>> thunk)
+        public static async Coroutine<T> AndThen<T>(this Coroutine coroutine, Func<Coroutine<T>> thunk)
         {
             if (thunk is null)
             {
@@ -26,9 +26,9 @@ namespace AwaitableCoroutine
             return await thunk();
         }
 
-        /* AwaitableCoroutine<T> */
+        /* Coroutine<T> */
 
-        public static async AwaitableCoroutine AndThen<T>(this AwaitableCoroutine<T> coroutine, Func<T, AwaitableCoroutine> thunk)
+        public static async Coroutine AndThen<T>(this Coroutine<T> coroutine, Func<T, Coroutine> thunk)
         {
             if (thunk is null)
             {
@@ -39,7 +39,7 @@ namespace AwaitableCoroutine
             await thunk(res);
         }
 
-        public static async AwaitableCoroutine<U> AndThen<T, U>(this AwaitableCoroutine<T> coroutine, Func<T, AwaitableCoroutine<U>> thunk)
+        public static async Coroutine<U> AndThen<T, U>(this Coroutine<T> coroutine, Func<T, Coroutine<U>> thunk)
         {
             if (thunk is null)
             {

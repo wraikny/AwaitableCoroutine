@@ -7,9 +7,9 @@ namespace AwaitableCoroutine.Internal
     [EditorBrowsable(EditorBrowsableState.Never)]
     public readonly struct AwaitableCoroutineMethodBuilder
     {
-        private sealed class Coroutine : AwaitableCoroutine
+        private sealed class MethodBuilderCoroutine : Coroutine
         {
-            public Coroutine(ICoroutineRunner runner) : base(runner) { }
+            public MethodBuilderCoroutine(ICoroutineRunner runner) : base(runner) { }
 
             public void CallComplete() => Complete();
 
@@ -17,13 +17,13 @@ namespace AwaitableCoroutine.Internal
         }
 
         private readonly ICoroutineRunner _runner;
-        private readonly Coroutine _coroutine;
+        private readonly MethodBuilderCoroutine _coroutine;
 
         private AwaitableCoroutineMethodBuilder(ICoroutineRunner runner)
         {
             Logger.Log("AwaitableCoroutineMethodBuilder constructor");
             _runner = runner;
-            _coroutine = new Coroutine(runner);
+            _coroutine = new MethodBuilderCoroutine(runner);
         }
 
         // 1. Static Create method.
@@ -34,7 +34,7 @@ namespace AwaitableCoroutine.Internal
         }
 
         // 2. TaskLike Task Property
-        public AwaitableCoroutine Task => _coroutine;
+        public Coroutine Task => _coroutine;
 
         // 3. SetException
         public void SetException(Exception exn)
@@ -92,9 +92,9 @@ namespace AwaitableCoroutine.Internal
     [EditorBrowsable(EditorBrowsableState.Never)]
     public readonly struct AwaitableCoroutineMethodBuilder<T>
     {
-        private sealed class Coroutine : AwaitableCoroutine<T>
+        private sealed class MethodBuilderCoroutine : Coroutine<T>
         {
-            public Coroutine(ICoroutineRunner runner) : base(runner) { }
+            public MethodBuilderCoroutine(ICoroutineRunner runner) : base(runner) { }
 
             public void CallComplete(T result) => Complete(result);
 
@@ -102,13 +102,13 @@ namespace AwaitableCoroutine.Internal
         }
 
         private readonly ICoroutineRunner _runner;
-        private readonly Coroutine _coroutine;
+        private readonly MethodBuilderCoroutine _coroutine;
 
         private AwaitableCoroutineMethodBuilder(ICoroutineRunner runner)
         {
             Logger.Log($"AwaitableCoroutineMethodBuilder<{typeof(T).Name}> constructor");
             _runner = runner;
-            _coroutine = new Coroutine(runner);
+            _coroutine = new MethodBuilderCoroutine(runner);
         }
 
         // 1. Static Create method.
@@ -119,7 +119,7 @@ namespace AwaitableCoroutine.Internal
         }
 
         // 2. TaskLike Task Property
-        public AwaitableCoroutine<T> Task => _coroutine;
+        public Coroutine<T> Task => _coroutine;
 
         // 3. SetException
         public void SetException(Exception exn)

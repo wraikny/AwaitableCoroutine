@@ -2,9 +2,9 @@
 
 namespace AwaitableCoroutine
 {
-    public partial class AwaitableCoroutine
+    public partial class Coroutine
     {
-        public static async AwaitableCoroutine DelayCount(int count, Action<int> onUpdating = null)
+        public static async Coroutine DelayCount(int count, Action<int> onUpdating = null)
         {
             for (var i = 0; i < count; i++)
             {

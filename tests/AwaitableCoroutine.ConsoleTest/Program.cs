@@ -10,8 +10,8 @@ namespace AwaitableCoroutine.ConsoleTest
             var count = 0;
 
             var c = runner.Create(() =>
-                AwaitableCoroutine.DelayCount(0)
-                    .AndThen(() => AwaitableCoroutine.DelayCount(0).OnCompleted(() =>
+                Coroutine.DelayCount(0)
+                    .AndThen(() => Coroutine.DelayCount(0).OnCompleted(() =>
                     {
                         count++;
                         Internal.Logger.Log($"Count: {count}");

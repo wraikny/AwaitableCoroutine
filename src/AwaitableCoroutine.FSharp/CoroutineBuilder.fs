@@ -72,7 +72,7 @@ module private Helper =
 
   /// Chains together a step with its following step.
   /// Note that this requires that the first step has no result.
-  /// This prevents constructs like `awaitableCoroutine { return 1; return 2; }`.
+  /// This prevents constructs like `coroutine { return 1; return 2; }`.
   let rec combine (step : Step<unit>) (continuation : unit -> Step<'b>) =
     match step with
     | Return _ -> continuation()
@@ -147,7 +147,7 @@ open Helper
 module Builders =
 
   [<Struct>]
-  type AwaitableCoroutineBuilder =
+  type CoroutineBuilder =
     member __.Delay(f : unit -> Step<_>) = f
     member __.Run(f : unit -> Step<'m>) = run f
     member __.Zero() = zero
@@ -160,10 +160,10 @@ module Builders =
     member __.Using(disp : #IDisposable, body : #IDisposable -> _ Step) = using disp body
     member inline __.ReturnFrom a : _ Step = genericAwait(a, Return)
     member inline __.Bind(abl, continuation) = genericAwait (abl, continuation)
-    member __.Yield(_: unit) = genericAwait(AwaitableCoroutine.Yield(), Return)
+    member __.Yield(_: unit) = genericAwait(Coroutine.Yield(), Return)
 
   [<Struct>]
-  type DoAwaitableCoroutineBuilder(fin: unit -> unit) =
+  type DoCoroutineBuilder(fin: unit -> unit) =
     member __.Delay(f : unit -> Step<_>) = f
     member __.Run(f : unit -> Step<'m>) = try run f finally fin()
     member __.Zero() = zero
@@ -176,14 +176,14 @@ module Builders =
     member __.Using(disp : #IDisposable, body : #IDisposable -> _ Step) = using disp body
     member inline __.ReturnFrom a : _ Step = genericAwait(a, Return)
     member inline __.Bind(abl, continuation) = genericAwait (abl, continuation)
-    member __.Yield(_: unit) = genericAwait(AwaitableCoroutine.Yield(), Return)
+    member __.Yield(_: unit) = genericAwait(Coroutine.Yield(), Return)
 
 open Builders
 
-let awaitableCoroutine = AwaitableCoroutineBuilder()
+let coroutine = CoroutineBuilder()
 
 type ICoroutineRunner with
   member this.Do =
     let prev = ICoroutineRunner.Instance
     ICoroutineRunner.Instance <- this
-    DoAwaitableCoroutineBuilder(fun() -> ICoroutineRunner.Instance <- prev)
+    DoCoroutineBuilder(fun() -> ICoroutineRunner.Instance <- prev)
