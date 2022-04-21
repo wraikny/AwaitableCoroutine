@@ -6,18 +6,18 @@
     <PlatformTarget>x64</PlatformTarget>
 
     <PackageId>AwaitableCoroutine.Altseed2</PackageId>
-    <Version>1.7.0</Version>
+    <Version>1.7.1</Version>
     <Description>AwaitableCoroutine extension for Altseed2</Description>
     <PackageProjectUrl>https://github.com/wraikny/AwaitableCoroutine</PackageProjectUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>Copyright (c) 2021 - 2022 wraikny</Copyright>
     <RepositoryType>git</RepositoryType>
-    <PackageTags>coroutine,awaitable,asyncawait,altseed2</PackageTags>
+    <PackageTags>coroutine,awaitable,asyncawait,game,altseed2</PackageTags>
 
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Altseed2" Version="2.1.*" />
+    <PackageReference Include="Altseed2" Version="2.*" />
   </ItemGroup>
 
   <ItemGroup>
