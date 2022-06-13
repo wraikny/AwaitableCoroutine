@@ -8,6 +8,9 @@ The generic version, `Coroutine<T>`, returns the result value.
 - [Coroutine](#coroutine)
   - [Method](#method)
   - [Extension method](#extension-method)
+  - [Exception and cancellation](#exception-and-cancellation)
+    - [CanceledException](#canceledexception)
+    - [例外](#例外)
   - [Modules](#modules)
     - [Yield](#yield)
     - [While](#while)
@@ -21,7 +24,6 @@ The generic version, `Coroutine<T>`, returns the result value.
     - [AwaitTask](#awaittask)
     - [AwaitObservable](#awaitobservable)
     - [AwaitObservableCompleted](#awaitobservablecompleted)
-    - [CanceledException](#canceledexception)
 
 ## Method
 
@@ -38,6 +40,45 @@ The generic version, `Coroutine<T>`, returns the result value.
 | `OnCompleted (Action)` | Register the process to be executed when the coroutine is completed |
 | `OnUpdating (Action)` | Register the process to be executed before updating the coroutine |
 | `OnCanceled (Action)` | Register the process to be executed when the coroutine is canceled |
+
+## Exception and cancellation
+
+### CanceledException
+
+`CanceledException` is an exception to use when you want to cancel the execution of a coroutine created by an asynchronous method from within that method.
+
+Use the `Cancel` method if you want to cancel the coroutine in any other case.
+
+| Name | Desc |
+| --- | --- |
+| [`CanceledException`](../../src/AwaitableCoroutine/CalceledException.cs) | Exception for canceling a coroutine |
+| `ChildCanceledException` | Exception for canceling a coroutine due to the cancellation of a waiting coroutine |
+| `ChildrenCanceledException` | Exception for canceling a coroutine due to multiple waiting coroutines being canceled |
+
+
+### 例外
+
+Exceptions thrown by a coroutine are propagated to the awaiting coroutine. 
+However, it will be wrapped by `ChildCanceledException`.
+
+
+```csharp
+var co = runner.Create(async () => {
+    try
+    {
+      await Hoge(); // throw exception
+    }
+    catch(ChildCanceledException e)
+    {
+      var hogeException = e.InnerException;
+      // do something
+    }
+    finally
+    {
+      // do something
+    }
+});
+```
 
 ## Modules
 
@@ -231,15 +272,3 @@ method creates a coroutine that waits for the `IObservable <T>` to complete.
 
 **Argument**
 * `observable`: `IObservable <T>`
-
-### CanceledException
-
-`CanceledException` is an exception to use when you want to cancel the execution of a coroutine created by an asynchronous method from within that method.
-
-Use the `Cancel` method if you want to cancel the coroutine in any other case.
-
-| Name | Desc |
-| --- | --- |
-| [`CanceledException`](../../src/AwaitableCoroutine/CalceledException.cs) | Exception for canceling a coroutine |
-| `ChildCanceledException` | Exception for canceling a coroutine due to the cancellation of a waiting coroutine |
-| `ChildrenCanceledException` | Exception for canceling a coroutine due to multiple waiting coroutines being canceled |

@@ -179,7 +179,7 @@ namespace AwaitableCoroutine.Test
             Assert.Throws<MyException>(runner.Update);
 
             runner.Update();
-            Assert.True(co.IsCanceled);
+            Assert.True(co.IsFaulted);
         }
 
         [Fact]
@@ -201,9 +201,9 @@ namespace AwaitableCoroutine.Test
             Assert.Throws<System.AggregateException>(runner.Update);
 
             runner.Update();
-            Assert.True(co1.IsCanceled);
-            Assert.False(co2.IsCanceled);
-            Assert.True(co3.IsCanceled);
+            Assert.True(co1.IsFaulted);
+            Assert.False(co2.IsFaulted);
+            Assert.True(co3.IsFaulted);
             Assert.True(waitAll.IsCanceled);
         }
     }

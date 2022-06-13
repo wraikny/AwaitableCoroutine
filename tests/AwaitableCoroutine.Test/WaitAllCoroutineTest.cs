@@ -17,7 +17,7 @@ namespace AwaitableCoroutine.Test
             var runner = new CoroutineRunner();
 
             var waitAll = runner.Create(() =>
-                Coroutine.WaitAll(new CoroutineBase[] {
+                Coroutine.WaitAll(new Coroutine[] {
                     Coroutine.DelayCount(0),
                     Coroutine.DelayCount(0),
                     Coroutine.DelayCount(0),
@@ -37,7 +37,7 @@ namespace AwaitableCoroutine.Test
             var runner = new CoroutineRunner();
 
             var waitAll = runner.Create(() =>
-                Coroutine.WaitAll(new CoroutineBase[] {
+                Coroutine.WaitAll(new Coroutine[] {
                     Coroutine.DelayCount(1),
                     Coroutine.DelayCount(2),
                     Coroutine.DelayCount(3),

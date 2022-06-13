@@ -1,13 +1,14 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Runtime.ExceptionServices;
 
 namespace AwaitableCoroutine.Internal
 {
     public interface ICoroutineAwaiter : INotifyCompletion, ICriticalNotifyCompletion { }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public readonly struct CoroutineAwaiter : ICoroutineAwaiter, IWaitingCoroutineRegisterer
+    public readonly struct CoroutineAwaiter : ICoroutineAwaiter
     {
         private readonly Coroutine _target;
 
@@ -18,28 +19,50 @@ namespace AwaitableCoroutine.Internal
             _target = target;
         }
 
-        public bool IsCompleted => _target.IsCompletedSuccessfully;
+        public bool IsCompleted => _target.IsCompleted;
 
         void INotifyCompletion.OnCompleted(Action continuation)
         {
-            _target.ContinueWith(continuation);
+            if (_target.IsCompleted)
+            {
+                continuation.Invoke();
+                return;
+            }
+
+            _target.AddOnCompletedSuccessfully(continuation);
+            _target.AddOnCanceled(continuation);
         }
 
         void ICriticalNotifyCompletion.UnsafeOnCompleted(Action continuation)
         {
-            _target.ContinueWith(continuation);
+            if (_target.IsCompleted)
+            {
+                continuation.Invoke();
+                return;
+            }
+
+            _target.AddOnCompletedSuccessfully(continuation);
+            _target.AddOnCanceled(continuation);
         }
 
-        public void GetResult() { }
-
-        void IWaitingCoroutineRegisterer.RegisterWaitingCoroutine(CoroutineBase child)
+        public void GetResult()
         {
-            Target.RegisterWaitingCoroutine(child);
+            if (_target.IsCanceledOrFaulted)
+            {
+                if (_target.Exception is CanceledException e)
+                {
+                    ExceptionDispatchInfo.Capture(e).Throw();
+                }
+                else
+                {
+                    Coroutine.ThrowCancel(innerException: _target.Exception, coroutine: _target);
+                }
+            }
         }
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public readonly struct CoroutineAwaiter<T> : ICoroutineAwaiter, IWaitingCoroutineRegisterer
+    public readonly struct CoroutineAwaiter<T> : ICoroutineAwaiter
     {
         private readonly Coroutine<T> _target;
 
@@ -50,23 +73,47 @@ namespace AwaitableCoroutine.Internal
             _target = target;
         }
 
-        public bool IsCompleted => _target.IsCompletedSuccessfully;
+        public bool IsCompleted => _target.IsCompleted;
 
         void INotifyCompletion.OnCompleted(Action continuation)
         {
-            _target.ContinueWith(continuation);
+            if (_target.IsCompleted)
+            {
+                continuation.Invoke();
+                return;
+            }
+
+            _target.AddOnCompletedSuccessfully(continuation);
+            _target.AddOnCanceled(continuation);
         }
 
         void ICriticalNotifyCompletion.UnsafeOnCompleted(Action continuation)
         {
-            _target.ContinueWith(continuation);
+            if (_target.IsCompleted)
+            {
+                continuation.Invoke();
+                return;
+            }
+
+            _target.AddOnCompletedSuccessfully(continuation);
+            _target.AddOnCanceled(continuation);
         }
 
-        public T GetResult() => _target.Result;
-
-        void IWaitingCoroutineRegisterer.RegisterWaitingCoroutine(CoroutineBase child)
+        public T GetResult()
         {
-            Target.RegisterWaitingCoroutine(child);
+            if (_target.IsCanceledOrFaulted)
+            {
+                if (_target.Exception is CanceledException e)
+                {
+                    ExceptionDispatchInfo.Capture(e).Throw();
+                }
+                else
+                {
+                    Coroutine.ThrowCancel(innerException: _target.Exception, coroutine: _target);
+                }
+            }
+
+            return _target.Result;
         }
     }
 }

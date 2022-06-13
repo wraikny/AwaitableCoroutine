@@ -4,73 +4,73 @@ namespace AwaitableCoroutine
 {
     public partial class Coroutine
     {
-        public static async Coroutine WaitAny(CoroutineBase c1, CoroutineBase c2)
+        public static async Coroutine WaitAny(Coroutine c1, Coroutine c2)
         {
             while (!(c1.IsCompletedSuccessfully || c2.IsCompletedSuccessfully))
             {
-                if (c1.IsCanceled && c2.IsCanceled)
+                if (c1.IsCanceledOrFaulted && c2.IsCanceledOrFaulted)
                 {
-                    Coroutine.ThrowChildrenCancel<CoroutineBase>(new CoroutineBase[] { c1, c2 });
+                    Coroutine.ThrowChildrenCancel(new Coroutine[] { c1, c2 });
                 }
                 await Yield();
             }
         }
 
-        public static async Coroutine WaitAny(CoroutineBase c1, CoroutineBase c2, CoroutineBase c3)
+        public static async Coroutine WaitAny(Coroutine c1, Coroutine c2, Coroutine c3)
         {
             while (!(c1.IsCompletedSuccessfully || c2.IsCompletedSuccessfully || c3.IsCompletedSuccessfully))
             {
-                if (c1.IsCanceled && c2.IsCanceled && c3.IsCanceled)
+                if (c1.IsCanceledOrFaulted && c2.IsCanceledOrFaulted && c3.IsCanceledOrFaulted)
                 {
-                    Coroutine.ThrowChildrenCancel<CoroutineBase>(new CoroutineBase[] { c1, c2, c3 });
+                    Coroutine.ThrowChildrenCancel(new Coroutine[] { c1, c2, c3 });
                 }
                 await Yield();
             }
         }
 
-        public static async Coroutine WaitAny(CoroutineBase c1, CoroutineBase c2, CoroutineBase c3, CoroutineBase c4)
+        public static async Coroutine WaitAny(Coroutine c1, Coroutine c2, Coroutine c3, Coroutine c4)
         {
             while (!(c1.IsCompletedSuccessfully || c2.IsCompletedSuccessfully || c3.IsCompletedSuccessfully || c4.IsCompletedSuccessfully))
             {
-                if (c1.IsCanceled && c2.IsCanceled && c3.IsCanceled && c4.IsCanceled)
+                if (c1.IsCanceledOrFaulted && c2.IsCanceledOrFaulted && c3.IsCanceledOrFaulted && c4.IsCanceledOrFaulted)
                 {
-                    Coroutine.ThrowChildrenCancel<CoroutineBase>(new CoroutineBase[] { c1, c2, c3, c4 });
+                    Coroutine.ThrowChildrenCancel(new Coroutine[] { c1, c2, c3, c4 });
                 }
                 await Yield();
             }
         }
 
-        public static async Coroutine WaitAny(CoroutineBase c1, CoroutineBase c2, CoroutineBase c3, CoroutineBase c4, CoroutineBase c5)
+        public static async Coroutine WaitAny(Coroutine c1, Coroutine c2, Coroutine c3, Coroutine c4, Coroutine c5)
         {
             while (!(c1.IsCompletedSuccessfully || c2.IsCompletedSuccessfully || c3.IsCompletedSuccessfully || c4.IsCompletedSuccessfully || c5.IsCompletedSuccessfully))
             {
-                if (c1.IsCanceled && c2.IsCanceled && c3.IsCanceled && c4.IsCanceled && c5.IsCanceled)
+                if (c1.IsCanceledOrFaulted && c2.IsCanceledOrFaulted && c3.IsCanceledOrFaulted && c4.IsCanceledOrFaulted && c5.IsCanceledOrFaulted)
                 {
-                    Coroutine.ThrowChildrenCancel<CoroutineBase>(new CoroutineBase[] { c1, c2, c3, c4, c5 });
+                    Coroutine.ThrowChildrenCancel(new Coroutine[] { c1, c2, c3, c4, c5 });
                 }
                 await Yield();
             }
         }
 
-        public static async Coroutine WaitAny(CoroutineBase c1, CoroutineBase c2, CoroutineBase c3, CoroutineBase c4, CoroutineBase c5, CoroutineBase c6)
+        public static async Coroutine WaitAny(Coroutine c1, Coroutine c2, Coroutine c3, Coroutine c4, Coroutine c5, Coroutine c6)
         {
             while (!(c1.IsCompletedSuccessfully || c2.IsCompletedSuccessfully || c3.IsCompletedSuccessfully || c4.IsCompletedSuccessfully || c5.IsCompletedSuccessfully || c6.IsCompletedSuccessfully))
             {
-                if (c1.IsCanceled && c2.IsCanceled && c3.IsCanceled && c4.IsCanceled && c5.IsCanceled && c6.IsCanceled)
+                if (c1.IsCanceledOrFaulted && c2.IsCanceledOrFaulted && c3.IsCanceledOrFaulted && c4.IsCanceledOrFaulted && c5.IsCanceledOrFaulted && c6.IsCanceledOrFaulted)
                 {
-                    Coroutine.ThrowChildrenCancel<CoroutineBase>(new CoroutineBase[] { c1, c2, c3, c4, c5, c6 });
+                    Coroutine.ThrowChildrenCancel(new Coroutine[] { c1, c2, c3, c4, c5, c6 });
                 }
                 await Yield();
             }
         }
 
-        public static async Coroutine WaitAny(CoroutineBase c1, CoroutineBase c2, CoroutineBase c3, CoroutineBase c4, CoroutineBase c5, CoroutineBase c6, CoroutineBase c7)
+        public static async Coroutine WaitAny(Coroutine c1, Coroutine c2, Coroutine c3, Coroutine c4, Coroutine c5, Coroutine c6, Coroutine c7)
         {
             while (!(c1.IsCompletedSuccessfully || c2.IsCompletedSuccessfully || c3.IsCompletedSuccessfully || c4.IsCompletedSuccessfully || c5.IsCompletedSuccessfully || c6.IsCompletedSuccessfully || c7.IsCompletedSuccessfully))
             {
-                if (c1.IsCanceled && c2.IsCanceled && c3.IsCanceled && c4.IsCanceled && c5.IsCanceled && c6.IsCanceled && c7.IsCanceled)
+                if (c1.IsCanceledOrFaulted && c2.IsCanceledOrFaulted && c3.IsCanceledOrFaulted && c4.IsCanceledOrFaulted && c5.IsCanceledOrFaulted && c6.IsCanceledOrFaulted && c7.IsCanceledOrFaulted)
                 {
-                    Coroutine.ThrowChildrenCancel<CoroutineBase>(new CoroutineBase[] { c1, c2, c3, c4, c5, c6, c7 });
+                    Coroutine.ThrowChildrenCancel(new Coroutine[] { c1, c2, c3, c4, c5, c6, c7 });
                 }
                 await Yield();
             }
@@ -83,9 +83,9 @@ namespace AwaitableCoroutine
                 if (c1.IsCompletedSuccessfully) return c1.Result;
                 if (c2.IsCompletedSuccessfully) return c2.Result;
 
-                if (c1.IsCanceled && c2.IsCanceled)
+                if (c1.IsCanceledOrFaulted && c2.IsCanceledOrFaulted)
                 {
-                    Coroutine.ThrowChildrenCancel<Coroutine<T>>(new Coroutine<T>[] { c1, c2 });
+                    Coroutine.ThrowChildrenCancel(new Coroutine<T>[] { c1, c2 });
                 }
 
                 await Yield();
@@ -100,9 +100,9 @@ namespace AwaitableCoroutine
                 if (c2.IsCompletedSuccessfully) return c2.Result;
                 if (c3.IsCompletedSuccessfully) return c3.Result;
 
-                if (c1.IsCanceled && c2.IsCanceled && c3.IsCanceled)
+                if (c1.IsCanceledOrFaulted && c2.IsCanceledOrFaulted && c3.IsCanceledOrFaulted)
                 {
-                    Coroutine.ThrowChildrenCancel<Coroutine<T>>(new Coroutine<T>[] { c1, c2, c3 });
+                    Coroutine.ThrowChildrenCancel(new Coroutine<T>[] { c1, c2, c3 });
                 }
 
                 await Yield();
@@ -118,9 +118,9 @@ namespace AwaitableCoroutine
                 if (c3.IsCompletedSuccessfully) return c3.Result;
                 if (c4.IsCompletedSuccessfully) return c4.Result;
 
-                if (c1.IsCanceled && c2.IsCanceled && c3.IsCanceled && c4.IsCanceled)
+                if (c1.IsCanceledOrFaulted && c2.IsCanceledOrFaulted && c3.IsCanceledOrFaulted && c4.IsCanceledOrFaulted)
                 {
-                    Coroutine.ThrowChildrenCancel<Coroutine<T>>(new Coroutine<T>[] { c1, c2, c3, c4 });
+                    Coroutine.ThrowChildrenCancel(new Coroutine<T>[] { c1, c2, c3, c4 });
                 }
 
                 await Yield();
@@ -137,9 +137,9 @@ namespace AwaitableCoroutine
                 if (c4.IsCompletedSuccessfully) return c4.Result;
                 if (c5.IsCompletedSuccessfully) return c5.Result;
 
-                if (c1.IsCanceled && c2.IsCanceled && c3.IsCanceled && c4.IsCanceled && c5.IsCanceled)
+                if (c1.IsCanceledOrFaulted && c2.IsCanceledOrFaulted && c3.IsCanceledOrFaulted && c4.IsCanceledOrFaulted && c5.IsCanceledOrFaulted)
                 {
-                    Coroutine.ThrowChildrenCancel<Coroutine<T>>(new Coroutine<T>[] { c1, c2, c3, c4, c5 });
+                    Coroutine.ThrowChildrenCancel(new Coroutine<T>[] { c1, c2, c3, c4, c5 });
                 }
 
                 await Yield();
@@ -150,9 +150,9 @@ namespace AwaitableCoroutine
         {
             while (true)
             {
-                if (c1.IsCanceled && c2.IsCanceled && c3.IsCanceled && c4.IsCanceled && c5.IsCanceled && c6.IsCanceled)
+                if (c1.IsCanceledOrFaulted && c2.IsCanceledOrFaulted && c3.IsCanceledOrFaulted && c4.IsCanceledOrFaulted && c5.IsCanceledOrFaulted && c6.IsCanceledOrFaulted)
                 {
-                    Coroutine.ThrowChildrenCancel<Coroutine<T>>(new Coroutine<T>[] { c1, c2, c3, c4, c5, c6 });
+                    Coroutine.ThrowChildrenCancel(new Coroutine<T>[] { c1, c2, c3, c4, c5, c6 });
                 }
 
                 if (c1.IsCompletedSuccessfully) return c1.Result;
@@ -178,9 +178,9 @@ namespace AwaitableCoroutine
                 if (c6.IsCompletedSuccessfully) return c6.Result;
                 if (c7.IsCompletedSuccessfully) return c7.Result;
 
-                if (c1.IsCanceled && c2.IsCanceled && c3.IsCanceled && c4.IsCanceled && c5.IsCanceled && c6.IsCanceled && c7.IsCanceled)
+                if (c1.IsCanceledOrFaulted && c2.IsCanceledOrFaulted && c3.IsCanceledOrFaulted && c4.IsCanceledOrFaulted && c5.IsCanceledOrFaulted && c6.IsCanceledOrFaulted && c7.IsCanceledOrFaulted)
                 {
-                    Coroutine.ThrowChildrenCancel<Coroutine<T>>(new Coroutine<T>[] { c1, c2, c3, c4, c5, c6, c7 });
+                    Coroutine.ThrowChildrenCancel(new Coroutine<T>[] { c1, c2, c3, c4, c5, c6, c7 });
                 }
 
                 await Yield();
@@ -188,32 +188,32 @@ namespace AwaitableCoroutine
         }
 
 
-        public static Coroutine WaitAny(ReadOnlySpan<CoroutineBase> span)
+        public static Coroutine WaitAny(ReadOnlySpan<Coroutine> span)
         {
-            static async Coroutine Create(CoroutineBase[] coroutines)
+            static async Coroutine Create(Coroutine[] coroutines)
             {
                 while (true)
                 {
-                    var isCanceled = true;
+                    var isCanceledOrFaulted = true;
                     foreach (var c in coroutines)
                     {
                         if (c.IsCompletedSuccessfully) return;
 
-                        if (isCanceled && !c.IsCanceled)
+                        if (isCanceledOrFaulted && !c.IsCanceledOrFaulted)
                         {
-                            isCanceled = false;
+                            isCanceledOrFaulted = false;
                         }
                     }
 
-                    if (isCanceled)
+                    if (isCanceledOrFaulted)
                     {
-                        Coroutine.ThrowChildrenCancel<CoroutineBase>(coroutines);
+                        Coroutine.ThrowChildrenCancel(coroutines);
                     }
                     await Yield();
                 }
             }
 
-            var coroutines = new CoroutineBase[span.Length];
+            var coroutines = new Coroutine[span.Length];
             span.CopyTo(coroutines);
             return Create(coroutines);
         }
@@ -224,20 +224,20 @@ namespace AwaitableCoroutine
             {
                 while (true)
                 {
-                    var isCanceled = true;
+                    var isCanceledOrFaulted = true;
                     foreach (var c in coroutines)
                     {
                         if (c.IsCompletedSuccessfully) return c.Result;
 
-                        if (isCanceled && !c.IsCanceled)
+                        if (isCanceledOrFaulted && !c.IsCanceledOrFaulted)
                         {
-                            isCanceled = false;
+                            isCanceledOrFaulted = false;
                         }
                     }
 
-                    if (isCanceled)
+                    if (isCanceledOrFaulted)
                     {
-                        Coroutine.ThrowChildrenCancel<CoroutineBase>(coroutines);
+                        Coroutine.ThrowChildrenCancel(coroutines);
                     }
 
                     await Yield();

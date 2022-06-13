@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -7,131 +6,111 @@ using AwaitableCoroutine.Internal;
 
 namespace AwaitableCoroutine
 {
-    public abstract class CoroutineBase
+    public enum CoroutineStatus
+    {
+        Created,
+        Running,
+        Canceled,
+        Faulted,
+        RanToCompletion,
+    }
+
+    [AsyncMethodBuilder(typeof(AwaitableCoroutineMethodBuilder))]
+    public abstract partial class Coroutine
     {
         internal event Action OnUpdating = null;
         protected internal ICoroutineRunner Runner { get; set; }
-        internal Action OnCompleted { get; set; }
 
-        public bool IsCompletedSuccessfully { get; protected internal set; } = false;
+        public CoroutineStatus Status { get; internal set; }
+
+        internal Action OnCompletedSuccessfully { get; set; }
+        private Action OnCalceled { get; set; }
 
         public Exception Exception { get; private set; } = null;
 
-        public bool IsCanceled { get; private set; } = false;
-        private Action OnCalceled { get; set; }
 
-        ///<summary>
-        /// Get AwaitableCoroutine is completed successfully or canceled
-        ///</summary>
-        public bool IsCompleted => IsCompletedSuccessfully || IsCanceled;
+        public bool IsCanceled => Status == CoroutineStatus.Canceled;
+        public bool IsFaulted => Status == CoroutineStatus.Faulted;
+        public bool IsCompletedSuccessfully => Status == CoroutineStatus.RanToCompletion;
+        public bool IsCompleted => IsCanceled || IsFaulted || IsCompletedSuccessfully;
 
-        internal List<CoroutineBase> WaitingCoroutines { get; set; }
+        public bool IsCanceledOrFaulted => IsCanceled || IsFaulted;
 
-        protected internal abstract void _Pseudo();
-
-        public CoroutineBase()
+        public Coroutine()
         {
+            Status = CoroutineStatus.Created;
             Runner = ICoroutineRunner.GetContext();
             Internal.Logger.Log($"{GetType()} is created");
             Runner.Register(this);
         }
 
-        internal CoroutineBase(ICoroutineRunner runner)
+        internal Coroutine(ICoroutineRunner runner)
         {
+            Status = CoroutineStatus.Created;
             Runner = runner;
             Internal.Logger.Log($"{GetType()} is created");
             Runner.Register(this);
         }
 
-        [EditorBrowsable(EditorBrowsableState.Never)]
-        internal void ContinueWith(Action action)
+        protected abstract void OnMoveNext();
+
+        internal void AddOnCanceled(Action action)
         {
             if (action is null)
             {
                 ThrowHelper.ArgNull(nameof(action));
             }
 
-            if (IsCanceled)
+            if (IsCompleted)
             {
-                ThrowHelper.InvalidOp("Coroutine is already canceled");
-            }
-
-            if (IsCompletedSuccessfully)
-            {
-                action.Invoke();
-                return;
+                ThrowHelper.InvalidOp("Coroutine has already been completed");
             }
 
             var runner = ICoroutineRunner.Instance;
 
             if (runner is null || Runner == runner)
             {
-                OnCompleted += action;
+                OnCalceled += action;
             }
             else
             {
-                OnCompleted += () => runner.Context(action);
+                OnCalceled += () => runner.Context(action);
             }
         }
 
-        protected abstract void OnMoveNext();
-
-        internal void AddOnCanceled(Action onCanceled)
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        internal void AddOnCompletedSuccessfully(Action action)
         {
-            if (onCanceled is null)
+            if (action is null)
             {
-                ThrowHelper.ArgNull(nameof(onCanceled));
+                ThrowHelper.ArgNull(nameof(action));
             }
 
-            if (IsCompletedSuccessfully)
+            if (IsCompleted)
             {
-                ThrowHelper.InvalidOp("Coroutine is already completed successfully");
-            }
-
-            if (IsCanceled)
-            {
-                onCanceled.Invoke();
-                return;
+                ThrowHelper.InvalidOp("Coroutine has already been completed");
             }
 
             var runner = ICoroutineRunner.Instance;
 
             if (runner is null || Runner == runner)
             {
-                OnCalceled += onCanceled;
+                OnCompletedSuccessfully += action;
             }
             else
             {
-                OnCalceled += () => runner.Context(onCanceled);
+                OnCompletedSuccessfully += () => runner.Context(action);
             }
         }
 
         public void Cancel()
         {
-            if (IsCanceled)
+            if (IsCompleted)
             {
-                ThrowHelper.InvalidOp("Coroutien is already canceled");
+                ThrowHelper.InvalidOp("Coroutine has already been completed");
             }
 
-            if (IsCompletedSuccessfully)
-            {
-                ThrowHelper.InvalidOp("Coroutine is already completed successfully");
-            }
-
-            IsCanceled = true;
-            OnCalceled?.Invoke();
-            OnCalceled = null;
-            OnCompleted = null;
-            Runner = null;
-
-            if (WaitingCoroutines is { })
-            {
-                foreach (var child in WaitingCoroutines)
-                {
-                    if (child.IsCompleted) continue;
-                    child.Cancel();
-                }
-            }
+            SetException(new CanceledException("This coroutine has been canceled"));
         }
 
         internal void SetException(Exception exn)
@@ -141,33 +120,36 @@ namespace AwaitableCoroutine
                 ThrowHelper.ArgNull(nameof(exn));
             }
 
-            Exception = exn;
-            Cancel();
-        }
-
-        internal void RegisterWaitingCoroutine(CoroutineBase coroutine)
-        {
-            if (IsCanceled)
+            if (exn is CanceledException e)
             {
-                if (coroutine.IsCompleted) return;
-                coroutine.Cancel();
-                return;
+                if (e.Coroutine is null)
+                {
+                    e.Coroutine = this;
+                }
+
+                Status = CoroutineStatus.Canceled;
+            }
+            else
+            {
+                Status = CoroutineStatus.Faulted;
             }
 
-            WaitingCoroutines ??= new List<CoroutineBase>();
-            WaitingCoroutines.Add(coroutine);
+            Exception = exn;
+            OnCalceled?.Invoke();
+            OnCalceled = null;
+            OnCompletedSuccessfully = null;
+            Runner = null;
         }
 
         public void MoveNext()
         {
-            if (IsCanceled)
+            if (Status == CoroutineStatus.Created)
             {
-                ThrowHelper.InvalidOp("Coroutine is alread canceled");
+                Status = CoroutineStatus.Running;
             }
-
-            if (IsCompletedSuccessfully)
+            else if (Status != CoroutineStatus.Running)
             {
-                ThrowHelper.InvalidOp("Coroutine is alread completed successfully");
+                ThrowHelper.InvalidOp("CoroutineStatus is invalid.");
             }
 
             try
@@ -176,53 +158,48 @@ namespace AwaitableCoroutine
                 OnUpdating?.Invoke();
                 OnMoveNext();
             }
+            catch (CanceledException e)
+            {
+                if (e.Coroutine is Coroutine c && c != this)
+                {
+                    SetException(new ChildCanceledException(c, e.Message, e));
+                }
+                else
+                {
+                    SetException(e);
+                }
+            }
             catch (Exception exn)
             {
-                Exception = exn;
+                SetException(exn);
             }
         }
-    }
 
-    [AsyncMethodBuilder(typeof(AwaitableCoroutineMethodBuilder))]
-    public abstract partial class Coroutine : CoroutineBase
-    {
         [EditorBrowsable(EditorBrowsableState.Never)]
         public CoroutineAwaiter GetAwaiter() => new CoroutineAwaiter(this);
 
-        protected internal sealed override void _Pseudo() { }
-
-        public Coroutine() { }
-
-        internal Coroutine(ICoroutineRunner runner) : base(runner) { }
-
         protected void Complete()
         {
-            if (IsCompletedSuccessfully)
+            if (IsCompleted)
             {
-                ThrowHelper.InvalidOp("Coroutine already completed successfully");
+                ThrowHelper.InvalidOp($"Coroutine has already been completed");
             }
 
-            if (IsCanceled)
-            {
-                ThrowHelper.InvalidOp($"Coroutine is already canceled");
-            }
+            Status = CoroutineStatus.RanToCompletion;
 
-            IsCompletedSuccessfully = true;
-            OnCompleted?.Invoke();
-            OnCompleted = null;
+            OnCompletedSuccessfully?.Invoke();
+            OnCompletedSuccessfully = null;
+
             Runner = null;
-            WaitingCoroutines = null;
         }
     }
 
     [AsyncMethodBuilder(typeof(AwaitableCoroutineMethodBuilder<>))]
     public abstract class Coroutine
-        <T> : CoroutineBase
+        <T> : Coroutine
     {
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public CoroutineAwaiter<T> GetAwaiter() => new CoroutineAwaiter<T>(this);
-
-        protected internal sealed override void _Pseudo() { }
+        public new CoroutineAwaiter<T> GetAwaiter() => new CoroutineAwaiter<T>(this);
 
         public Coroutine() { }
 
@@ -232,23 +209,18 @@ namespace AwaitableCoroutine
 
         protected void Complete(T result)
         {
-            if (IsCompletedSuccessfully)
+            if (IsCompleted)
             {
-                ThrowHelper.InvalidOp("Coroutine already completed successfully");
+                ThrowHelper.InvalidOp($"Coroutine has already been completed");
             }
 
-            if (IsCanceled)
-            {
-                ThrowHelper.InvalidOp($"Coroutine is already canceled");
-            }
-
-            IsCompletedSuccessfully = true;
+            Status = CoroutineStatus.RanToCompletion;
             Result = result;
 
-            OnCompleted?.Invoke();
-            OnCompleted = null;
+            OnCompletedSuccessfully?.Invoke();
+            OnCompletedSuccessfully = null;
+
             Runner = null;
-            WaitingCoroutines = null;
         }
     }
 }

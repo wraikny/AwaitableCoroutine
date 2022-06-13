@@ -4,16 +4,14 @@ namespace AwaitableCoroutine
 {
     public static class CoroutineSelectExt
     {
-        public static async Coroutine<T> SelectTo<T>(this CoroutineBase coroutine, T result)
+        public static async Coroutine<T> SelectTo<T>(this Coroutine coroutine, T result)
         {
-            while (!coroutine.IsCompletedSuccessfully)
+            if (coroutine is null)
             {
-                if (coroutine.IsCanceled)
-                {
-                    Coroutine.ThrowChildCancel<CoroutineBase>(coroutine);
-                }
-                await Coroutine.Yield();
+                ThrowHelper.ArgNull(nameof(coroutine));
             }
+
+            await coroutine;
 
             return result;
         }
@@ -30,14 +28,7 @@ namespace AwaitableCoroutine
                 ThrowHelper.ArgNull(nameof(thunk));
             }
 
-            while (!coroutine.IsCompletedSuccessfully)
-            {
-                if (coroutine.IsCanceled)
-                {
-                    Coroutine.ThrowChildCancel<CoroutineBase>(coroutine);
-                }
-                await Coroutine.Yield();
-            }
+            await coroutine;
 
             return thunk();
         }
@@ -54,16 +45,7 @@ namespace AwaitableCoroutine
                 ThrowHelper.ArgNull(nameof(thunk));
             }
 
-            while (!coroutine.IsCompletedSuccessfully)
-            {
-                if (coroutine.IsCanceled)
-                {
-                    Coroutine.ThrowChildCancel<CoroutineBase>(coroutine);
-                }
-                await Coroutine.Yield();
-            }
-
-            return thunk(coroutine.Result);
+            return thunk(await coroutine);
         }
     }
 }
