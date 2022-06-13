@@ -10,7 +10,7 @@ namespace AwaitableCoroutine
             {
                 if (coroutine.IsCanceled)
                 {
-                    Coroutine.ThrowChildCancel<CoroutineBase>(coroutine);
+                    Coroutine.ThrowChildCancel(coroutine);
                 }
                 await Coroutine.Yield();
             }
@@ -34,7 +34,7 @@ namespace AwaitableCoroutine
             {
                 if (coroutine.IsCanceled)
                 {
-                    Coroutine.ThrowChildCancel<CoroutineBase>(coroutine);
+                    Coroutine.ThrowChildCancel(coroutine);
                 }
                 await Coroutine.Yield();
             }
@@ -58,7 +58,7 @@ namespace AwaitableCoroutine
             {
                 if (coroutine.IsCanceled)
                 {
-                    Coroutine.ThrowChildCancel<CoroutineBase>(coroutine);
+                    Coroutine.ThrowChildCancel(coroutine);
                 }
                 await Coroutine.Yield();
             }

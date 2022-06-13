@@ -4,45 +4,30 @@ namespace AwaitableCoroutine
 {
     public class CanceledException : Exception
     {
-        public CanceledException()
-        {
+        public CoroutineBase Coroutine { get; internal set; }
 
-        }
-
-        public CanceledException(string message)
-            : base(message)
+        public CanceledException(string message = null, Exception innerException = null)
+            : base(message, innerException)
         {
 
         }
     }
 
-    public sealed class ChildCanceledException<T> : CanceledException
-        where T : CoroutineBase
+    public sealed class ChildCanceledException : CanceledException
     {
-        public T Child { get; private set; }
-        public ChildCanceledException(T child)
-        {
-            Child = child;
-        }
-
-        public ChildCanceledException(T child, string message)
-            : base(message)
+        public CoroutineBase Child { get; private set; }
+        public ChildCanceledException(CoroutineBase child, string message = null, Exception innerException = null)
+            : base(message, innerException)
         {
             Child = child;
         }
     }
 
-    public sealed class ChildrenCanceledException<T> : CanceledException
-        where T : CoroutineBase
+    public sealed class ChildrenCanceledException : CanceledException
     {
-        public T[] Children { get; private set; }
-        public ChildrenCanceledException(T[] children)
-        {
-            Children = children;
-        }
-
-        public ChildrenCanceledException(T[] children, string message)
-            : base(message)
+        public CoroutineBase[] Children { get; private set; }
+        public ChildrenCanceledException(CoroutineBase[] children, string message = null, Exception innerException = null)
+            : base(message, innerException)
         {
             Children = children;
         }
@@ -50,21 +35,19 @@ namespace AwaitableCoroutine
 
     public partial class Coroutine
     {
-        public static void ThrowCancel(string message = null)
+        public static void ThrowCancel(string message = null, Exception innerException = null)
         {
-            throw new CanceledException(message);
+            throw new CanceledException(message, innerException);
         }
 
-        public static void ThrowChildCancel<T>(T child, string message = null)
-            where T : CoroutineBase
+        public static void ThrowChildCancel(CoroutineBase child, string message = null, Exception innerException = null)
         {
-            throw new ChildCanceledException<T>(child, message);
+            throw new ChildCanceledException(child, message, innerException);
         }
 
-        public static void ThrowChildrenCancel<T>(T[] children, string message = null)
-            where T : CoroutineBase
+        public static void ThrowChildrenCancel(CoroutineBase[] children, string message = null, Exception innerException = null)
         {
-            throw new ChildrenCanceledException<T>(children, message);
+            throw new ChildrenCanceledException(children, message, innerException);
         }
     }
 }

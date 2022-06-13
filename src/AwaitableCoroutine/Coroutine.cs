@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
@@ -11,7 +10,7 @@ namespace AwaitableCoroutine
     {
         internal event Action OnUpdating = null;
         protected internal ICoroutineRunner Runner { get; set; }
-        internal Action OnCompleted { get; set; }
+        internal Action OnCompletedSuccessfully { get; set; }
 
         public bool IsCompletedSuccessfully { get; protected internal set; } = false;
 
@@ -24,8 +23,6 @@ namespace AwaitableCoroutine
         /// Get AwaitableCoroutine is completed successfully or canceled
         ///</summary>
         public bool IsCompleted => IsCompletedSuccessfully || IsCanceled;
-
-        internal List<CoroutineBase> WaitingCoroutines { get; set; }
 
         protected internal abstract void _Pseudo();
 
@@ -43,8 +40,40 @@ namespace AwaitableCoroutine
             Runner.Register(this);
         }
 
+        protected abstract void OnMoveNext();
+
+        internal void AddOnCanceled(Action action)
+        {
+            if (action is null)
+            {
+                ThrowHelper.ArgNull(nameof(action));
+            }
+
+            if (IsCompletedSuccessfully)
+            {
+                ThrowHelper.InvalidOp("Coroutine is already completed successfully");
+            }
+
+            if (IsCanceled)
+            {
+                action.Invoke();
+                return;
+            }
+
+            var runner = ICoroutineRunner.Instance;
+
+            if (runner is null || Runner == runner)
+            {
+                OnCalceled += action;
+            }
+            else
+            {
+                OnCalceled += () => runner.Context(action);
+            }
+        }
+
         [EditorBrowsable(EditorBrowsableState.Never)]
-        internal void ContinueWith(Action action)
+        internal void AddOnCompletedSuccessfully(Action action)
         {
             if (action is null)
             {
@@ -66,43 +95,11 @@ namespace AwaitableCoroutine
 
             if (runner is null || Runner == runner)
             {
-                OnCompleted += action;
+                OnCompletedSuccessfully += action;
             }
             else
             {
-                OnCompleted += () => runner.Context(action);
-            }
-        }
-
-        protected abstract void OnMoveNext();
-
-        internal void AddOnCanceled(Action onCanceled)
-        {
-            if (onCanceled is null)
-            {
-                ThrowHelper.ArgNull(nameof(onCanceled));
-            }
-
-            if (IsCompletedSuccessfully)
-            {
-                ThrowHelper.InvalidOp("Coroutine is already completed successfully");
-            }
-
-            if (IsCanceled)
-            {
-                onCanceled.Invoke();
-                return;
-            }
-
-            var runner = ICoroutineRunner.Instance;
-
-            if (runner is null || Runner == runner)
-            {
-                OnCalceled += onCanceled;
-            }
-            else
-            {
-                OnCalceled += () => runner.Context(onCanceled);
+                OnCompletedSuccessfully += () => runner.Context(action);
             }
         }
 
@@ -118,20 +115,7 @@ namespace AwaitableCoroutine
                 ThrowHelper.InvalidOp("Coroutine is already completed successfully");
             }
 
-            IsCanceled = true;
-            OnCalceled?.Invoke();
-            OnCalceled = null;
-            OnCompleted = null;
-            Runner = null;
-
-            if (WaitingCoroutines is { })
-            {
-                foreach (var child in WaitingCoroutines)
-                {
-                    if (child.IsCompleted) continue;
-                    child.Cancel();
-                }
-            }
+            SetException(new CanceledException("Canceled"));
         }
 
         internal void SetException(Exception exn)
@@ -141,21 +125,17 @@ namespace AwaitableCoroutine
                 ThrowHelper.ArgNull(nameof(exn));
             }
 
-            Exception = exn;
-            Cancel();
-        }
-
-        internal void RegisterWaitingCoroutine(CoroutineBase coroutine)
-        {
-            if (IsCanceled)
+            if (exn is CanceledException e)
             {
-                if (coroutine.IsCompleted) return;
-                coroutine.Cancel();
-                return;
+                e.Coroutine = this;
             }
 
-            WaitingCoroutines ??= new List<CoroutineBase>();
-            WaitingCoroutines.Add(coroutine);
+            Exception = exn;
+            IsCanceled = true;
+            OnCalceled?.Invoke();
+            OnCalceled = null;
+            OnCompletedSuccessfully = null;
+            Runner = null;
         }
 
         public void MoveNext()
@@ -176,9 +156,20 @@ namespace AwaitableCoroutine
                 OnUpdating?.Invoke();
                 OnMoveNext();
             }
+            catch (CanceledException e)
+            {
+                if (e.Coroutine is CoroutineBase c && c != this)
+                {
+                    SetException(new ChildCanceledException(c, e.Message, e));
+                }
+                else
+                {
+                    SetException(e);
+                }
+            }
             catch (Exception exn)
             {
-                Exception = exn;
+                SetException(exn);
             }
         }
     }
@@ -208,10 +199,11 @@ namespace AwaitableCoroutine
             }
 
             IsCompletedSuccessfully = true;
-            OnCompleted?.Invoke();
-            OnCompleted = null;
+
+            OnCompletedSuccessfully?.Invoke();
+            OnCompletedSuccessfully = null;
+
             Runner = null;
-            WaitingCoroutines = null;
         }
     }
 
@@ -245,10 +237,10 @@ namespace AwaitableCoroutine
             IsCompletedSuccessfully = true;
             Result = result;
 
-            OnCompleted?.Invoke();
-            OnCompleted = null;
+            OnCompletedSuccessfully?.Invoke();
+            OnCompletedSuccessfully = null;
+
             Runner = null;
-            WaitingCoroutines = null;
         }
     }
 }

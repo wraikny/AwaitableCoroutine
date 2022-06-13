@@ -10,7 +10,7 @@ namespace AwaitableCoroutine
             {
                 if (c1.IsCanceled && c2.IsCanceled)
                 {
-                    Coroutine.ThrowChildrenCancel<CoroutineBase>(new CoroutineBase[] { c1, c2 });
+                    Coroutine.ThrowChildrenCancel(new CoroutineBase[] { c1, c2 });
                 }
                 await Yield();
             }
@@ -22,7 +22,7 @@ namespace AwaitableCoroutine
             {
                 if (c1.IsCanceled && c2.IsCanceled && c3.IsCanceled)
                 {
-                    Coroutine.ThrowChildrenCancel<CoroutineBase>(new CoroutineBase[] { c1, c2, c3 });
+                    Coroutine.ThrowChildrenCancel(new CoroutineBase[] { c1, c2, c3 });
                 }
                 await Yield();
             }
@@ -34,7 +34,7 @@ namespace AwaitableCoroutine
             {
                 if (c1.IsCanceled && c2.IsCanceled && c3.IsCanceled && c4.IsCanceled)
                 {
-                    Coroutine.ThrowChildrenCancel<CoroutineBase>(new CoroutineBase[] { c1, c2, c3, c4 });
+                    Coroutine.ThrowChildrenCancel(new CoroutineBase[] { c1, c2, c3, c4 });
                 }
                 await Yield();
             }
@@ -46,7 +46,7 @@ namespace AwaitableCoroutine
             {
                 if (c1.IsCanceled && c2.IsCanceled && c3.IsCanceled && c4.IsCanceled && c5.IsCanceled)
                 {
-                    Coroutine.ThrowChildrenCancel<CoroutineBase>(new CoroutineBase[] { c1, c2, c3, c4, c5 });
+                    Coroutine.ThrowChildrenCancel(new CoroutineBase[] { c1, c2, c3, c4, c5 });
                 }
                 await Yield();
             }
@@ -58,7 +58,7 @@ namespace AwaitableCoroutine
             {
                 if (c1.IsCanceled && c2.IsCanceled && c3.IsCanceled && c4.IsCanceled && c5.IsCanceled && c6.IsCanceled)
                 {
-                    Coroutine.ThrowChildrenCancel<CoroutineBase>(new CoroutineBase[] { c1, c2, c3, c4, c5, c6 });
+                    Coroutine.ThrowChildrenCancel(new CoroutineBase[] { c1, c2, c3, c4, c5, c6 });
                 }
                 await Yield();
             }
@@ -70,7 +70,7 @@ namespace AwaitableCoroutine
             {
                 if (c1.IsCanceled && c2.IsCanceled && c3.IsCanceled && c4.IsCanceled && c5.IsCanceled && c6.IsCanceled && c7.IsCanceled)
                 {
-                    Coroutine.ThrowChildrenCancel<CoroutineBase>(new CoroutineBase[] { c1, c2, c3, c4, c5, c6, c7 });
+                    Coroutine.ThrowChildrenCancel(new CoroutineBase[] { c1, c2, c3, c4, c5, c6, c7 });
                 }
                 await Yield();
             }
@@ -85,7 +85,7 @@ namespace AwaitableCoroutine
 
                 if (c1.IsCanceled && c2.IsCanceled)
                 {
-                    Coroutine.ThrowChildrenCancel<Coroutine<T>>(new Coroutine<T>[] { c1, c2 });
+                    Coroutine.ThrowChildrenCancel(new Coroutine<T>[] { c1, c2 });
                 }
 
                 await Yield();
@@ -102,7 +102,7 @@ namespace AwaitableCoroutine
 
                 if (c1.IsCanceled && c2.IsCanceled && c3.IsCanceled)
                 {
-                    Coroutine.ThrowChildrenCancel<Coroutine<T>>(new Coroutine<T>[] { c1, c2, c3 });
+                    Coroutine.ThrowChildrenCancel(new Coroutine<T>[] { c1, c2, c3 });
                 }
 
                 await Yield();
@@ -120,7 +120,7 @@ namespace AwaitableCoroutine
 
                 if (c1.IsCanceled && c2.IsCanceled && c3.IsCanceled && c4.IsCanceled)
                 {
-                    Coroutine.ThrowChildrenCancel<Coroutine<T>>(new Coroutine<T>[] { c1, c2, c3, c4 });
+                    Coroutine.ThrowChildrenCancel(new Coroutine<T>[] { c1, c2, c3, c4 });
                 }
 
                 await Yield();
@@ -139,7 +139,7 @@ namespace AwaitableCoroutine
 
                 if (c1.IsCanceled && c2.IsCanceled && c3.IsCanceled && c4.IsCanceled && c5.IsCanceled)
                 {
-                    Coroutine.ThrowChildrenCancel<Coroutine<T>>(new Coroutine<T>[] { c1, c2, c3, c4, c5 });
+                    Coroutine.ThrowChildrenCancel(new Coroutine<T>[] { c1, c2, c3, c4, c5 });
                 }
 
                 await Yield();
@@ -152,7 +152,7 @@ namespace AwaitableCoroutine
             {
                 if (c1.IsCanceled && c2.IsCanceled && c3.IsCanceled && c4.IsCanceled && c5.IsCanceled && c6.IsCanceled)
                 {
-                    Coroutine.ThrowChildrenCancel<Coroutine<T>>(new Coroutine<T>[] { c1, c2, c3, c4, c5, c6 });
+                    Coroutine.ThrowChildrenCancel(new Coroutine<T>[] { c1, c2, c3, c4, c5, c6 });
                 }
 
                 if (c1.IsCompletedSuccessfully) return c1.Result;
@@ -180,7 +180,7 @@ namespace AwaitableCoroutine
 
                 if (c1.IsCanceled && c2.IsCanceled && c3.IsCanceled && c4.IsCanceled && c5.IsCanceled && c6.IsCanceled && c7.IsCanceled)
                 {
-                    Coroutine.ThrowChildrenCancel<Coroutine<T>>(new Coroutine<T>[] { c1, c2, c3, c4, c5, c6, c7 });
+                    Coroutine.ThrowChildrenCancel(new Coroutine<T>[] { c1, c2, c3, c4, c5, c6, c7 });
                 }
 
                 await Yield();
@@ -207,7 +207,7 @@ namespace AwaitableCoroutine
 
                     if (isCanceled)
                     {
-                        Coroutine.ThrowChildrenCancel<CoroutineBase>(coroutines);
+                        Coroutine.ThrowChildrenCancel(coroutines);
                     }
                     await Yield();
                 }
@@ -237,7 +237,7 @@ namespace AwaitableCoroutine
 
                     if (isCanceled)
                     {
-                        Coroutine.ThrowChildrenCancel<CoroutineBase>(coroutines);
+                        Coroutine.ThrowChildrenCancel(coroutines);
                     }
 
                     await Yield();

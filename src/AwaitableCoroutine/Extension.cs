@@ -17,7 +17,8 @@ namespace AwaitableCoroutine
                 ThrowHelper.ArgNull(nameof(onCompleted));
             }
 
-            coroutine.ContinueWith(onCompleted);
+            coroutine.AddOnCompletedSuccessfully(onCompleted);
+            coroutine.AddOnCanceled(onCompleted);
             return coroutine;
         }
 
@@ -62,6 +63,23 @@ namespace AwaitableCoroutine
             }
 
             coroutine.AddOnCanceled(onCanceled);
+            return coroutine;
+        }
+
+        public static T OnCompletedSuccessfully<T>(this T coroutine, Action onCanceled)
+            where T : CoroutineBase
+        {
+            if (coroutine is null)
+            {
+                ThrowHelper.ArgNull(nameof(coroutine));
+            }
+
+            if (onCanceled is null)
+            {
+                ThrowHelper.ArgNull(nameof(onCanceled));
+            }
+
+            coroutine.AddOnCompletedSuccessfully(onCanceled);
             return coroutine;
         }
     }

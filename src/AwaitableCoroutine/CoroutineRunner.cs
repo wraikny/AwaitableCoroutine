@@ -62,7 +62,7 @@ namespace AwaitableCoroutine
 
                 foreach (var c in _coroutines)
                 {
-                    if (!c.IsCompletedSuccessfully && !c.IsCanceled) c.MoveNext();
+                    if (!c.IsCompleted) c.MoveNext();
 
                     if (c.Exception is CanceledException)
                     {
