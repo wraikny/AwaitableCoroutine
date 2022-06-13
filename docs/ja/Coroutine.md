@@ -9,6 +9,9 @@
 - [AwaitableCoroutine](#awaitablecoroutine)
   - [メソッド](#メソッド)
   - [拡張メソッド](#拡張メソッド)
+  - [例外とキャンセル](#例外とキャンセル)
+    - [CanceledException](#canceledexception)
+    - [例外](#例外)
   - [モジュール](#モジュール)
     - [Yield](#yield)
     - [While](#while)
@@ -22,7 +25,6 @@
     - [AwaitTask](#awaittask)
     - [AwaitObservable](#awaitobservable)
     - [AwaitObservableCompleted](#awaitobservablecompleted)
-    - [CanceledException](#canceledexception)
 
 ## メソッド
 
@@ -39,6 +41,52 @@
 | `OnCompleted(Action)` | コルーチンが完了したときに実行される処理を登録 |
 | `OnUpdating(Action)` | コルーチン更新直前に実行される処理を登録 |
 | `OnCanceled(Action)` | コルーチンがキャンセルされたときに実行される処理を登録 |
+
+## 例外とキャンセル
+
+### CanceledException
+
+`CanceledException`は、非同期メソッドによって作成されるコルーチンの実行をそのメソッド内からキャンセルしたいときに利用するための例外です。
+
+それ以外の場合でコルーチンをキャンセルしたい場合、`Coroutine.Cancel()`メソッドを利用してください。
+
+| Name | Desc |
+| --- | --- |
+| [`CanceledException`](../../src/AwaitableCoroutine/CalceledException.cs) | コルーチンのキャンセルを表す例外 |
+| `ChildCanceledException` | 待機しているコルーチンがキャンセルされたことによるコルーチンのキャンセルを表す例外 |
+| `ChildrenCanceledException` | 待機している複数のコルーチンがキャンセルされたことによるコルーチンのキャンセルを表す例外 |
+
+`Coroutine`クラスの静的メソッドとして、以下の補助メソッドを提供しています。
+
+| Name | Desc |
+| --- | --- |
+| [`ThrowCancel()`](../../src/AwaitableCoroutine/CalceledException.cs) | `CanceledException`をスロー |
+| `ThrowChildCancel()` | `CanceledChildException`をスロー |
+| `ThrowChildrenCancel()` | `CanceledChildrenException`をスロー |
+
+### 例外
+
+コルーチンでスローされた例外は、そのコルーチンをawaitするコルーチンに伝播します。
+ただし、 `ChildCanceledException` によって包まれます。
+
+
+```csharp
+var co = runner.Create(async () => {
+    try
+    {
+      await Hoge(); // throw exception
+    }
+    catch(ChildCanceledException e)
+    {
+      var hogeException = e.InnerException;
+      // do something
+    }
+    finally
+    {
+      // do something
+    }
+});
+```
 
 ## モジュール
 
@@ -232,23 +280,3 @@ Coroutine.DelayCount(10)
 
 **引数**
 * `observable`: `IObservable<T>`
-
-### CanceledException
-
-`CanceledException`は、非同期メソッドによって作成されるコルーチンの実行をそのメソッド内からキャンセルしたいときに利用するための例外です。
-
-それ以外の場合でコルーチンをキャンセルしたい場合、`Coroutine.Cancel()`メソッドを利用してください。
-
-| Name | Desc |
-| --- | --- |
-| [`CanceledException`](../../src/AwaitableCoroutine/CalceledException.cs) | コルーチンのキャンセルを表す例外 |
-| `ChildCanceledException` | 待機しているコルーチンがキャンセルされたことによるコルーチンのキャンセルを表す例外 |
-| `ChildrenCanceledException` | 待機している複数のコルーチンがキャンセルされたことによるコルーチンのキャンセルを表す例外 |
-
-`Coroutine`クラスの静的メソッドとして、以下の補助メソッドを提供しています。
-
-| Name | Desc |
-| --- | --- |
-| [`ThrowCancel()`](../../src/AwaitableCoroutine/CalceledException.cs) | `CanceledException`をスロー |
-| `ThrowChildCancel()` | `CanceledChildException`をスロー |
-| `ThrowChildrenCancel()` | `CanceledChildrenException`をスロー |
