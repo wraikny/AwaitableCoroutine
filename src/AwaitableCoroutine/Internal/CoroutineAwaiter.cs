@@ -47,7 +47,7 @@ namespace AwaitableCoroutine.Internal
 
         public void GetResult()
         {
-            if (_target.IsCanceled)
+            if (_target.IsCanceledOrFaulted)
             {
                 if (_target.Exception is CanceledException e)
                 {
@@ -55,7 +55,7 @@ namespace AwaitableCoroutine.Internal
                 }
                 else
                 {
-                    Coroutine.ThrowCancel(innerException: _target.Exception);
+                    Coroutine.ThrowCancel(innerException: _target.Exception, coroutine: _target);
                 }
             }
         }
@@ -101,7 +101,7 @@ namespace AwaitableCoroutine.Internal
 
         public T GetResult()
         {
-            if (_target.IsCanceled)
+            if (_target.IsCanceledOrFaulted)
             {
                 if (_target.Exception is CanceledException e)
                 {
@@ -109,7 +109,7 @@ namespace AwaitableCoroutine.Internal
                 }
                 else
                 {
-                    Coroutine.ThrowCancel(innerException: _target.Exception);
+                    Coroutine.ThrowCancel(innerException: _target.Exception, coroutine: _target);
                 }
             }
 

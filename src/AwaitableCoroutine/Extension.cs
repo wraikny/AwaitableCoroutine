@@ -2,10 +2,10 @@
 
 namespace AwaitableCoroutine
 {
-    public static class CoroutineBaseExtension
+    public static class CoroutineExtension
     {
         public static T OnCompleted<T>(this T coroutine, Action onCompleted)
-            where T : CoroutineBase
+            where T : Coroutine
         {
             if (coroutine is null)
             {
@@ -17,13 +17,18 @@ namespace AwaitableCoroutine
                 ThrowHelper.ArgNull(nameof(onCompleted));
             }
 
+            if (coroutine.IsCompleted)
+            {
+                return coroutine;
+            }
+
             coroutine.AddOnCompletedSuccessfully(onCompleted);
             coroutine.AddOnCanceled(onCompleted);
             return coroutine;
         }
 
         public static T OnUpdating<T>(this T coroutine, Action onUpdating)
-            where T : CoroutineBase
+            where T : Coroutine
         {
             if (coroutine is null)
             {
@@ -35,14 +40,9 @@ namespace AwaitableCoroutine
                 ThrowHelper.ArgNull(nameof(onUpdating));
             }
 
-            if (coroutine.IsCanceled)
+            if (coroutine.IsCompleted)
             {
-                ThrowHelper.InvalidOp("Coroutine is already canceled");
-            }
-
-            if (coroutine.IsCompletedSuccessfully)
-            {
-                ThrowHelper.InvalidOp("Coroutine is already completed successfully");
+                return coroutine;
             }
 
             coroutine.OnUpdating += onUpdating;
@@ -50,7 +50,7 @@ namespace AwaitableCoroutine
         }
 
         public static T OnCanceled<T>(this T coroutine, Action onCanceled)
-            where T : CoroutineBase
+            where T : Coroutine
         {
             if (coroutine is null)
             {
@@ -60,6 +60,11 @@ namespace AwaitableCoroutine
             if (onCanceled is null)
             {
                 ThrowHelper.ArgNull(nameof(onCanceled));
+            }
+
+            if (coroutine.IsCompleted)
+            {
+                return coroutine;
             }
 
             coroutine.AddOnCanceled(onCanceled);
@@ -67,7 +72,7 @@ namespace AwaitableCoroutine
         }
 
         public static T OnCompletedSuccessfully<T>(this T coroutine, Action onCanceled)
-            where T : CoroutineBase
+            where T : Coroutine
         {
             if (coroutine is null)
             {
@@ -77,6 +82,11 @@ namespace AwaitableCoroutine
             if (onCanceled is null)
             {
                 ThrowHelper.ArgNull(nameof(onCanceled));
+            }
+
+            if (coroutine.IsCompleted)
+            {
+                return coroutine;
             }
 
             coroutine.AddOnCompletedSuccessfully(onCanceled);

@@ -4,7 +4,7 @@ namespace AwaitableCoroutine
 {
     public static class UntilCompletedCoroutineExt
     {
-        public static async Coroutine UntilCompleted(this CoroutineBase coroutine, Action action)
+        public static async Coroutine UntilCompleted(this Coroutine coroutine, Action action)
         {
             if (coroutine is null)
             {
@@ -18,16 +18,16 @@ namespace AwaitableCoroutine
 
             while (!coroutine.IsCompletedSuccessfully)
             {
-                if (coroutine.IsCanceled)
+                if (coroutine.IsCanceled || coroutine.IsFaulted)
                 {
-                    Coroutine.ThrowChildCancel(coroutine);
+                    Coroutine.ThrowChildCancel(coroutine, innerException: coroutine.Exception);
                 }
                 action.Invoke();
                 await Coroutine.Yield();
             }
         }
 
-        public static async Coroutine UntilCompleted(this CoroutineBase coroutine, Func<Coroutine> createCoroutine)
+        public static async Coroutine UntilCompleted(this Coroutine coroutine, Func<Coroutine> createCoroutine)
         {
             if (coroutine is null)
             {
@@ -41,15 +41,15 @@ namespace AwaitableCoroutine
 
             while (!coroutine.IsCompletedSuccessfully)
             {
-                if (coroutine.IsCanceled)
+                if (coroutine.IsCanceled || coroutine.IsFaulted)
                 {
-                    Coroutine.ThrowChildCancel(coroutine);
+                    Coroutine.ThrowChildCancel(coroutine, innerException: coroutine.Exception);
                 }
                 await createCoroutine.Invoke();
             }
         }
 
-        public static async Coroutine UntilCompleted<T>(this CoroutineBase coroutine, Func<Coroutine<T>> action)
+        public static async Coroutine UntilCompleted<T>(this Coroutine coroutine, Func<Coroutine<T>> action)
         {
             if (coroutine is null)
             {
@@ -63,9 +63,9 @@ namespace AwaitableCoroutine
 
             while (!coroutine.IsCompletedSuccessfully)
             {
-                if (coroutine.IsCanceled)
+                if (coroutine.IsCanceled || coroutine.IsFaulted)
                 {
-                    Coroutine.ThrowChildCancel(coroutine);
+                    Coroutine.ThrowChildCancel(coroutine, innerException: coroutine.Exception);
                 }
                 _ = await action.Invoke();
             }

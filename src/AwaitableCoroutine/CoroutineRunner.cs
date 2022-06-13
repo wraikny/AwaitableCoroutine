@@ -8,8 +8,8 @@ namespace AwaitableCoroutine
     {
         private readonly Queue<Action> _continuations;
 
-        private List<CoroutineBase> _coroutines;
-        private List<CoroutineBase> _coroutinesTmp;
+        private List<Coroutine> _coroutines;
+        private List<Coroutine> _coroutinesTmp;
 
         public bool IsUpdating { get; private set; } = false;
 
@@ -18,11 +18,11 @@ namespace AwaitableCoroutine
         public CoroutineRunner()
         {
             _continuations = new Queue<Action>();
-            _coroutines = new List<CoroutineBase>();
-            _coroutinesTmp = new List<CoroutineBase>();
+            _coroutines = new List<Coroutine>();
+            _coroutinesTmp = new List<Coroutine>();
         }
 
-        void ICoroutineRunner.OnRegistering(CoroutineBase coroutine)
+        void ICoroutineRunner.OnRegistering(Coroutine coroutine)
         {
             Internal.Logger.Log($"CoroutineRunner.Registering {coroutine.GetType().Name}");
             _coroutinesTmp.Add(coroutine);
@@ -64,29 +64,31 @@ namespace AwaitableCoroutine
                 {
                     if (!c.IsCompleted) c.MoveNext();
 
-                    if (c.Exception is CanceledException)
+                    switch (c.Status)
                     {
-                        // hack
-                        Internal.Logger.Log($"CoroutineRunner.OnUpdate {c.GetType().Name} is canceled with {c.Exception.GetType()}");
-                    }
-                    else if (c.Exception is Exception e)
-                    {
-                        Internal.Logger.Log($"CoroutineRunner.OnUpdate {c.GetType().Name} has {e.GetType()}");
-
-                        exns ??= new List<Exception>();
-                        exns.Add(e);
-                    }
-                    else if (c.IsCanceled)
-                    {
-                        Internal.Logger.Log($"CoroutineRunner.OnUpdate {c.GetType().Name} is canceled");
-                    }
-                    else if (c.IsCompletedSuccessfully)
-                    {
-                        Internal.Logger.Log($"CoroutineRunner.OnUpdate {c.GetType().Name} is completed successfully");
-                    }
-                    else
-                    {
-                        _coroutinesTmp.Add(c);
+                        case CoroutineStatus.Running:
+                            {
+                                _coroutinesTmp.Add(c);
+                                break;
+                            }
+                        case CoroutineStatus.Canceled:
+                            {
+                                Internal.Logger.Log($"CoroutineRunner.OnUpdate {c.GetType().Name} is canceled with {c.Exception.GetType()}");
+                                break;
+                            }
+                        case CoroutineStatus.Faulted:
+                            {
+                                Internal.Logger.Log($"CoroutineRunner.OnUpdate {c.GetType().Name} has {c.Exception.GetType()}");
+                                exns ??= new List<Exception>();
+                                exns.Add(c.Exception);
+                                break;
+                            }
+                        case CoroutineStatus.RanToCompletion:
+                            {
+                                Internal.Logger.Log($"CoroutineRunner.OnUpdate {c.GetType().Name} is completed successfully");
+                                break;
+                            }
+                        default: break;
                     }
                 }
 

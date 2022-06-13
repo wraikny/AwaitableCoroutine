@@ -1,5 +1,4 @@
-﻿using System;
-
+﻿
 using Xunit;
 using Xunit.Abstractions;
 
@@ -99,32 +98,39 @@ namespace AwaitableCoroutine.Test
             {
                 try
                 {
-                    await Coroutine.DelayCount(2);
+                    Log("try B 1");
+                    await Coroutine.Yield();
+                    Log("try B 2");
                     throw new System.InvalidOperationException();
                 }
                 finally
                 {
+                    Log("finally B");
                     finallyIsCalledB = true;
                 }
+
+                Log("after finally B");
             });
 
             var coA = runner.Create(async () =>
             {
                 try
                 {
+                    Log("try A");
                     await coB;
-                }
-                catch (CanceledException e)
-                {
-                    Assert.True(e.InnerException is InvalidOperationException);
-                    throw e;
+                    Log("try A 2");
                 }
                 finally
                 {
+                    Log("finally A");
                     finallyIsCalledA = true;
                 }
 
+                Log("after finally A");
+
                 await Coroutine.Yield();
+
+                Log("should not be called");
 
                 shouldNotBeCalled = true;
             });
@@ -148,11 +154,13 @@ namespace AwaitableCoroutine.Test
                 }
             }
 
-            Assert.True(coA.IsCanceled);
-            Assert.True(coB.IsCanceled);
             Assert.True(finallyIsCalledB);
             Assert.True(finallyIsCalledA);
+
             Assert.False(shouldNotBeCalled);
+
+            Assert.Equal(CoroutineStatus.Faulted, coB.Status);
+            Assert.Equal(CoroutineStatus.Canceled, coA.Status);
         }
 
         [Fact]
@@ -201,6 +209,9 @@ namespace AwaitableCoroutine.Test
             }
 
             Assert.True(finallyIsCalledA);
+
+            Assert.Equal(CoroutineStatus.Canceled, coB.Status);
+            Assert.Equal(CoroutineStatus.Canceled, coA.Status);
         }
     }
 }

@@ -20,7 +20,7 @@ namespace AwaitableCoroutine.Test
             var flag = false;
 
             var waitAny = runner.Create(() =>
-                Coroutine.WaitAny(new CoroutineBase[] {
+                Coroutine.WaitAny(new Coroutine[] {
                     Coroutine.While(() => true),
                     Coroutine.While(() => true),
                     Coroutine.While(() => true),

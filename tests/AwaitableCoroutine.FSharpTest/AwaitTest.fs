@@ -221,7 +221,7 @@ type AwaitTest(outputHelper: ITestOutputHelper) =
     Assert.Equal(3, counter.Count)
 
     runner.Update()
-    Assert.True(ac.IsCanceled)
+    Assert.True(ac.IsFaulted)
 
   [<Fact>]
   member __.``Do Test`` () =

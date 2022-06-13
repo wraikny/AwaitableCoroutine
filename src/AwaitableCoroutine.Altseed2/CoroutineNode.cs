@@ -20,7 +20,7 @@ namespace AwaitableCoroutine.Altseed2
 
         bool ICoroutineRunner.IsUpdating => _runner.IsUpdating;
 
-        void ICoroutineRunner.OnRegistering(CoroutineBase coroutine) => _runner.OnRegistering(coroutine);
+        void ICoroutineRunner.OnRegistering(Coroutine coroutine) => _runner.OnRegistering(coroutine);
 
         void ICoroutineRunner.OnUpdate() => _runner.OnUpdate();
 
