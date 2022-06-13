@@ -92,23 +92,6 @@ Target.create "Test" (fun _ ->
   )
 )
 
-Target.create "CopyDlls" (fun _ ->
-  Directory.ensure "output"
-
-  [ "netstandard2.1"
-    "net5.0"
-    "net6.0"
-  ] |> Seq.iter (fun target ->
-    Shell.mkdir $"output/%s{target}"
-    [ ""
-      ".Altseed2"
-      ".FSharp"
-    ] |> Seq.iter (fun sufix ->
-      Shell.cp $"src/AwaitableCoroutine%s{sufix}/bin/Release/%s{target}/AwaitableCoroutine%s{sufix}.dll" $"output/%s{target}/."
-    )
-  )
-)
-
 Target.create "None" ignore
 Target.create "Default" ignore
 
